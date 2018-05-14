@@ -1,12 +1,12 @@
-package it.uniroma2.progisssr.demo;
+package it.uniroma2.progisssr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class TicketingSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(TicketingSystemApplication.class, args);
     }
 }
