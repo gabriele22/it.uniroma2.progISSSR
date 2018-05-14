@@ -25,4 +25,5 @@ public class TicketMessage {
     private String text;
     private Date date;
 
+
 }
