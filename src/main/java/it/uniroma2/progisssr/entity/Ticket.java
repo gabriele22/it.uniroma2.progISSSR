@@ -1,54 +1,65 @@
 package it.uniroma2.progisssr.entity;
 
+import it.uniroma2.progisssr.utils.State;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ticket_ID")
     private Long ID;
-    private Date dateTime; // dateStart e dateEnd
-    private String subject;
-    private String message;
     private String status;
-    private Integer priority;
-    @OneToOne
-    private Lifecycle state;
-    @OneToOne
-    private User source;
-    private String object;
-    private String description;
-    @Transient
-    private List<String> attachedFiles;
+    private Date dateStart;
+    private Date dateEnd;
     private String category;
-    @OneToOne
-    private SoftwareProduct product;
+    private String title;
+    private String description;
+
+    @OneToOne //mappedby
+    private Product product;
     private Integer custumerPriority;
-    private Integer teamPriority;
-    private String visibility;
+    private Integer DispatcherPriority;
+    @OneToMany(mappedBy = "ticket")
+    private Set<TicketMessage> ticketMessages;
     @OneToOne
-    private User assistant;
+    private Utente customer;
+    @OneToOne
+    private Utente assistant;  //responsabile
 
-    private String nome;
-    private String cognome;
+    @OneToMany(mappedBy = "mainTicket")
+    private Set<SubTicket> subTickets;
+     /*   @Transient ALLEGATI
+    private List<String> attachedFiles; */
 
+    public Ticket(Date dateStart, String category, String title, String description, Product product, Integer custumerPriority, Utente customer) {
+        this.status= State.NEW.toString();
+        this.dateStart = dateStart;
+        this.category = category;
+        this.title = title;
+        this.description = description;
+        this.product = product;
+        this.custumerPriority = custumerPriority;
+        this.customer = customer;
+
+    }
 
 
 
     public void aggiorna(@NotNull Ticket datiAggiornati) {
-        this.nome = datiAggiornati.nome;
-        this.cognome = datiAggiornati.cognome;
+        this.status= datiAggiornati.status;
     }
+
+
 }
