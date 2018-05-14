@@ -26,7 +26,6 @@ public class Ticket {
     private String category;
     private String title;
     private String description;
-
     @OneToOne //mappedby
     private Product product;
     private Integer custumerPriority;

@@ -26,6 +26,7 @@ public class Utente {
     @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;
 
+
     public Utente(String name, String surname, String email, String nickname, String password) {
         this.name = name;
         this.surname = surname;
