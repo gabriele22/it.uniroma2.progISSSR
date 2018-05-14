@@ -22,7 +22,6 @@ public class Utente {
     private String email;
     private String nickname;
     private String password;
-
     @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;
 

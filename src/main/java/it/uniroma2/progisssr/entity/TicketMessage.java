@@ -23,7 +23,6 @@ public class TicketMessage {
     @ManyToOne@JoinColumn(name = "utente_ID")
     private Utente writer;
     private String text;
-
     private Date date;
 
 }

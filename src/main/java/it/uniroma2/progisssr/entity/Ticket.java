@@ -36,7 +36,6 @@ public class Ticket {
     private Utente customer;
     @OneToOne
     private Utente assistant;  //responsabile
-
     @OneToMany(mappedBy = "mainTicket")
     private Set<SubTicket> subTickets;
      /*   @Transient ALLEGATI
