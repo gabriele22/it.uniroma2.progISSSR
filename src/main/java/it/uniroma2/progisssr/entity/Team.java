@@ -19,13 +19,13 @@ public class Team {
     private Long ID;
     private String teamName;
     @OneToOne
-    private Utente teamLeader;
+    private User teamLeader;
     @OneToOne
-    private Utente teamCoordinator;
-    @OneToMany(mappedBy = "ID")
-    private Set<Utente> teamMembers;
+    private User teamCoordinator;
+    @OneToMany
+    private Set<User> teamMembers;
 
-    public Team(String teamName, Utente teamLeader, Utente teamCoordinator) {
+    public Team(String teamName, User teamLeader, User teamCoordinator) {
         this.teamName = teamName;
         this.teamLeader = teamLeader;
         this.teamCoordinator = teamCoordinator;

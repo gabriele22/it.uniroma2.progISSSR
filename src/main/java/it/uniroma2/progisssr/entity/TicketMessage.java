@@ -18,10 +18,10 @@ public class TicketMessage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "message_ID")
     private Long ID;
-    @ManyToOne@JoinColumn(name = "ticket_ID")
+ /*   @ManyToOne@JoinColumn(name = "ticket_ID")
     private Ticket ticket;
     @ManyToOne@JoinColumn(name = "utente_ID")
-    private Utente writer;
+    private User writer;*/
     private String text;
     private Date date;
 

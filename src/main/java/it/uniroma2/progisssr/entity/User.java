@@ -11,7 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Utente {
+@Table(name = "person")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,12 +24,12 @@ public class Utente {
     private String nickname;
     private String password;
     private String role;
-    @OneToMany(mappedBy = "writer")
-    private Set<TicketMessage> ticketMessages;
+/*    @OneToMany(mappedBy = "writer")
+    private Set<TicketMessage> ticketMessages;*/
 
 
 
-    public Utente(String name, String surname, String email, String nickname, String password, String role) {
+    public User(String name, String surname, String email, String nickname, String password, String role) {
         this.name = name;
         this.surname = surname;
         this.email = email;

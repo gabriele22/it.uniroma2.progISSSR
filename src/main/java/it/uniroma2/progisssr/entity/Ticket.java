@@ -21,19 +21,19 @@ public class Ticket {
     @Column(name = "ticket_ID")
     private Long ID;
     private String status;
-    private Date dateStart;
-    private Date dateEnd;
+    private String dateStart;
+    private String dateEnd;
     private String category;
     private String title;
     private String description;
-    @OneToOne //mappedby
+    @OneToOne
     private Product product;
     private Integer customerPriority;
     private Integer teamPriority;
-    @OneToMany(mappedBy = "ticket")
-    private Set<TicketMessage> ticketMessages;
+ /*   @OneToMany(mappedBy = "ticket")
+    private Set<TicketMessage> ticketMessages;*/
     @OneToOne
-    private Utente customer;
+    private User customer;
     @OneToOne
     private Team team;
     @OneToMany(mappedBy = "mainTicket")
@@ -45,7 +45,7 @@ public class Ticket {
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
 
-    public Ticket(Date dateStart, String category, String title, String description, Product product, Integer customerPriority, Utente customer) {
+    public Ticket(String dateStart, String category, String title, String description, Product product, Integer customerPriority, User customer) {
         this.status= State.NEW.toString();
         this.dateStart = dateStart;
         this.category = category;

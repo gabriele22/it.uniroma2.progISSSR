@@ -1,7 +1,8 @@
 package it.uniroma2.progisssr.rest;
 
 
-import it.uniroma2.progisssr.controller.PersonaController;
+import it.uniroma2.progisssr.controller.TicketController;
+import it.uniroma2.progisssr.dto.TicketDto;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,22 @@ import java.util.List;
 // @RestController è un metodo sintetico per dichiararlo e fornire a Spring la configurazione necessaria per serialzizare
 // e deserializzare il JSON.
 @RestController
-@RequestMapping(path = "person")
-public class PersonaRestService {
+@RequestMapping(path = "ticket")
+public class TicketRestService {
 
     @Autowired
-    private PersonaController personaController;
-
+    private TicketController ticketController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Ticket> creaPersona(@RequestBody Ticket ticket) {
-        Ticket ticketCreata = personaController.creaPersona(ticket);
+    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDto ticket) {
+        Ticket ticketCreata = ticketController.createTicket(ticket);
         return new ResponseEntity<>(ticketCreata, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> aggiornaPersona(@PathVariable Long id, @RequestBody Ticket ticket) {
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
         Ticket ticketAggiornata;
         try {
-            ticketAggiornata = personaController.aggiornaPersona(id, ticket);
+            ticketAggiornata = ticketController.updateTicket(id, ticket);
         } catch (EntitaNonTrovataException e) {
             return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
         }
@@ -46,20 +46,21 @@ public class PersonaRestService {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Ticket> cercaPersona(@PathVariable Long id) {
-        Ticket ticketTrovata = personaController.cercaPersonaPerId(id);
+    public ResponseEntity<Ticket> findTicket(@PathVariable Long id) {
+        Ticket ticketTrovata = ticketController.findTicketById(id);
         return new ResponseEntity<>(ticketTrovata, ticketTrovata == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> eliminaPersona(@PathVariable Long id) {
-        boolean eliminata = personaController.eliminaPersona(id);
+    public ResponseEntity<Boolean> deleteTicket(@PathVariable Long id) {
+        boolean eliminata = ticketController.deleteTicket(id);
         return new ResponseEntity<>(eliminata, eliminata ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> prelevaPersone() {
-        List<Ticket> persone = personaController.prelevaPersone();
+    public ResponseEntity<List<Ticket>> findAlltickets() {
+        List<Ticket> persone = ticketController.findAllTickets();
         return new ResponseEntity<>(persone, HttpStatus.OK);
     }
+
 }

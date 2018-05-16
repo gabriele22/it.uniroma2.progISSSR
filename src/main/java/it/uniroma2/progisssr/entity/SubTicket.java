@@ -17,7 +17,7 @@ public class SubTicket extends Ticket {
     @ManyToOne
     private Ticket mainTicket;
 
-    public SubTicket(Date dateStart, String category, String title, String description, Product product, Integer custumerPriority, Utente customer) {
+    public SubTicket(String dateStart, String category, String title, String description, Product product, Integer custumerPriority, User customer) {
         super(dateStart, category, title, description, product, custumerPriority, customer);
     }
 
