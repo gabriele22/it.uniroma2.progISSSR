@@ -22,16 +22,18 @@ public class Utente {
     private String email;
     private String nickname;
     private String password;
+    private String role;
     @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;
 
 
 
-    public Utente(String name, String surname, String email, String nickname, String password) {
+    public Utente(String name, String surname, String email, String nickname, String password, String role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+        this.role = role;
     }
 }

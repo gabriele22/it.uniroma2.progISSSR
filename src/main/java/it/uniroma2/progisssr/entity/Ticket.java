@@ -28,27 +28,31 @@ public class Ticket {
     private String description;
     @OneToOne //mappedby
     private Product product;
-    private Integer custumerPriority;
-    private Integer DispatcherPriority;
+    private Integer customerPriority;
+    private Integer teamPriority;
     @OneToMany(mappedBy = "ticket")
     private Set<TicketMessage> ticketMessages;
     @OneToOne
     private Utente customer;
     @OneToOne
-    private Utente assistant;  //responsabile
+    private Team team;
     @OneToMany(mappedBy = "mainTicket")
     private Set<SubTicket> subTickets;
+    @OneToMany(mappedBy = "ID")
+    private Set<Ticket> sameTopicTickets;
+    @OneToMany(mappedBy = "ID")
+    private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
 
-    public Ticket(Date dateStart, String category, String title, String description, Product product, Integer custumerPriority, Utente customer) {
+    public Ticket(Date dateStart, String category, String title, String description, Product product, Integer customerPriority, Utente customer) {
         this.status= State.NEW.toString();
         this.dateStart = dateStart;
         this.category = category;
         this.title = title;
         this.description = description;
         this.product = product;
-        this.custumerPriority = custumerPriority;
+        this.customerPriority = customerPriority;
         this.customer = customer;
 
 
