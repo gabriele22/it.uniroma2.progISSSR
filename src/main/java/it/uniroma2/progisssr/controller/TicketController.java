@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 // @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
@@ -85,7 +86,7 @@ public class TicketController {
 
     public List<TicketDto> findAllTickets() {
         List<Ticket> tickets = ticketDao.findAll();
-        List<TicketDto> ticketsDto = null;
+        List<TicketDto> ticketsDto =new ArrayList<>();
         for (int i = 0; i < tickets.size(); i++) {
             ticketsDto.add(unmarshalling(tickets.get(i)));
         }
