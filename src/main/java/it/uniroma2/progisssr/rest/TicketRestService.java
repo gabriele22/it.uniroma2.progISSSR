@@ -29,8 +29,8 @@ public class TicketRestService {
     @Autowired
     private TicketController ticketController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDto ticket) {
-        Ticket ticketCreata = ticketController.createTicket(ticket);
+    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
+        TicketDto ticketCreata = ticketController.createTicket(ticket);
         return new ResponseEntity<>(ticketCreata, HttpStatus.CREATED);
     }
 

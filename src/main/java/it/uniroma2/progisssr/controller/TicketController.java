@@ -9,6 +9,7 @@ import it.uniroma2.progisssr.entity.Product;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,11 @@ public class TicketController {
     private UserDao userDao;
 
     @Transactional
-    public @NotNull Ticket createTicket(@NotNull TicketDto ticket) {
+    public @NotNull TicketDto createTicket(@NotNull TicketDto ticketDto) {
 
-        Ticket newTicket = this.marshall(ticket);
+        Ticket newTicket = this.marshall(ticketDto);
         ticketDao.save(newTicket);
-        return newTicket;
+        return unmarshalling(newTicket);
     }
 
     private Ticket marshall(TicketDto ticketDto){
@@ -43,6 +44,15 @@ public class TicketController {
                 product,ticketDto.getCustomerPriority(),user);
         return ticket;
     }
+
+
+    private TicketDto unmarshalling(Ticket ticket){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(ticket, TicketDto.class);
+
+    }
+
+
     @Transactional
     public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket datiAggiornati) throws EntitaNonTrovataException {
         Ticket ticketDaAggiornare = ticketDao.getOne(id);
@@ -56,8 +66,8 @@ public class TicketController {
     }
 
     public Ticket findTicketById(@NotNull Long id) {
-        Ticket ticketTrovata = ticketDao.getOne(id);
-        return ticketTrovata;
+        Ticket ticket = ticketDao.getOne(id);
+        return ticket;
     }
 
     public boolean deleteTicket(@NotNull Long id) {
