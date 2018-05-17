@@ -4,10 +4,11 @@ import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Product;
 import it.uniroma2.progisssr.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-
+@Service
 public class UserController {
 
     @Autowired
