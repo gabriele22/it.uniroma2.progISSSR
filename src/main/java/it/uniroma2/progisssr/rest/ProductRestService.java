@@ -17,6 +17,7 @@ import java.util.List;
 public class ProductRestService {
     @Autowired
     private ProductController productController;
+
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
         ProductDto newProductDto = productController.createProduct(productDto);

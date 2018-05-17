@@ -17,7 +17,6 @@ public class ProductDto {
     }*/
 
 
-
     public Long getID() {
         return ID;
     }

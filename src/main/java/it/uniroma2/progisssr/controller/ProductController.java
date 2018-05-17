@@ -53,8 +53,6 @@ public class ProductController {
         Product productUpdated = productDao.save(productToUpdate);
         return unmarshalling(productUpdated);
 
-
-
     }
 
     public ProductDto findProductById(@NotNull Long id) {

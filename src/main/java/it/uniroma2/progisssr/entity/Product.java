@@ -24,7 +24,6 @@ public class Product {
     private String description;
 
 
-
     public Product(String name, Integer version, String description) {
         this.name = name;
         this.version = version;
