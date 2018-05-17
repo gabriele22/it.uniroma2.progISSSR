@@ -62,21 +62,21 @@ public class Ticket {
 
     public void update(@NotNull Ticket ticketUpdated)
     {
-        if(!ticketUpdated.equals(null) )
+        if(ticketUpdated.status !=null)
             this.status= ticketUpdated.status;
-        if(!dateEnd.equals(null))
+        if(dateEnd != null)
             this.dateEnd= ticketUpdated.dateEnd;
-        if(!ticketUpdated.equals(null))
+        if(ticketUpdated.category != null)
             this.category= ticketUpdated.category;
         if(ticketUpdated.customerPriority!=null)
             this.customerPriority= ticketUpdated.customerPriority;
-        if(!ticketUpdated.equals(null))
+        if(ticketUpdated.description != null)
             this.description=ticketUpdated.description;
-        if(!ticketUpdated.equals(null))
+        if(ticketUpdated.team != null)
             this.team = ticketUpdated.team;
         if(ticketUpdated.teamPriority!=null)
             this.teamPriority= ticketUpdated.teamPriority;
-        if(!ticketUpdated.title.equals(null))
+        if(ticketUpdated.title != null)
         this.title= ticketUpdated.title;
     }
 
