@@ -92,10 +92,4 @@ public class TicketController {
         }
         return ticketsDto;
     }
-
-/*    public static void main(String[] strings) {
-        TicketController ticketController = new TicketController();
-        List<Ticket> tickets = ticketController.findAllTickets();
-        System.out.println(tickets);
-    }*/
 }

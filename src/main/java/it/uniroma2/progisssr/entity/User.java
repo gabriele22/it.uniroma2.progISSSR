@@ -1,5 +1,6 @@
 package it.uniroma2.progisssr.entity;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,5 +39,20 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public void update(@NotNull User userUpdated) {
+        if(userUpdated.name != null)
+            this.name = userUpdated.name;
+        if(userUpdated.surname != null)
+            this.surname = userUpdated.surname;
+        if(userUpdated.email != null)
+            this.email = userUpdated.email;
+        if (userUpdated.username != null)
+            this.username = userUpdated.username;
+        if (userUpdated.password!= null)
+            this.password = userUpdated.password;
+        if (userUpdated.role != null)
+            this.role = userUpdated.role;
     }
 }
