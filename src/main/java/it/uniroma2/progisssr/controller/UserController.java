@@ -1,23 +1,75 @@
 package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.UserDao;
-import it.uniroma2.progisssr.entity.Product;
+import it.uniroma2.progisssr.dto.UserDto;
 import it.uniroma2.progisssr.entity.User;
+import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserController {
 
     @Autowired
     UserDao userDao;
 
-    @Transactional
-    public @NotNull User createUser(@NotNull User user) {
+    private User marshalling(UserDto userDto){
+        User user = new User(userDto.getName(), userDto.getSurname(),
+                userDto.getEmail(), userDto.getUsername(), userDto.getPassword(),
+                userDto.getRole());
+        return user;
+    }
 
-        User newUser= userDao.save(user);
-        return newUser;
+    private UserDto unmarshalling(User user){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(user, UserDto.class);
+
+    }
+
+    @Transactional
+    public @NotNull UserDto createUser(@NotNull UserDto userDto) {
+
+        User newUser= userDao.save(marshalling(userDto));
+        return unmarshalling(newUser);
+    }
+
+    @Transactional
+    public UserDto updateUser(Long id, UserDto userDto) throws EntitaNonTrovataException {
+        User userToUpdate = userDao.getOne(id);
+        if (userToUpdate == null)
+            throw new EntitaNonTrovataException();
+        userDto.setID(id);
+        userToUpdate.update(marshalling(userDto));
+        User userUpdated = userDao.save(userToUpdate);
+        return unmarshalling(userUpdated);
+
+    }
+
+    public UserDto findUserById(@NotNull Long id) {
+        UserDto userDto = unmarshalling(userDao.getOne(id));
+        return userDto;
+    }
+
+    public boolean deleteUser(@NotNull Long id) {
+        if (!userDao.existsById(id)) {
+            return false;
+        }
+        userDao.deleteById(id);
+        return true;
+    }
+
+    public List<UserDto> findAllUsers() {
+        List<User> users = userDao.findAll();
+        List<UserDto> usersDto = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            usersDto.add(unmarshalling(users.get(i)));
+        }
+        return usersDto;
     }
 }

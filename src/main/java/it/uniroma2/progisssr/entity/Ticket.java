@@ -77,7 +77,7 @@ public class Ticket {
         if(ticketUpdated.teamPriority!=null)
             this.teamPriority= ticketUpdated.teamPriority;
         if(ticketUpdated.title != null)
-        this.title= ticketUpdated.title;
+            this.title= ticketUpdated.title;
     }
 
 
