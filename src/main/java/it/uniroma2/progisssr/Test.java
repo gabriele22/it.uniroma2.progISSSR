@@ -13,6 +13,7 @@ public class Test {
 
 
     public static void main(String[] strings){
+/*
         TicketController ticketController = new TicketController();
         Product product = new Product("p1",1,"wvwvv");
         User user = new User("pippo","franco","ooo@ini","pip","pip","customer");
@@ -20,7 +21,7 @@ public class Test {
         ProductRestService productRestService =  new ProductRestService();
         productRestService.createProduct(product);
         //userController.createUser(user);
-
+*/
 
     }
    // Ticket ticket = new Ticket(date,"bug")

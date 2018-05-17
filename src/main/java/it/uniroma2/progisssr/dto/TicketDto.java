@@ -1,6 +1,5 @@
 package it.uniroma2.progisssr.dto;
 
-import it.uniroma2.progisssr.utils.State;
 
 public class TicketDto {
 
@@ -15,6 +14,9 @@ public class TicketDto {
     private Long productId;
     private Long customerId;
     private Long teamId;
+
+
+
 //constructor for create ticket
     /*public TicketDto(String dateStart, String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
         this.dateStart =dateStart;

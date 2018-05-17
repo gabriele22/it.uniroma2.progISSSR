@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -28,5 +29,16 @@ public class Product {
         this.name = name;
         this.version = version;
         this.description = description;
+    }
+
+
+    public void update(@NotNull Product productUpdated) {
+        if (productUpdated.name != null)
+            this.name = productUpdated.name;
+        if(productUpdated.version != null)
+            this.version = productUpdated.version;
+        if(productUpdated.description != null)
+            this.description = productUpdated.description;
+
     }
 }

@@ -32,12 +32,12 @@ public class TicketController {
     @Transactional
     public @NotNull TicketDto createTicket(@NotNull TicketDto ticketDto) {
 
-        Ticket newTicket = this.marshall(ticketDto);
+        Ticket newTicket = this.marshalling(ticketDto);
         ticketDao.save(newTicket);
         return unmarshalling(newTicket);
     }
 
-    private Ticket marshall(TicketDto ticketDto){
+    private Ticket marshalling(TicketDto ticketDto){
         Product product = null;
         User user = null;
         if(ticketDto.getProductId()!=null)
@@ -65,7 +65,7 @@ public class TicketController {
         if (ticketToUpdate == null)
             throw new EntitaNonTrovataException();
         ticketDto.setID(ID);
-        ticketToUpdate.update(marshall(ticketDto));
+        ticketToUpdate.update(marshalling(ticketDto));
 
         Ticket ticketUpdated = ticketDao.save(ticketToUpdate);
         return unmarshalling(ticketUpdated);
@@ -87,15 +87,10 @@ public class TicketController {
     public List<TicketDto> findAllTickets() {
         List<Ticket> tickets = ticketDao.findAll();
         List<TicketDto> ticketsDto =new ArrayList<>();
-        for (int i = 0; i < tickets.size(); i++) {
-            ticketsDto.add(unmarshalling(tickets.get(i)));
+        for (Ticket ticket : tickets) {
+            ticketsDto.add(unmarshalling(ticket));
         }
         return ticketsDto;
     }
 
-/*    public static void main(String[] strings) {
-        TicketController ticketController = new TicketController();
-        List<Ticket> tickets = ticketController.findAllTickets();
-        System.out.println(tickets);
-    }*/
 }
