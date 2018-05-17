@@ -1,7 +1,5 @@
 package it.uniroma2.progisssr.dto;
 
-import java.util.Date;
-
 public class TicketDto {
 
     private Long ID;
