@@ -15,5 +15,4 @@ public class ProductDto {
         this.version = version;
         this.description = description;
     }
-
 }
