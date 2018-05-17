@@ -29,11 +29,11 @@ public class TicketController {
     private UserDao userDao;
 
     @Transactional
-    public @NotNull TicketDto createTicket(@NotNull TicketDto ticketDto) {
+    public @NotNull Ticket createTicket(@NotNull TicketDto ticketDto) {
 
         Ticket newTicket = this.marshall(ticketDto);
         ticketDao.save(newTicket);
-        return unmarshalling(newTicket);
+        return newTicket;
     }
 
     private Ticket marshall(TicketDto ticketDto){
@@ -54,15 +54,16 @@ public class TicketController {
 
 
     @Transactional
-    public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket datiAggiornati) throws EntitaNonTrovataException {
-        Ticket ticketDaAggiornare = ticketDao.getOne(id);
-        if (ticketDaAggiornare == null)
+    public @NotNull Ticket updateTicket(@NotNull Long ID, @NotNull TicketDto ticketDto) throws EntitaNonTrovataException {
+
+        Ticket ticketToUpdate = ticketDao.getOne(ID);
+        if (ticketToUpdate == null)
             throw new EntitaNonTrovataException();
 
-        ticketDaAggiornare.aggiorna(datiAggiornati);
+        ticketToUpdate.update(marshall(ticketDto));
 
-        Ticket ticketAggiornata = ticketDao.save(ticketDaAggiornare);
-        return ticketAggiornata;
+        Ticket ticketUpdated = ticketDao.save(ticketToUpdate);
+        return ticketUpdated;
     }
 
     public Ticket findTicketById(@NotNull Long id) {
@@ -74,7 +75,6 @@ public class TicketController {
         if (!ticketDao.existsById(id)) {
             return false;
         }
-
         ticketDao.deleteById(id);
         return true;
     }

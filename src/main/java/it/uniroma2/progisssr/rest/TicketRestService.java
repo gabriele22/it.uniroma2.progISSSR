@@ -29,20 +29,20 @@ public class TicketRestService {
     @Autowired
     private TicketController ticketController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
-        TicketDto ticketCreata = ticketController.createTicket(ticket);
-        return new ResponseEntity<>(ticketCreata, HttpStatus.CREATED);
+    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDto ticket) {
+        Ticket newTicket = ticketController.createTicket(ticket);
+        return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
-        Ticket ticketAggiornata;
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto) {
+        Ticket ticketUptdated=null;
         try {
-            ticketAggiornata = ticketController.updateTicket(id, ticket);
+            ticketUptdated = ticketController.updateTicket(id, ticketDto);
         } catch (EntitaNonTrovataException e) {
-            return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ticketUptdated, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ticketAggiornata, HttpStatus.OK);
+        return new ResponseEntity<>(ticketUptdated, HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)

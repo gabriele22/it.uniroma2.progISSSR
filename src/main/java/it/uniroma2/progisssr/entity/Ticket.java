@@ -26,13 +26,13 @@ public class Ticket {
     private String category;
     private String title;
     private String description;
-    @OneToOne
+    @ManyToOne
     private Product product;
     private Integer customerPriority;
     private Integer teamPriority;
  /*   @OneToMany(mappedBy = "ticket")
     private Set<TicketMessage> ticketMessages;*/
-    @OneToOne
+    @ManyToOne
     private User customer;
     @OneToOne
     private Team team;
@@ -60,8 +60,24 @@ public class Ticket {
 
 
 
-    public void aggiorna(@NotNull Ticket datiAggiornati) {
-        this.status= datiAggiornati.status;
+    public void update(@NotNull Ticket ticketUpdated)
+    {
+        if(!ticketUpdated.equals(null) )
+            this.status= ticketUpdated.status;
+        if(!dateEnd.equals(null))
+            this.dateEnd= ticketUpdated.dateEnd;
+        if(!ticketUpdated.equals(null))
+            this.category= ticketUpdated.category;
+        if(ticketUpdated.customerPriority!=null)
+            this.customerPriority= ticketUpdated.customerPriority;
+        if(!ticketUpdated.equals(null))
+            this.description=ticketUpdated.description;
+        if(!ticketUpdated.equals(null))
+            this.team = ticketUpdated.team;
+        if(ticketUpdated.teamPriority!=null)
+            this.teamPriority= ticketUpdated.teamPriority;
+        if(!ticketUpdated.title.equals(null))
+        this.title= ticketUpdated.title;
     }
 
 

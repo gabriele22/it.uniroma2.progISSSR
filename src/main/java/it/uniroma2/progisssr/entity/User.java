@@ -21,19 +21,21 @@ public class User {
     private String name;
     private String surname;
     private String email;
-    private String nickname;
+    private String username;
     private String password;
     private String role;
+    @OneToMany
+    private Set<Ticket> tickets;
 /*    @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;*/
 
 
 
-    public User(String name, String surname, String email, String nickname, String password, String role) {
+    public User(String name, String surname, String email, String username, String password, String role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.nickname = nickname;
+        this.username = username;
         this.password = password;
         this.role = role;
     }

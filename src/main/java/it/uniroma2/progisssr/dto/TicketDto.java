@@ -13,21 +13,9 @@ public class TicketDto {
     private Long productId;
     private Long customerId;
     private Long teamId;
-
-    public TicketDto(Long ID, String status, String dateStart, String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
-        this.ID = ID;
-        this.status = status;
-        this.dateStart = dateStart;
-        this.category = category;
-        this.title = title;
-        this.description = description;
-        this.customerPriority = customerPriority;
-        this.productId = productId;
-        this.customerId = customerId;
-    }
-
+//constructor for create ticket
     public TicketDto(String dateStart, String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
-        this.dateStart = dateStart;
+        this.dateStart =dateStart;
         this.category = category;
         this.title = title;
         this.description = description;
@@ -35,6 +23,28 @@ public class TicketDto {
         this.productId = productId;
         this.customerId = customerId;
     }
+//constructor for modify ticket(case customer)
+    public TicketDto(String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
+        this.category = category;
+        this.title = title;
+        this.description = description;
+        this.customerPriority = customerPriority;
+        this.productId = productId;
+        this.customerId = customerId;
+    }
+
+
+//costructor for
+
+    public TicketDto( String category, String title, String description, Integer customerPriority, Long productId) {
+        this.category = category;
+        this.title = title;
+        this.description = description;
+        this.customerPriority = customerPriority;
+        this.productId = productId;
+    }
+
+
 
     public TicketDto(){}
 
