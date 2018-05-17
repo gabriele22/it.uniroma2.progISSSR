@@ -24,8 +24,8 @@ public class User {
     private String username;
     private String password;
     private String role;
-    @OneToMany
-    private Set<Ticket> tickets;
+    /*@OneToMany
+    private Set<Ticket> tickets;*/
 /*    @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;*/
 

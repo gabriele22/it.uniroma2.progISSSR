@@ -29,17 +29,21 @@ public class TicketController {
     private UserDao userDao;
 
     @Transactional
-    public @NotNull Ticket createTicket(@NotNull TicketDto ticketDto) {
+    public @NotNull TicketDto createTicket(@NotNull TicketDto ticketDto) {
 
         Ticket newTicket = this.marshall(ticketDto);
         ticketDao.save(newTicket);
-        return newTicket;
+        return unmarshalling(newTicket);
     }
 
     private Ticket marshall(TicketDto ticketDto){
-        Product product = productDao.getOne(ticketDto.getProductId());
-        User user = userDao.getOne(ticketDto.getCustomerId());
-        Ticket ticket = new Ticket(ticketDto.getDateStart(),ticketDto.getCategory(),
+        Product product = null;
+        User user = null;
+        if(ticketDto.getProductId()!=null)
+            product = productDao.getOne(ticketDto.getProductId());
+        if(ticketDto.getCustomerId()!=null)
+            user = userDao.getOne(ticketDto.getCustomerId());
+        Ticket ticket = new Ticket(ticketDto.getStatus(), ticketDto.getDateStart(),ticketDto.getCategory(),
                 ticketDto.getTitle(),ticketDto.getDescription(),
                 product,ticketDto.getCustomerPriority(),user);
         return ticket;
@@ -54,21 +58,21 @@ public class TicketController {
 
 
     @Transactional
-    public @NotNull Ticket updateTicket(@NotNull Long ID, @NotNull TicketDto ticketDto) throws EntitaNonTrovataException {
+    public @NotNull TicketDto updateTicket(@NotNull Long ID, @NotNull TicketDto ticketDto) throws EntitaNonTrovataException {
 
         Ticket ticketToUpdate = ticketDao.getOne(ID);
         if (ticketToUpdate == null)
             throw new EntitaNonTrovataException();
-
+        ticketDto.setID(ID);
         ticketToUpdate.update(marshall(ticketDto));
 
         Ticket ticketUpdated = ticketDao.save(ticketToUpdate);
-        return ticketUpdated;
+        return unmarshalling(ticketUpdated);
     }
 
-    public Ticket findTicketById(@NotNull Long id) {
-        Ticket ticket = ticketDao.getOne(id);
-        return ticket;
+    public TicketDto findTicketById(@NotNull Long id) {
+        TicketDto ticketDto = unmarshalling(ticketDao.getOne(id));
+        return ticketDto;
     }
 
     public boolean deleteTicket(@NotNull Long id) {
@@ -79,7 +83,18 @@ public class TicketController {
         return true;
     }
 
-    public List<Ticket> findAllTickets() {
-        return ticketDao.findAll();
+    public List<TicketDto> findAllTickets() {
+        List<Ticket> tickets = ticketDao.findAll();
+        List<TicketDto> ticketsDto = null;
+        for (int i = 0; i < tickets.size(); i++) {
+            ticketsDto.add(unmarshalling(tickets.get(i)));
+        }
+        return ticketsDto;
     }
+
+/*    public static void main(String[] strings) {
+        TicketController ticketController = new TicketController();
+        List<Ticket> tickets = ticketController.findAllTickets();
+        System.out.println(tickets);
+    }*/
 }

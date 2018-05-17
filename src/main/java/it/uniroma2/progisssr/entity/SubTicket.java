@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -17,8 +16,8 @@ public class SubTicket extends Ticket {
     @ManyToOne
     private Ticket mainTicket;
 
-    public SubTicket(String dateStart, String category, String title, String description, Product product, Integer custumerPriority, User customer) {
-        super(dateStart, category, title, description, product, custumerPriority, customer);
+    public SubTicket(String state, String dateStart, String category, String title, String description, Product product, Integer custumerPriority, User customer) {
+        super(state, dateStart, category, title, description, product, custumerPriority, customer);
     }
 
 

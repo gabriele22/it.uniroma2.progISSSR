@@ -29,38 +29,38 @@ public class TicketRestService {
     @Autowired
     private TicketController ticketController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDto ticket) {
-        Ticket newTicket = ticketController.createTicket(ticket);
-        return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
+    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
+        TicketDto newTicketDto = ticketController.createTicket(ticketDto);
+        return new ResponseEntity<>(newTicketDto, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto) {
-        Ticket ticketUptdated=null;
+    public ResponseEntity<TicketDto> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto) {
+        TicketDto ticketUpdatedDto = null;
         try {
-            ticketUptdated = ticketController.updateTicket(id, ticketDto);
+            ticketUpdatedDto = ticketController.updateTicket(id, ticketDto);
         } catch (EntitaNonTrovataException e) {
-            return new ResponseEntity<>(ticketUptdated, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ticketUpdatedDto, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ticketUptdated, HttpStatus.OK);
+        return new ResponseEntity<>(ticketUpdatedDto, HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Ticket> findTicket(@PathVariable Long id) {
-        Ticket ticketTrovata = ticketController.findTicketById(id);
-        return new ResponseEntity<>(ticketTrovata, ticketTrovata == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+    public ResponseEntity<TicketDto>  findTicket(@PathVariable Long id) {
+        TicketDto ticketDto = ticketController.findTicketById(id);
+        return new ResponseEntity<>(ticketDto, ticketDto == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteTicket(@PathVariable Long id) {
-        boolean eliminata = ticketController.deleteTicket(id);
-        return new ResponseEntity<>(eliminata, eliminata ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        boolean deleted = ticketController.deleteTicket(id);
+        return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findAlltickets() {
-        List<Ticket> persone = ticketController.findAllTickets();
-        return new ResponseEntity<>(persone, HttpStatus.OK);
+    public ResponseEntity<List<TicketDto>> findAllTickets() {
+        List<TicketDto> ticketsDto = ticketController.findAllTickets();
+        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
     }
 
 }

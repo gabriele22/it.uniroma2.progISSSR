@@ -45,8 +45,8 @@ public class Ticket {
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
 
-    public Ticket(String dateStart, String category, String title, String description, Product product, Integer customerPriority, User customer) {
-        this.status= State.NEW.toString();
+    public Ticket(String status, String dateStart, String category, String title, String description, Product product, Integer customerPriority, User customer) {
+        this.status= status;
         this.dateStart = dateStart;
         this.category = category;
         this.title = title;
