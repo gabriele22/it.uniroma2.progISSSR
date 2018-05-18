@@ -3,7 +3,6 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.dto.TicketDto;
-import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,7 +47,7 @@ public class TicketRestService {
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<TicketDto>  findTicket(@PathVariable Long id) {
         TicketDto ticketDto = ticketController.findTicketById(id);
-        return new ResponseEntity<>(ticketDto, ticketDto == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        return new ResponseEntity<>(ticketDto, ticketDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)

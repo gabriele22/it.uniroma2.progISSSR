@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -25,9 +26,22 @@ public class Team {
     @OneToMany
     private Set<User> teamMembers;
 
-    public Team(String teamName, User teamLeader, User teamCoordinator) {
+    public Team(String teamName, User teamLeader, User teamCoordinator, Set<User> teamMembers) {
         this.teamName = teamName;
         this.teamLeader = teamLeader;
         this.teamCoordinator = teamCoordinator;
+        this.teamMembers = teamMembers;
+    }
+
+
+    public void update(@NotNull Team teamUpdated) {
+        if (teamUpdated.teamName != null)
+            this.teamName = teamUpdated.teamName;
+        if (teamUpdated.teamCoordinator != null)
+            this.teamCoordinator = teamUpdated.teamCoordinator;
+        if (teamUpdated.teamLeader != null)
+            this.teamLeader = teamUpdated.teamLeader;
+        if (teamUpdated.teamMembers != null)
+            this.teamMembers = teamUpdated.teamMembers;
     }
 }

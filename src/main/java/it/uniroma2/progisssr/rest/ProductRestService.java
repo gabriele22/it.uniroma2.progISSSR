@@ -2,8 +2,6 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.ProductController;
 import it.uniroma2.progisssr.dto.ProductDto;
-import it.uniroma2.progisssr.dto.TicketDto;
-import it.uniroma2.progisssr.entity.Product;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +36,7 @@ public class ProductRestService {
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductDto>  findProduct(@PathVariable Long id) {
         ProductDto productDto = productController.findProductById(id);
-        return new ResponseEntity<>(productDto, productDto == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        return new ResponseEntity<>(productDto, productDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
