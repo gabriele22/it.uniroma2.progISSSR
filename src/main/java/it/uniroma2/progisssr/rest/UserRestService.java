@@ -38,11 +38,34 @@ public class UserRestService {
         return new ResponseEntity<>(userUpdatedDto, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "{username}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> findUser(@PathVariable String username) {
-        UserDto userDto = userController.findUserById(username);
+    @RequestMapping(path = "{username} ", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> findUser(@PathVariable String username) throws EntitaNonTrovataException {
+        UserDto userDto=null;
+        try {
+            userDto = userController.findUserById(username);
+        }catch (EntitaNonTrovataException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(userDto,HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(userDto, userDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
+
+    @RequestMapping (path = "{login}", method = RequestMethod.POST)
+    public ResponseEntity<UserDto> login (@RequestBody UserDto userDto) throws EntitaNonTrovataException {
+        UserDto userDtoauthenticated=null;
+        try {
+            userDtoauthenticated = userController.findUserById(userDto.getUsername());
+        }catch (EntitaNonTrovataException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(userDtoauthenticated,HttpStatus.NOT_FOUND);
+        }
+        if (userDtoauthenticated.getPassword().equals(userDto.getPassword())){
+                return new ResponseEntity<>(userDtoauthenticated,HttpStatus.OK);
+        }else
+            return new ResponseEntity<>(userDtoauthenticated,HttpStatus.FOUND);
+    }
+
+
 
     @RequestMapping(path = "{username}", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteUser(@PathVariable String id) {

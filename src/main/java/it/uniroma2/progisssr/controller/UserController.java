@@ -27,8 +27,10 @@ public class UserController {
     }
 
     private UserDto unmarshalling(User user){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(user, UserDto.class);
+        if(user!=null) {
+            ModelMapper modelMapper = new ModelMapper();
+            return modelMapper.map(user, UserDto.class);
+        }else return  null;
 
     }
 
@@ -50,8 +52,18 @@ public class UserController {
 
     }
 
-    public UserDto findUserById(@NotNull String username) {
-        UserDto userDto = unmarshalling(userDao.getOne(username));
+    public UserDto findUserById(@NotNull String username) throws EntitaNonTrovataException {
+        UserDto userDto;
+        User user;
+        try {
+            user = userDao.getOne(username);
+            userDto=unmarshalling(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new EntitaNonTrovataException();
+        }
+
+
         return userDto;
     }
 
