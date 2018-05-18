@@ -2,9 +2,7 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dto.ProductDto;
-import it.uniroma2.progisssr.dto.TicketDto;
 import it.uniroma2.progisssr.entity.Product;
-import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -20,11 +20,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
     private String name;
-    private Integer version;
+    private String version;
     private String description;
 
 
-    public Product(String name, Integer version, String description) {
+    public Product(String name, String version, String description) {
         this.name = name;
         this.version = version;
         this.description = description;

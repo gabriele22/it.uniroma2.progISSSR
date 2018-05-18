@@ -4,7 +4,7 @@ public class ProductDto {
 
     private Long ID;
     private String name;
-    private Integer version;
+    private String version;
     private String description;
 
     public ProductDto() {}
@@ -32,11 +32,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
