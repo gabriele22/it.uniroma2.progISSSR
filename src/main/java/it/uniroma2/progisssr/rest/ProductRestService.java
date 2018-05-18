@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "product")
+@CrossOrigin
 public class ProductRestService {
     @Autowired
     private ProductController productController;

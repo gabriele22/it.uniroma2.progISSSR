@@ -23,6 +23,7 @@ import java.util.List;
 // e deserializzare il JSON.
 @RestController
 @RequestMapping(path = "ticket")
+@CrossOrigin
 public class TicketRestService {
 
     @Autowired

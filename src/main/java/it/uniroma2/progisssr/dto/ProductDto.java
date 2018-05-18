@@ -16,7 +16,6 @@ public class ProductDto {
         this.description = description;
     }*/
 
-
     public Long getID() {
         return ID;
     }
