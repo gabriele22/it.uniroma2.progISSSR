@@ -35,19 +35,20 @@ public class TeamController {
         User teamCoordinator = null;
         Set<User> teamMembers = new HashSet<>();
 
-        if(teamDto.getTeamLeaderId()!=null)
-            teamLeader = userDao.getOne(teamDto.getTeamLeaderId());
-        if(teamDto.getTeamCoordinatorId()!=null)
-            teamCoordinator = userDao.getOne(teamDto.getTeamCoordinatorId());
+        if(teamDto.getTeamLeaderUsername()!=null)
+            teamLeader = userDao.getOne(teamDto.getTeamLeaderUsername());
+        if(teamDto.getTeamCoordinatorUsername()!=null)
+            teamCoordinator = userDao.getOne(teamDto.getTeamCoordinatorUsername());
 
-        System.out.println("MEMBRIIIIIIIIIIIIIIIIIIIII"+teamDto.getTeamMembersId().get(0));
-        if(teamDto.getTeamMembersId()!=null)
-            for(int i=0; i<teamMembers.size();i++){
+        System.out.println("MEMBRIIIIIIIIIIIIIIIIIIIII"+teamDto.getTeamMembersUsername());
+        if(teamDto.getTeamMembersUsername()!=null)
+            for(String s: teamDto.getTeamMembersUsername()){
 
-                teamMembers.add(userDao.getOne(teamDto.getTeamMembersId().get(i)));
+                teamMembers.add(userDao.getOne(s));
             }
-
-      Team team = new Team(teamDto.getTeamName(),teamLeader,teamCoordinator,teamMembers);
+        System.out.println(teamMembers);
+        Team team = new Team(teamDto.getTeamName(),teamLeader,teamCoordinator,(Set<User>) teamMembers);
+        System.out.println("TEAMMM  "+ unmarshalling(team).getTeamMembersUsername());
       return team;
 
     }

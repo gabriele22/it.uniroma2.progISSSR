@@ -42,8 +42,8 @@ public class TicketController {
         User user = null;
         if(ticketDto.getProductId()!=null)
             product = productDao.getOne(ticketDto.getProductId());
-        if(ticketDto.getCustomerId()!=null)
-            user = userDao.getOne(ticketDto.getCustomerId());
+        if(ticketDto.getCustomerUsername()!=null)
+            user = userDao.getOne(ticketDto.getCustomerUsername());
         Ticket ticket = new Ticket(ticketDto.getStatus(), ticketDto.getDateStart(),ticketDto.getCategory(),
                 ticketDto.getTitle(),ticketDto.getDescription(),
                 product,ticketDto.getCustomerPriority(),user);

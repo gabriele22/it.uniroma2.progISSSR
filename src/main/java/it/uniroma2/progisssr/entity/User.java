@@ -54,4 +54,9 @@ public class User {
         if (userUpdated.role != null)
             this.role = userUpdated.role;
     }
+
+    @Override
+    public String toString() {
+        return this.username;
+    }
 }

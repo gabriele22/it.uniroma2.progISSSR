@@ -24,13 +24,13 @@ public class Team {
     @OneToOne
     private User teamCoordinator;
     @OneToMany
-    private Set<User> teamMembers;
+    private Set<User> teamMembersUsername;
 
     public Team(String teamName, User teamLeader, User teamCoordinator, Set<User> teamMembers) {
         this.teamName = teamName;
         this.teamLeader = teamLeader;
         this.teamCoordinator = teamCoordinator;
-        this.teamMembers = teamMembers;
+        this.teamMembersUsername = teamMembers;
     }
 
 
@@ -41,7 +41,9 @@ public class Team {
             this.teamCoordinator = teamUpdated.teamCoordinator;
         if (teamUpdated.teamLeader != null)
             this.teamLeader = teamUpdated.teamLeader;
-        if (teamUpdated.teamMembers != null)
-            this.teamMembers = teamUpdated.teamMembers;
+        if (teamUpdated.teamMembersUsername != null)
+            this.teamMembersUsername = teamUpdated.teamMembersUsername;
     }
+
+
 }

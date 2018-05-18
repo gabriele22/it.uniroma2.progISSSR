@@ -12,30 +12,30 @@ public class TicketDto {
     private String description;
     private Integer customerPriority;
     private Long productId;
-    private String customerId;
-    private Long teamId;
+    private String customerUsername;
+    private Long team;
 
 
 
 //constructor for create ticket
-    /*public TicketDto(String dateStart, String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
+    /*public TicketDto(String dateStart, String category, String title, String description, Integer customerPriority, Long productId, Long customerUsername) {
         this.dateStart =dateStart;
         this.category = category;
         this.title = title;
         this.description = description;
         this.customerPriority = customerPriority;
         this.productId = productId;
-        this.customerId = customerId;
+        this.customerUsername = customerUsername;
         this.status = State.NEW.toString();
     }
 //constructor for modify ticket(case customer)
-    public TicketDto(String category, String title, String description, Integer customerPriority, Long productId, Long customerId) {
+    public TicketDto(String category, String title, String description, Integer customerPriority, Long productId, Long customerUsername) {
         this.category = category;
         this.title = title;
         this.description = description;
         this.customerPriority = customerPriority;
         this.productId = productId;
-        this.customerId = customerId;
+        this.customerUsername = customerUsername;
     }
 
 
@@ -103,32 +103,32 @@ public class TicketDto {
         this.customerPriority = customerPriority;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Long getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
-    }
-
     public String getDateStart() {
         return dateStart;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setProductId(Long product) {
+        this.productId = product;
+    }
+
+    public String getCustomerUsername() {
+        return customerUsername;
+    }
+
+    public void setCustomerUsername(String customer) {
+        this.customerUsername = customer;
+    }
+
+    public Long getTeam() {
+        return team;
+    }
+
+    public void setTeam(Long team) {
+        this.team = team;
     }
 
     public void setDateStart(String dateStart) {

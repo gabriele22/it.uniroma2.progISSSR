@@ -1,15 +1,18 @@
 package it.uniroma2.progisssr.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TeamDto {
     private Long ID;
     private String teamName;
-    private String teamLeaderId;
-    private String teamCoordinatorId;
-    private ArrayList<String> teamMembersId;
+    private String teamLeaderUsername;
+    private String teamCoordinatorUsername;
+    private Set<String> teamMembersUsername;
 
     public TeamDto() {
+        this.teamMembersUsername = new HashSet<>();
     }
 
 
@@ -25,28 +28,28 @@ public class TeamDto {
         this.teamName = teamName;
     }
 
-    public String getTeamLeaderId() {
-        return teamLeaderId;
+    public String getTeamLeaderUsername() {
+        return teamLeaderUsername;
     }
 
-    public void setTeamLeaderId(String teamLeaderId) {
-        this.teamLeaderId = teamLeaderId;
+    public void setTeamLeaderUsername(String teamLeaderUsername) {
+        this.teamLeaderUsername = teamLeaderUsername;
     }
 
-    public String getTeamCoordinatorId() {
-        return teamCoordinatorId;
+    public String getTeamCoordinatorUsername() {
+        return teamCoordinatorUsername;
     }
 
-    public void setTeamCoordinatorId(String teamCoordinatorId) {
-        this.teamCoordinatorId = teamCoordinatorId;
+    public void setTeamCoordinatorUsername(String teamCoordinatorUsername) {
+        this.teamCoordinatorUsername = teamCoordinatorUsername;
     }
 
-    public ArrayList<String> getTeamMembersId() {
-        return teamMembersId;
+    public Set<String> getTeamMembersUsername() {
+        return teamMembersUsername;
     }
 
-    public void setTeamMembersId(ArrayList<String> teamMembersId) {
-        this.teamMembersId = teamMembersId;
+    public void setTeamMembersUsername(Set<String> teamMembersUsername) {
+        this.teamMembersUsername = teamMembersUsername;
     }
 
     public String getTeamName() {
