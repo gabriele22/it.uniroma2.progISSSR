@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class TeamDto {
     private Long ID;
     private String teamName;
-    private Long teamLeaderId;
-    private Long teamCoordinatorId;
-    private ArrayList<Long> teamMembersId;
+    private String teamLeaderId;
+    private String teamCoordinatorId;
+    private ArrayList<String> teamMembersId;
 
-    public TeamDto(){}
+    public TeamDto() {
+    }
 
 
     public Long getID() {
@@ -20,35 +21,35 @@ public class TeamDto {
         this.ID = ID;
     }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
 
-    public Long getTeamLeaderId() {
+    public String getTeamLeaderId() {
         return teamLeaderId;
     }
 
-    public void setTeamLeaderId(Long teamLeaderId) {
+    public void setTeamLeaderId(String teamLeaderId) {
         this.teamLeaderId = teamLeaderId;
     }
 
-    public Long getTeamCoordinatorId() {
+    public String getTeamCoordinatorId() {
         return teamCoordinatorId;
     }
 
-    public void setTeamCoordinatorId(Long teamCoordinatorId) {
+    public void setTeamCoordinatorId(String teamCoordinatorId) {
         this.teamCoordinatorId = teamCoordinatorId;
     }
 
-    public ArrayList<Long> getTeamMembersId() {
+    public ArrayList<String> getTeamMembersId() {
         return teamMembersId;
     }
 
-    public void setTeamMembersId(ArrayList<Long> teamMembersId) {
+    public void setTeamMembersId(ArrayList<String> teamMembersId) {
         this.teamMembersId = teamMembersId;
+    }
+
+    public String getTeamName() {
+        return teamName;
     }
 }

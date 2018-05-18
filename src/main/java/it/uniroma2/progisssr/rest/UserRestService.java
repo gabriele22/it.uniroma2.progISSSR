@@ -27,25 +27,25 @@ public class UserRestService {
         return new ResponseEntity<>(newUserDto, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    @RequestMapping(path = "{username}", method = RequestMethod.PUT)
+    public ResponseEntity<UserDto> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
         UserDto userUpdatedDto = null;
         try {
-            userUpdatedDto = userController.updateUser(id, userDto);
+            userUpdatedDto = userController.updateUser(username, userDto);
         } catch (EntitaNonTrovataException e) {
             return new ResponseEntity<>(userUpdatedDto, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userUpdatedDto, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> findUser(@PathVariable Long id) {
-        UserDto userDto = userController.findUserById(id);
+    @RequestMapping(path = "{username}", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> findUser(@PathVariable String username) {
+        UserDto userDto = userController.findUserById(username);
         return new ResponseEntity<>(userDto, userDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
+    @RequestMapping(path = "{username}", method = RequestMethod.DELETE)
+    public ResponseEntity<Boolean> deleteUser(@PathVariable String id) {
         boolean deleted = userController.deleteUser(id);
         return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }

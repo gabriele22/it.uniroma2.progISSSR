@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,13 +16,11 @@ import java.util.Set;
 @Table(name = "person")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_ID")
-    private Long ID;
     private String name;
     private String surname;
+    @NaturalId
     private String email;
+    @Id
     private String username;
     private String password;
     private String role;

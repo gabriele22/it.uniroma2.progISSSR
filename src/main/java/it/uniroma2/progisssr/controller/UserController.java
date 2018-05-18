@@ -40,27 +40,26 @@ public class UserController {
     }
 
     @Transactional
-    public UserDto updateUser(Long id, UserDto userDto) throws EntitaNonTrovataException {
-        User userToUpdate = userDao.getOne(id);
+    public UserDto updateUser(String username, UserDto userDto) throws EntitaNonTrovataException {
+        User userToUpdate = userDao.getOne(username);
         if (userToUpdate == null)
             throw new EntitaNonTrovataException();
-        userDto.setID(id);
         userToUpdate.update(marshalling(userDto));
         User userUpdated = userDao.save(userToUpdate);
         return unmarshalling(userUpdated);
 
     }
 
-    public UserDto findUserById(@NotNull Long id) {
-        UserDto userDto = unmarshalling(userDao.getOne(id));
+    public UserDto findUserById(@NotNull String username) {
+        UserDto userDto = unmarshalling(userDao.getOne(username));
         return userDto;
     }
 
-    public boolean deleteUser(@NotNull Long id) {
-        if (!userDao.existsById(id)) {
+    public boolean deleteUser(String username) {
+        if (!userDao.existsById(username)) {
             return false;
         }
-        userDao.deleteById(id);
+        userDao.deleteById(username);
         return true;
     }
 

@@ -2,7 +2,6 @@ package it.uniroma2.progisssr.dto;
 
 public class UserDto {
 
-    private Long ID;
     private String name;
     private String surname;
     private String email;
@@ -11,14 +10,6 @@ public class UserDto {
     private String role;
 
     public UserDto() {}
-
-    public Long getID() {
-        return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
 
     public String getName() {
         return name;

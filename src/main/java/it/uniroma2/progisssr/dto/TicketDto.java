@@ -12,7 +12,7 @@ public class TicketDto {
     private String description;
     private Integer customerPriority;
     private Long productId;
-    private Long customerId;
+    private String customerId;
     private Long teamId;
 
 
@@ -111,14 +111,6 @@ public class TicketDto {
         this.productId = productId;
     }
 
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
     public Long getTeamId() {
         return teamId;
     }
@@ -129,6 +121,14 @@ public class TicketDto {
 
     public String getDateStart() {
         return dateStart;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public void setDateStart(String dateStart) {
