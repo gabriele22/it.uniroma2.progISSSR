@@ -1,5 +1,8 @@
 package it.uniroma2.progisssr.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class UserDto {
 
     private String name;
@@ -8,8 +11,10 @@ public class UserDto {
     private String username;
     private String password;
     private String role;
+    private Set<String> tickets;
 
-    public UserDto() {}
+    public UserDto() { this.tickets = new HashSet<>();
+    }
 
     public String getName() {
         return name;
@@ -57,5 +62,13 @@ public class UserDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<String> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<String> tickets) {
+        this.tickets = tickets;
     }
 }

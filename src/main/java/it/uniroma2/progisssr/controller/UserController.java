@@ -1,7 +1,10 @@
 package it.uniroma2.progisssr.controller;
 
+import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
+import it.uniroma2.progisssr.dto.TicketDto;
 import it.uniroma2.progisssr.dto.UserDto;
+import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.modelmapper.ModelMapper;
@@ -18,15 +21,34 @@ public class UserController {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    TicketDao ticketDao;
 
     private User marshalling(UserDto userDto){
         User user = new User(userDto.getName(), userDto.getSurname(),
                 userDto.getEmail(), userDto.getUsername(), userDto.getPassword(),
                 userDto.getRole());
+        /*for (String t: userDto.getTickets()) {
+            user.addTickets(ticketDao.getOne(Long.parseLong(t)));
+            System.out.println(ticketDao.getOne(Long.parseLong(t)));
+        }*/
+        /*if (userDao.existsById(userDto.getUsername())){
+            User user = userDao.getOne(userDto.getUsername());
+            user.update(new User(userDto.getName(), userDto.getSurname(),
+                    userDto.getEmail(), userDto.getUsername(), userDto.getPassword(),
+                    userDto.getRole()));
+            return user;
+        } else {
+            User user = new User(userDto.getName(), userDto.getSurname(),
+                    userDto.getEmail(), userDto.getUsername(), userDto.getPassword(),
+                    userDto.getRole());
+            return user;
+        }*/
         return user;
     }
 
     private UserDto unmarshalling(User user){
+
         if(user!=null) {
             ModelMapper modelMapper = new ModelMapper();
             return modelMapper.map(user, UserDto.class);
@@ -46,10 +68,12 @@ public class UserController {
         User userToUpdate = userDao.getOne(username);
         if (userToUpdate == null)
             throw new EntitaNonTrovataException();
+        /*System.out.println("userToUpdate\n\n" + userToUpdate.print());
+        System.out.println("userDton\n\n" + marshalling(userDto).print());*/
         userToUpdate.update(marshalling(userDto));
+        /*System.out.println("userToUpdate\n\n" + userToUpdate.print());*/
         User userUpdated = userDao.save(userToUpdate);
         return unmarshalling(userUpdated);
-
     }
 
 
@@ -84,5 +108,15 @@ public class UserController {
             usersDto.add(unmarshalling(users.get(i)));
         }
         return usersDto;
+    }
+
+    public List<Ticket> findTicketsById(String id) {
+        User user = userDao.getOne(id);
+        UserDto userDto = unmarshalling(user);
+        List<Ticket> tickets = new ArrayList<>();
+        for (String s: userDto.getTickets()) {
+            tickets.add(ticketDao.getOne(Long.parseLong(s)));
+        }
+        return tickets;
     }
 }

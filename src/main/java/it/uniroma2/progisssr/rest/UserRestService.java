@@ -2,15 +2,19 @@ package it.uniroma2.progisssr.rest;
 
 
 
+import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.controller.UserController;
 
+import it.uniroma2.progisssr.dto.TicketDto;
 import it.uniroma2.progisssr.dto.UserDto;
+import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,8 @@ public class UserRestService {
 
     @Autowired
     private UserController userController;
+    @Autowired
+    private TicketController ticketController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
@@ -38,7 +44,7 @@ public class UserRestService {
         return new ResponseEntity<>(userUpdatedDto, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "{username} ", method = RequestMethod.GET)
+    @RequestMapping(path = "{username}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> findUser(@PathVariable String username) throws EntitaNonTrovataException {
         UserDto userDto=null;
         try {
@@ -77,5 +83,17 @@ public class UserRestService {
     public ResponseEntity<List<UserDto>> findAllUsers() {
         List<UserDto> usersDto = userController.findAllUsers();
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "getAllTickets/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<TicketDto>> findTicketsById(@PathVariable String id) {
+        List<Ticket> tickets = userController.findTicketsById(id);
+        List<TicketDto> ticketsDto = new ArrayList<>();
+        if (!tickets.isEmpty()) {
+            for (Ticket t : tickets) {
+                ticketsDto.add(ticketController.unmarshalling(t));
+            }
+        }
+        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
     }
 }

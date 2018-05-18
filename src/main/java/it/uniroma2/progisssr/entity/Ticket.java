@@ -13,7 +13,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Ticket {
 
     @Id
@@ -80,5 +80,7 @@ public class Ticket {
             this.title= ticketUpdated.title;
     }
 
-
+    public String toString(){
+        return this.ID.toString();
+    }
 }

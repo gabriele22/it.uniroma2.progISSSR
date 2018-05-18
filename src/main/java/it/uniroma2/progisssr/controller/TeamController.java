@@ -40,15 +40,13 @@ public class TeamController {
         if(teamDto.getTeamCoordinatorUsername()!=null)
             teamCoordinator = userDao.getOne(teamDto.getTeamCoordinatorUsername());
 
-        System.out.println("MEMBRIIIIIIIIIIIIIIIIIIIII"+teamDto.getTeamMembersUsername());
         if(teamDto.getTeamMembersUsername()!=null)
             for(String s: teamDto.getTeamMembersUsername()){
 
                 teamMembers.add(userDao.getOne(s));
             }
         System.out.println(teamMembers);
-        Team team = new Team(teamDto.getTeamName(),teamLeader,teamCoordinator,(Set<User>) teamMembers);
-        System.out.println("TEAMMM  "+ unmarshalling(team).getTeamMembersUsername());
+        Team team = new Team(teamDto.getTeamName(),teamLeader,teamCoordinator,teamMembers);
       return team;
 
     }

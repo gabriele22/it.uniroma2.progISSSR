@@ -5,6 +5,7 @@ import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.dto.TicketDto;
+import it.uniroma2.progisssr.dto.UserDto;
 import it.uniroma2.progisssr.entity.Product;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
@@ -34,10 +35,16 @@ public class TicketController {
 
         Ticket newTicket = this.marshalling(ticketDto);
         ticketDao.save(newTicket);
+        UserDto userDto = new UserDto();
+        userDto.setUsername(ticketDto.getCustomerUsername());
+        //update the ticket list of user
+        User userUpdated = userDao.getOne(ticketDto.getCustomerUsername());
+        userUpdated.addTickets(newTicket);
+        userDao.save(userUpdated);
         return unmarshalling(newTicket);
     }
 
-    private Ticket marshalling(TicketDto ticketDto){
+    public Ticket marshalling(TicketDto ticketDto){
         Product product = null;
         User user = null;
         if(ticketDto.getProductId()!=null)
@@ -51,7 +58,7 @@ public class TicketController {
     }
 
 
-    private TicketDto unmarshalling(Ticket ticket){
+    public TicketDto unmarshalling(Ticket ticket){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(ticket, TicketDto.class);
 
@@ -80,6 +87,7 @@ public class TicketController {
         if (!ticketDao.existsById(id)) {
             return false;
         }
+
         ticketDao.deleteById(id);
         return true;
     }
