@@ -52,6 +52,8 @@ public class UserController {
 
     }
 
+
+
     public UserDto findUserById(@NotNull String username) throws EntitaNonTrovataException {
         UserDto userDto;
         User user;
