@@ -38,9 +38,9 @@ public class TicketController {
         UserDto userDto = new UserDto();
         userDto.setUsername(ticketDto.getCustomerUsername());
         //update the ticket list of user
-        User userUpdated = userDao.getOne(ticketDto.getCustomerUsername());
+        /*User userUpdated = userDao.getOne(ticketDto.getCustomerUsername());
         userUpdated.addTickets(newTicket);
-        userDao.save(userUpdated);
+        userDao.save(userUpdated);*/
         return unmarshalling(newTicket);
     }
 
