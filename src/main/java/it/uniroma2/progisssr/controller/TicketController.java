@@ -6,7 +6,7 @@ import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.dto.TicketDto;
 import it.uniroma2.progisssr.dto.UserDto;
-import it.uniroma2.progisssr.entity.Product;
+import it.uniroma2.progisssr.entity.Target;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
@@ -45,15 +45,15 @@ public class TicketController {
     }
 
     public Ticket marshalling(TicketDto ticketDto){
-        Product product = null;
+        Target target = null;
         User user = null;
         if(ticketDto.getProductId()!=null)
-            product = productDao.getOne(ticketDto.getProductId());
+            target = productDao.getOne(ticketDto.getProductId());
         if(ticketDto.getCustomerUsername()!=null)
             user = userDao.getOne(ticketDto.getCustomerUsername());
         Ticket ticket = new Ticket(ticketDto.getStatus(), ticketDto.getDateStart(),ticketDto.getCategory(),
                 ticketDto.getTitle(),ticketDto.getDescription(),
-                product,ticketDto.getCustomerPriority(),user);
+                target,ticketDto.getCustomerPriority(),user);
         return ticket;
     }
 

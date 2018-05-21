@@ -2,7 +2,7 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dto.ProductDto;
-import it.uniroma2.progisssr.entity.Product;
+import it.uniroma2.progisssr.entity.Target;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,34 +22,34 @@ public class ProductController {
     @Transactional
     public @NotNull ProductDto createProduct(@NotNull ProductDto productDto) {
 
-        Product product = this.marshalling(productDto);
-        Product newProduct= productDao.save(product);
-        return unmarshalling(newProduct);
+        Target target = this.marshalling(productDto);
+        Target newTarget = productDao.save(target);
+        return unmarshalling(newTarget);
     }
 
-    private Product marshalling (ProductDto productDto){
-        Product product = new Product(productDto.getName(),
+    private Target marshalling (ProductDto productDto){
+        Target target = new Target(productDto.getName(),
                 productDto.getVersion(),productDto.getDescription() );
-        return product;
+        return target;
 
     }
 
-    private ProductDto unmarshalling (Product product){
+    private ProductDto unmarshalling (Target target){
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(product, ProductDto.class);
+        return modelMapper.map(target, ProductDto.class);
     }
 
     @Transactional
     public @NotNull ProductDto updateProduct( @NotNull Long id, @NotNull ProductDto productDto) throws EntitaNonTrovataException{
 
-        Product productToUpdate = productDao.getOne(id);
-        if (productToUpdate == null)
+        Target targetToUpdate = productDao.getOne(id);
+        if (targetToUpdate == null)
             throw new EntitaNonTrovataException();
         productDto.setID(id);
-        productToUpdate.update(marshalling(productDto));
+        targetToUpdate.update(marshalling(productDto));
 
-        Product productUpdated = productDao.save(productToUpdate);
-        return unmarshalling(productUpdated);
+        Target targetUpdated = productDao.save(targetToUpdate);
+        return unmarshalling(targetUpdated);
 
     }
 
@@ -67,10 +67,10 @@ public class ProductController {
     }
 
     public List<ProductDto> findAllTickets(){
-        List<Product> products = productDao.findAll();
+        List<Target> targets = productDao.findAll();
         List<ProductDto> productsDto = new ArrayList<>();
-        for (Product product : products) {
-            productsDto.add(unmarshalling(product));
+        for (Target target : targets) {
+            productsDto.add(unmarshalling(target));
         }
         return productsDto;
     }

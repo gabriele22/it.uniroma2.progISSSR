@@ -1,6 +1,5 @@
 package it.uniroma2.progisssr.entity;
 
-import it.uniroma2.progisssr.utils.State;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +26,7 @@ public class Ticket {
     private String title;
     private String description;
     @ManyToOne
-    private Product product;
+    private Target target;
     private Integer customerPriority;
     private Integer teamPriority;
  /*   @OneToMany(mappedBy = "ticket")
@@ -45,13 +44,13 @@ public class Ticket {
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
 
-    public Ticket(String status, String dateStart, String category, String title, String description, Product product, Integer customerPriority, User customer) {
+    public Ticket(String status, String dateStart, String category, String title, String description, Target target, Integer customerPriority, User customer) {
         this.status= status;
         this.dateStart = dateStart;
         this.category = category;
         this.title = title;
         this.description = description;
-        this.product = product;
+        this.target = target;
         this.customerPriority = customerPriority;
         this.customer = customer;
 
