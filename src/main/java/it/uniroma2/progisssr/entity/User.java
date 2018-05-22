@@ -26,9 +26,7 @@ public class User {
     private String username;
     private String password;
     private String role;
-    @OneToMany
-    private Set<Ticket> tickets;
-/*    @OneToMany(mappedBy = "writer")
+    /*    @OneToMany(mappedBy = "writer")
     private Set<TicketMessage> ticketMessages;*/
 
 
@@ -40,7 +38,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.tickets = new HashSet<>();
     }
 
     public void update(@NotNull User userUpdated) {
@@ -56,18 +53,11 @@ public class User {
             this.password = userUpdated.password;
         if (userUpdated.role != null)
             this.role = userUpdated.role;
-        if (userUpdated.tickets != null)
-            if (!userUpdated.tickets.isEmpty())
-                this.tickets = userUpdated.tickets;
     }
 
     @Override
     public String toString() {
         return this.username;
-    }
-
-    public void addTickets(@NotNull Ticket ticket) {
-        this.tickets.add(ticket);
     }
 
     public String print() {
@@ -76,8 +66,13 @@ public class User {
                 "email: "   +   this.email      + "\n" +
                 "username:" +   this.username   + "\n" +
                 "password:" +   this.password   + "\n" +
-                "role:"     +   this.role       + "\n" +
-                "tickets:"  +   this.tickets.toString();
+                "role:"     +   this.role       + "\n";
 
+    }
+
+    public boolean verifyPassword(@NotNull String password) {
+        if (password == this.password) {
+            return true;
+        } else return false;
     }
 }

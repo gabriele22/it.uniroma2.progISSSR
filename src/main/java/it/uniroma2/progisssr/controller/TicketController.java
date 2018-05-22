@@ -4,19 +4,13 @@ package it.uniroma2.progisssr.controller;
 import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
-import it.uniroma2.progisssr.dto.TicketDto;
-import it.uniroma2.progisssr.dto.UserDto;
-import it.uniroma2.progisssr.entity.Target;
 import it.uniroma2.progisssr.entity.Ticket;
-import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 // @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
@@ -25,62 +19,28 @@ public class TicketController {
 
     @Autowired
     private TicketDao ticketDao;
-    @Autowired
-    private ProductDao productDao;
-    @Autowired
-    private UserDao userDao;
 
     @Transactional
-    public @NotNull TicketDto createTicket(@NotNull TicketDto ticketDto) {
-
-        Ticket newTicket = this.marshalling(ticketDto);
-        ticketDao.save(newTicket);
-        UserDto userDto = new UserDto();
-        userDto.setUsername(ticketDto.getCustomerUsername());
-        //update the ticket list of user
-        /*User userUpdated = userDao.getOne(ticketDto.getCustomerUsername());
-        userUpdated.addTickets(newTicket);
-        userDao.save(userUpdated);*/
-        return unmarshalling(newTicket);
+    public @NotNull Ticket createTicket(@NotNull Ticket ticket) {
+        Ticket newTicket = ticketDao.save(ticket);
+        return newTicket;
     }
-
-    public Ticket marshalling(TicketDto ticketDto){
-        Target target = null;
-        User user = null;
-        if(ticketDto.getProductId()!=null)
-            target = productDao.getOne(ticketDto.getProductId());
-        if(ticketDto.getCustomerUsername()!=null)
-            user = userDao.getOne(ticketDto.getCustomerUsername());
-        Ticket ticket = new Ticket(ticketDto.getStatus(), ticketDto.getDateStart(),ticketDto.getCategory(),
-                ticketDto.getTitle(),ticketDto.getDescription(),
-                target,ticketDto.getCustomerPriority(),user);
-        return ticket;
-    }
-
-
-    public TicketDto unmarshalling(Ticket ticket){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(ticket, TicketDto.class);
-
-    }
-
 
     @Transactional
-    public @NotNull TicketDto updateTicket(@NotNull Long ID, @NotNull TicketDto ticketDto) throws EntitaNonTrovataException {
+    public @NotNull Ticket updateTicket(@NotNull Long ID, @NotNull Ticket ticket) throws EntitaNonTrovataException {
 
         Ticket ticketToUpdate = ticketDao.getOne(ID);
         if (ticketToUpdate == null)
             throw new EntitaNonTrovataException();
-        ticketDto.setID(ID);
-        ticketToUpdate.update(marshalling(ticketDto));
+        ticketToUpdate.update(ticket);
 
         Ticket ticketUpdated = ticketDao.save(ticketToUpdate);
-        return unmarshalling(ticketUpdated);
+        return ticketUpdated;
     }
 
-    public TicketDto findTicketById(@NotNull Long id) {
-        TicketDto ticketDto = unmarshalling(ticketDao.getOne(id));
-        return ticketDto;
+    public Ticket findTicketById(@NotNull Long id) {
+        Ticket ticket = ticketDao.getOne(id);
+        return ticket;
     }
 
     public boolean deleteTicket(@NotNull Long id) {
@@ -92,13 +52,17 @@ public class TicketController {
         return true;
     }
 
-    public List<TicketDto> findAllTickets() {
+    public List<Ticket> findAllTickets() {
         List<Ticket> tickets = ticketDao.findAll();
-        List<TicketDto> ticketsDto =new ArrayList<>();
-        for (Ticket ticket : tickets) {
-            ticketsDto.add(unmarshalling(ticket));
-        }
-        return ticketsDto;
+        return tickets;
     }
 
+    public List<Ticket> findTicketsByCustomer(String username) {
+        List<Ticket> tickets = ticketDao.findByCustomer(username);
+        /*List<Ticket>  tickets = new ArrayList<>();
+        for (Long i:ticketsId) {
+            tickets.add(ticketDao.getOne(i));
+        }*/
+        return tickets;
+    }
 }

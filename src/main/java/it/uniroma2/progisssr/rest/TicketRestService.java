@@ -2,7 +2,7 @@ package it.uniroma2.progisssr.rest;
 
 
 import it.uniroma2.progisssr.controller.TicketController;
-import it.uniroma2.progisssr.dto.TicketDto;
+import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,26 +29,26 @@ public class TicketRestService {
     @Autowired
     private TicketController ticketController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
-        TicketDto newTicketDto = ticketController.createTicket(ticketDto);
-        return new ResponseEntity<>(newTicketDto, HttpStatus.CREATED);
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
+        Ticket newTicket = ticketController.createTicket(ticket);
+        return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<TicketDto> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto) {
-        TicketDto ticketUpdatedDto = null;
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
+        Ticket ticketUpdated = null;
         try {
-            ticketUpdatedDto = ticketController.updateTicket(id, ticketDto);
+            ticketUpdated = ticketController.updateTicket(id, ticket);
         } catch (EntitaNonTrovataException e) {
-            return new ResponseEntity<>(ticketUpdatedDto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ticketUpdatedDto, HttpStatus.OK);
+        return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<TicketDto>  findTicket(@PathVariable Long id) {
-        TicketDto ticketDto = ticketController.findTicketById(id);
-        return new ResponseEntity<>(ticketDto, ticketDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    public ResponseEntity<Ticket>  findTicket(@PathVariable Long id) {
+        Ticket ticket = ticketController.findTicketById(id);
+        return new ResponseEntity<>(ticket, ticket == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
@@ -58,9 +58,14 @@ public class TicketRestService {
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<TicketDto>> findAllTickets() {
-        List<TicketDto> ticketsDto = ticketController.findAllTickets();
-        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
+    public ResponseEntity<List<Ticket>> findAllTickets() {
+        List<Ticket> tickets = ticketController.findAllTickets();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "getTicketsByUser/{username}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketsById(@PathVariable String username) {
+        List<Ticket> tickets = ticketController.findTicketsByCustomer(username);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
 }

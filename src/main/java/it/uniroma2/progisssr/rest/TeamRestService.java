@@ -1,14 +1,12 @@
 package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TeamController;
-import it.uniroma2.progisssr.dto.TeamDto;
+import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,28 +17,26 @@ public class TeamRestService {
     @Autowired
     private TeamController teamController;
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto){
-        TeamDto newTeamDto = teamController.createTeam(teamDto);
-        return new ResponseEntity<>(newTeamDto, HttpStatus.CREATED);
+    public ResponseEntity<Team> createTeam(@RequestBody Team team){
+        Team newTeam = teamController.createTeam(team);
+        return new ResponseEntity<>(newTeam, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<TeamDto> updateTeam(@PathVariable Long id, @RequestBody TeamDto teamDto) {
-        TeamDto teamtUpdatedDto = null;
+    public ResponseEntity<Team> updateTeam(@PathVariable Long id, @RequestBody Team team) {
+        Team teamtUpdated = null;
         try {
-            teamtUpdatedDto = teamController.updateTeam(id, teamDto);
+            teamtUpdated = teamController.updateTeam(id, team);
         } catch (EntitaNonTrovataException e) {
-            return new ResponseEntity<>(teamtUpdatedDto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(teamtUpdated, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(teamtUpdatedDto, HttpStatus.OK);
+        return new ResponseEntity<>(teamtUpdated, HttpStatus.OK);
     }
 
-
-
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<TeamDto>  findTeam(@PathVariable Long id) {
-        TeamDto teamDto = teamController.findTeamById(id);
-        return new ResponseEntity<>(teamDto, teamDto == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    public ResponseEntity<Team>  findTeam(@PathVariable Long id) {
+        Team team = teamController.findTeamById(id);
+        return new ResponseEntity<>(team, team == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
@@ -50,11 +46,8 @@ public class TeamRestService {
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<TeamDto>> findAllTeams() {
-        List<TeamDto> teamDto = teamController.findAllTeam();
-        return new ResponseEntity<>(teamDto, HttpStatus.OK);
+    public ResponseEntity<List<Team>> findAllTeams() {
+        List<Team> team = teamController.findAllTeam();
+        return new ResponseEntity<>(team, HttpStatus.OK);
     }
-
-
-
 }

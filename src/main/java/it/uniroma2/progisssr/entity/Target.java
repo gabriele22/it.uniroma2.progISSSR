@@ -24,8 +24,8 @@ public class Target {
     private String description;
     private String type;
 
-
-    public Target(String name, String version, String description,String type) {
+    public Target(Long ID, String name, String version, String description,String type) {
+        this.ID = ID;
         this.name = name;
         this.version = version;
         this.description = description;

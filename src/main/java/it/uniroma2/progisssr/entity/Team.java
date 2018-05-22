@@ -24,6 +24,7 @@ public class Team {
     @OneToOne
     private User teamCoordinator;
     @OneToMany
+    @JoinTable(name = "Team_Members")
     private Set<User> teamMembersUsername;
 
     public Team(String teamName, User teamLeader, User teamCoordinator, Set<User> teamMembers) {

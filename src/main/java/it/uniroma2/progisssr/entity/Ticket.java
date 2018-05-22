@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-@Entity
+@Entity(name = "ticket")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -32,15 +32,14 @@ public class Ticket {
  /*   @OneToMany(mappedBy = "ticket")
     private Set<TicketMessage> ticketMessages;*/
     @ManyToOne
+    @JoinTable(name = "Person_Tickets")
     private User customer;
     @OneToOne
     private Team team;
-    @OneToMany(mappedBy = "mainTicket")
-    private Set<SubTicket> subTickets;
-    @OneToMany(mappedBy = "ID")
+    /*@OneToMany(mappedBy = "ID")
     private Set<Ticket> sameTopicTickets;
     @OneToMany(mappedBy = "ID")
-    private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----
+    private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----*/
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
 

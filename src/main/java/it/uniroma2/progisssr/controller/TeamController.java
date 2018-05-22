@@ -2,11 +2,8 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.TeamDao;
 import it.uniroma2.progisssr.dao.UserDao;
-import it.uniroma2.progisssr.dto.TeamDto;
 import it.uniroma2.progisssr.entity.Team;
-import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,53 +21,25 @@ public class TeamController {
     private UserDao userDao;
 
     @Transactional
-    public @NotNull TeamDto createTeam (@NotNull TeamDto teamDto){
-        Team newTeam = this.marshalling(teamDto);
-        teamDao.save(newTeam);
-        return unmarshalling(newTeam);
-    }
-
-    private Team marshalling(TeamDto teamDto){
-        User teamLeader= null;
-        User teamCoordinator = null;
-        Set<User> teamMembers = new HashSet<>();
-
-        if(teamDto.getTeamLeaderUsername()!=null)
-            teamLeader = userDao.getOne(teamDto.getTeamLeaderUsername());
-        if(teamDto.getTeamCoordinatorUsername()!=null)
-            teamCoordinator = userDao.getOne(teamDto.getTeamCoordinatorUsername());
-
-        if(teamDto.getTeamMembersUsername()!=null)
-            for(String s: teamDto.getTeamMembersUsername()){
-
-                teamMembers.add(userDao.getOne(s));
-            }
-        System.out.println(teamMembers);
-        Team team = new Team(teamDto.getTeamName(),teamLeader,teamCoordinator,teamMembers);
-      return team;
-
-    }
-
-    private TeamDto unmarshalling (Team team){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(team,TeamDto.class);
+    public @NotNull Team createTeam (@NotNull Team team){
+        teamDao.save(team);
+        return team;
     }
 
     @Transactional
-    public @NotNull TeamDto updateTeam( @NotNull Long ID, @NotNull TeamDto teamDto) throws EntitaNonTrovataException {
+    public @NotNull Team updateTeam( @NotNull Long ID, @NotNull Team team) throws EntitaNonTrovataException {
         Team teamToUpdate = teamDao.getOne(ID);
         if(teamToUpdate == null)
             throw new EntitaNonTrovataException();
-        teamDto.setID(ID);
-        teamToUpdate.update(marshalling(teamDto));
+        teamToUpdate.update(team);
         Team teamUpdated = teamDao.save(teamToUpdate);
-        return unmarshalling(teamUpdated);
+        return teamUpdated;
 
     }
 
-    public TeamDto findTeamById(@NotNull Long id){
-        TeamDto teamDto = unmarshalling(teamDao.getOne(id));
-        return teamDto;
+    public Team findTeamById(@NotNull Long id){
+        Team team = teamDao.getOne(id);
+        return team;
     }
 
     public boolean deleteTicket(@NotNull Long id){
@@ -81,13 +50,8 @@ public class TeamController {
         return true;
     }
 
-    public List<TeamDto> findAllTeam(){
+    public List<Team> findAllTeam(){
         List<Team> teams = teamDao.findAll();
-        List<TeamDto> teamsDto = new ArrayList<>();
-        for (Team team : teams){
-            teamsDto.add(unmarshalling(team));
-        }
-        return teamsDto;
+        return teams;
     }
-
 }
