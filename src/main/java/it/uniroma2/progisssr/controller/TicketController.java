@@ -67,6 +67,4 @@ public class TicketController {
         }*/
         return tickets;
     }
-
-
 }

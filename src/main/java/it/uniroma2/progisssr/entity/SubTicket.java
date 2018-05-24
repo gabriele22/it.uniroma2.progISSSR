@@ -21,6 +21,4 @@ public class SubTicket extends Ticket {
     public SubTicket(String state, String dateStart, String category, String title, String description, Target target, Integer custumerPriority, User customer,Byte attached) {
         super(state, dateStart, category, title, description, target, custumerPriority, customer, attached );
     }
-
-
 }

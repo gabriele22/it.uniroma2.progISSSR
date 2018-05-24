@@ -25,7 +25,6 @@ public class TeamController {
         teamDao.save(team);
         return team;
     }
-
     @Transactional
     public @NotNull Team updateTeam( @NotNull Long ID, @NotNull Team team) throws EntitaNonTrovataException {
         Team teamToUpdate = teamDao.getOne(ID);

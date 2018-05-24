@@ -22,7 +22,6 @@ public class TargetController {
         Target newTarget = productDao.save(target);
         return newTarget;
     }
-
     @Transactional
     public @NotNull Target updateTarget( @NotNull Long id, @NotNull Target target) throws EntitaNonTrovataException{
 

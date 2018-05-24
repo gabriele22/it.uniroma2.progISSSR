@@ -46,6 +46,7 @@ public class TicketRestService {
         return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
     }
 
+
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Ticket>  findTicket(@PathVariable Long id) {
         Ticket ticket = ticketController.findTicketById(id);

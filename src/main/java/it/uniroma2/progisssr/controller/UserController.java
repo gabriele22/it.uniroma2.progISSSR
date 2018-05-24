@@ -27,7 +27,6 @@ public class UserController {
         User newUser= userDao.save(user);
         return newUser;
     }
-
     @Transactional
     public User updateUser(String username, User user) throws EntitaNonTrovataException {
         User userToUpdate = userDao.getOne(username);

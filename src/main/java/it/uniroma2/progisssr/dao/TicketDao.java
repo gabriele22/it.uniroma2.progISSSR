@@ -16,4 +16,5 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     @Query("SELECT '*' FROM Ticket t where t.customer = :username")*/
     List<Ticket> findByCustomer(/*@Param("username") */User customer);
 
+
 }

@@ -44,6 +44,7 @@ public class UserRestService {
         return new ResponseEntity<>(userUpdated, HttpStatus.OK);
     }
 
+
     @RequestMapping(path = "{username}", method = RequestMethod.GET)
     public ResponseEntity<User> findUser(@PathVariable String username) throws EntitaNonTrovataException {
         User user = null;

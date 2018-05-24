@@ -58,8 +58,6 @@ public class Ticket {
 
     }
 
-
-
     public void update(@NotNull Ticket ticketUpdated)
     {
         if(ticketUpdated.status !=null)

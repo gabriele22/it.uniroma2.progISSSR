@@ -34,7 +34,6 @@ public class Team {
         this.teamMembersUsername = teamMembers;
     }
 
-
     public void update(@NotNull Team teamUpdated) {
         if (teamUpdated.teamName != null)
             this.teamName = teamUpdated.teamName;

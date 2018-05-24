@@ -14,6 +14,7 @@ import java.util.Date;
 @Setter
 public class TicketMessage {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "message_ID")
