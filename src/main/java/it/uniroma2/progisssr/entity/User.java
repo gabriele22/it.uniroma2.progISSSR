@@ -70,9 +70,11 @@ public class User {
 
     }
 
+/*    public String getPassword() {
+        return password;
+    }*/
+
     public boolean verifyPassword(@NotNull String password) {
-        if (password == this.password) {
-            return true;
-        } else return false;
+        return password.equals(this.password);
     }
 }

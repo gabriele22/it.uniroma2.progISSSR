@@ -2,8 +2,10 @@ package it.uniroma2.progisssr.rest;
 
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.controller.UserController;
+import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -53,7 +57,7 @@ public class UserRestService {
     }
 
     @RequestMapping (path = "login/{username}", method = RequestMethod.POST)
-    public ResponseEntity<User> login (@PathVariable String username, @RequestBody User user) throws EntitaNonTrovataException {
+    public ResponseEntity<User> login (@PathVariable String username, @RequestBody User user) {
         User userToAuthenticated = null;
         try {
             userToAuthenticated =  userController.findUserById(username);
@@ -61,6 +65,8 @@ public class UserRestService {
             e.printStackTrace();
             return new ResponseEntity<>(userToAuthenticated,HttpStatus.NOT_FOUND);
         }
+        if(userToAuthenticated==null)
+            return new ResponseEntity<>(userToAuthenticated,HttpStatus.NOT_FOUND);
         boolean userIsAuthenticated = userController.userVerifyCredentials(username, user);
         if (userIsAuthenticated){
                 return new ResponseEntity<>(user,HttpStatus.OK);

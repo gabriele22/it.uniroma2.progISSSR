@@ -36,14 +36,15 @@ public class Ticket {
     private User customer;
     @OneToOne
     private Team team;
-    /*@OneToMany(mappedBy = "ID")
-    private Set<Ticket> sameTopicTickets;
-    @OneToMany(mappedBy = "ID")
+    @OneToOne@JoinColumn(name = "sameTicket")
+    private Ticket sameTicket;
+   /* @OneToMany(mappedBy = "ID")
     private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----*/
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
+    private Byte attached;
 
-    public Ticket(String status, String dateStart, String category, String title, String description, Target target, Integer customerPriority, User customer) {
+    public Ticket(String status, String dateStart, String category, String title, String description, Target target, Integer customerPriority, User customer, Byte attached) {
         this.status= status;
         this.dateStart = dateStart;
         this.category = category;
@@ -52,6 +53,7 @@ public class Ticket {
         this.target = target;
         this.customerPriority = customerPriority;
         this.customer = customer;
+        this.attached = attached;
 
 
     }
@@ -76,6 +78,8 @@ public class Ticket {
             this.teamPriority= ticketUpdated.teamPriority;
         if(ticketUpdated.title != null)
             this.title= ticketUpdated.title;
+        if(ticketUpdated.sameTicket != null)
+            this.sameTicket = ticketUpdated.sameTicket;
     }
 
     public String toString(){

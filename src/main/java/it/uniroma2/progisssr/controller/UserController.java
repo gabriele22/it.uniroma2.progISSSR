@@ -42,12 +42,14 @@ public class UserController {
 
     public User findUserById(@NotNull String username) throws EntitaNonTrovataException {
         User user;
-        try {
-            user = userDao.getOne(username);
-        }catch (Exception e){
+        if(!userDao.existsById(username))
+            throw new EntitaNonTrovataException();
+  //      try {
+        user = userDao.getOne(username);
+ /*       }catch (Exception e){
             e.printStackTrace();
             throw new EntitaNonTrovataException();
-        }
+        }*/
         return user;
     }
 
@@ -65,9 +67,10 @@ public class UserController {
     }
 
     public boolean userVerifyCredentials(@NotNull String username, @NotNull User user) {
-        String password = userDao.findPasswordById(username);
-        if (user.verifyPassword(password)) {
-            return true;
-        } else return false;
+       // User userToFind = userDao.getOne(username);
+
+        //String password = userDao.findPasswordById(username);
+        return user.verifyPassword(userDao.findPasswordByUsername(username));
     }
+
 }

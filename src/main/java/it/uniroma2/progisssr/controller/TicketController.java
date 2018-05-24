@@ -5,6 +5,7 @@ import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,12 +58,15 @@ public class TicketController {
         return tickets;
     }
 
-    public List<Ticket> findTicketsByCustomer(String username) {
-        List<Ticket> tickets = ticketDao.findByCustomer(username);
+    public List<Ticket> findTicketsByCustomer(User user){
+        List<Ticket> tickets = ticketDao.findByCustomer(user);
+
         /*List<Ticket>  tickets = new ArrayList<>();
         for (Long i:ticketsId) {
             tickets.add(ticketDao.getOne(i));
         }*/
         return tickets;
     }
+
+
 }

@@ -3,6 +3,7 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,9 +64,9 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "getTicketsByUser/{username}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findTicketsById(@PathVariable String username) {
-        List<Ticket> tickets = ticketController.findTicketsByCustomer(username);
+    @RequestMapping(path = "getTicketsByUser", method = RequestMethod.POST)
+    public ResponseEntity<List<Ticket>> findTicketsById(@RequestBody User user) {
+        List<Ticket> tickets = ticketController.findTicketsByCustomer(user);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 }
