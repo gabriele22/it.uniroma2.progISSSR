@@ -1,5 +1,6 @@
 package it.uniroma2.progisssr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +37,8 @@ public class Ticket {
     private User customer;
     @OneToOne
     private Team team;
-    @OneToOne@JoinColumn(name = "sameTicket")
+    //si legano i ticket uguali sempre al main ticket già presente nel sistema
+    @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
     private Ticket sameTicket;
    /* @OneToMany(mappedBy = "ID")
     private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----*/

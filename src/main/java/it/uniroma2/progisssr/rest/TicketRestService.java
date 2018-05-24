@@ -68,6 +68,17 @@ public class TicketRestService {
     @RequestMapping(path = "getTicketsByUser", method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> findTicketsById(@RequestBody User user) {
         List<Ticket> tickets = ticketController.findTicketsByCustomer(user);
+        if(tickets==null || tickets.size()==0)
+            return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "getTicketsBySameTicket", method = RequestMethod.POST)
+    public ResponseEntity<List<Ticket>> findTicketsBySameTicket(@RequestBody Ticket ticket) {
+        List<Ticket> tickets = ticketController.findTicketBySameTicket(ticket);
+        if(tickets==null || tickets.size()==0)
+            return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
 }

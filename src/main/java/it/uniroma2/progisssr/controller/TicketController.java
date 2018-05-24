@@ -60,11 +60,11 @@ public class TicketController {
 
     public List<Ticket> findTicketsByCustomer(User user){
         List<Ticket> tickets = ticketDao.findByCustomer(user);
+        return tickets;
+    }
 
-        /*List<Ticket>  tickets = new ArrayList<>();
-        for (Long i:ticketsId) {
-            tickets.add(ticketDao.getOne(i));
-        }*/
+    public List<Ticket> findTicketBySameTicket(Ticket ticket){
+        List<Ticket> tickets = ticketDao.findBySameTicket(ticket);
         return tickets;
     }
 }
