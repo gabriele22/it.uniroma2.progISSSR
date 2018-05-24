@@ -1,5 +1,10 @@
 package it.uniroma2.progisssr;
 
+import it.uniroma2.progisssr.entity.Ticket;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Test {
 
 

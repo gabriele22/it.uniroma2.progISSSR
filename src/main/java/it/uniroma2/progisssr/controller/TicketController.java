@@ -67,4 +67,18 @@ public class TicketController {
         List<Ticket> tickets = ticketDao.findBySameTicket(ticket);
         return tickets;
     }
+
+    public Ticket/*List<Ticket> */addDependentTicket( @NotNull Long ID, @NotNull Ticket ticket) throws EntitaNonTrovataException {
+        Ticket ticketMain = ticketDao.getOne(ID);
+        if (ticketMain == null)
+            throw new EntitaNonTrovataException();
+        //add ticket to ticketMain set of dependent tickets
+        ticketMain.addDependentTickets(ticket);
+        Ticket ticketMainUpdate = ticketDao.save(ticketMain);
+        //aggiungere campo conta dipendenze
+
+       /* return ticketDao.findDependentTickets(ID);*/
+        return ticketMainUpdate;
+
+    }
 }

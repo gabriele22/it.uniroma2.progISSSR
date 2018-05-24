@@ -35,13 +35,13 @@ public class Ticket {
     @ManyToOne
     @JoinTable(name = "Person_Tickets")
     private User customer;
-    @OneToOne
+    @OneToOne@Transient
     private Team team;
     //si legano i ticket uguali sempre al main ticket già presente nel sistema
     @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
     private Ticket sameTicket;
-   /* @OneToMany(mappedBy = "ID")
-    private Set<Ticket> dependentTickets;// che vuol dire dipendenti?  <-----*/
+    @OneToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
+    private Set<Ticket> dependentTickets;
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
     private Byte attached;
@@ -80,6 +80,11 @@ public class Ticket {
             this.title= ticketUpdated.title;
         if(ticketUpdated.sameTicket != null)
             this.sameTicket = ticketUpdated.sameTicket;
+    }
+
+    public void addDependentTickets(@NotNull Ticket ticket){
+        if(ticket.dependentTickets != null)
+            this.dependentTickets.add(ticket);
     }
 
     public String toString(){

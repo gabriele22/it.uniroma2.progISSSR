@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // @RestController e @Controller identificano uno Spring Bean che nell'architettura MVC è l'anello di congiunzione tra
@@ -80,5 +81,22 @@ public class TicketRestService {
             return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
+    @RequestMapping(path = "addDependentTicket/{id}", method = RequestMethod.POST)
+  //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
+    public ResponseEntity<Ticket> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
+        Ticket ticketMain = null;
+            List<Ticket> tickets = new ArrayList<>();
+        try {
+            ticket = ticketController.addDependentTicket(id, ticket);
+        }catch (EntitaNonTrovataException e){
+            return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
+        }
+        /*if(tickets==null || tickets.size()==0)
+            return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);*/
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
+    }
+
+
+
 
 }
