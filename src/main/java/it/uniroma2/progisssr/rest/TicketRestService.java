@@ -85,15 +85,15 @@ public class TicketRestService {
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
     public ResponseEntity<Ticket> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
         Ticket ticketMain = null;
-            List<Ticket> tickets = new ArrayList<>();
+          //  List<Ticket> tickets = new ArrayList<>();
         try {
-            ticket = ticketController.addDependentTicket(id, ticket);
+            ticketMain = ticketController.addDependentTicket(id, ticket);
         }catch (EntitaNonTrovataException e){
-            return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ticketMain, HttpStatus.NOT_FOUND);
         }
         /*if(tickets==null || tickets.size()==0)
             return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);*/
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
+        return new ResponseEntity<>(ticketMain, HttpStatus.OK);
     }
 
 

@@ -73,12 +73,13 @@ public class TicketController {
         if (ticketMain == null)
             throw new EntitaNonTrovataException();
         //add ticket to ticketMain set of dependent tickets
+        System.out.println("TICKET DIPENDENTEEEEEEE:"+ticket.toString());
         ticketMain.addDependentTickets(ticket);
-        Ticket ticketMainUpdate = ticketDao.save(ticketMain);
+        //Ticket ticketMainUpdate = ticketDao.save(ticketMain);
         //aggiungere campo conta dipendenze
 
        /* return ticketDao.findDependentTickets(ID);*/
-        return ticketMainUpdate;
+        return ticketDao.save(ticketMain);
 
     }
 }

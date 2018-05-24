@@ -56,6 +56,7 @@ public class Ticket {
         this.customerPriority = customerPriority;
         this.customer = customer;
         this.attached = attached;
+        this.dependentTickets = new HashSet<>();
 
 
     }
@@ -83,9 +84,10 @@ public class Ticket {
     }
 
     public void addDependentTickets(@NotNull Ticket ticket){
-        if(ticket.dependentTickets != null)
             this.dependentTickets.add(ticket);
     }
+
+
 
     public String toString(){
         return this.ID.toString();
