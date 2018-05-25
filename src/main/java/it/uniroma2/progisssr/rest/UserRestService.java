@@ -64,13 +64,13 @@ public class UserRestService {
             userToAuthenticated =  userController.findUserById(username);
         }catch (EntitaNonTrovataException e){
             e.printStackTrace();
-            return new ResponseEntity<>(userToAuthenticated,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(user,HttpStatus.NOT_FOUND);
         }
         if(userToAuthenticated==null)
-            return new ResponseEntity<>(userToAuthenticated,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(user,HttpStatus.NOT_FOUND);
         boolean userIsAuthenticated = userController.userVerifyCredentials(username, user);
         if (userIsAuthenticated){
-                return new ResponseEntity<>(user,HttpStatus.OK);
+                return new ResponseEntity<>(userToAuthenticated,HttpStatus.OK);
         }else
             return new ResponseEntity<>(user, HttpStatus.FOUND);
     }

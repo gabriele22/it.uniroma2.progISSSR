@@ -70,6 +70,7 @@ public class TicketController {
 
     public Ticket/*List<Ticket> */addDependentTicket( @NotNull Long ID, @NotNull Ticket ticket) throws EntitaNonTrovataException {
         Ticket ticketMain = ticketDao.getOne(ID);
+
         if (ticketMain == null)
             throw new EntitaNonTrovataException();
         //add ticket to ticketMain set of dependent tickets

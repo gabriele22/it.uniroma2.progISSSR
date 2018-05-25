@@ -42,6 +42,7 @@ public class Ticket {
     private Ticket sameTicket;
     @OneToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
     private Set<Ticket> dependentTickets;
+    private Integer countDependencies;
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
     private Byte attached;
@@ -87,7 +88,9 @@ public class Ticket {
             this.dependentTickets.add(ticket);
     }
 
-
+    public void updateCount(){
+        this.countDependencies++;
+    }
 
     public String toString(){
         return this.ID.toString();
