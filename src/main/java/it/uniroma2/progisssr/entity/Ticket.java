@@ -40,12 +40,14 @@ public class Ticket {
     //si legano i ticket uguali sempre al main ticket già presente nel sistema
     @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
     private Ticket sameTicket;
-    @OneToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
+    @ManyToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
     private Set<Ticket> dependentTickets;
     private Integer countDependencies;
      /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
     private Byte attached;
+
+    private String teamComment;
 
     public Ticket(String status, String dateStart, String category, String title, String description, Target target, Integer customerPriority, User customer, Byte attached) {
         this.status= status;
@@ -57,7 +59,6 @@ public class Ticket {
         this.customerPriority = customerPriority;
         this.customer = customer;
         this.attached = attached;
-        this.dependentTickets = new HashSet<>();
 
 
     }
@@ -82,15 +83,60 @@ public class Ticket {
             this.title= ticketUpdated.title;
         if(ticketUpdated.sameTicket != null)
             this.sameTicket = ticketUpdated.sameTicket;
+        if(ticketUpdated.teamComment != null)
+            this.teamComment = ticketUpdated.teamComment;
     }
 
-    public void addDependentTickets(@NotNull Ticket ticket){
-            this.dependentTickets.add(ticket);
+    //return true if there isn't cycle
+    public boolean isAcycle(@NotNull Ticket dependentTicket){
+
+        if(this.dependentTickets.isEmpty())
+            return true;
+        if(this.dependentTickets.contains(dependentTicket))
+            return false;
+        else{
+            for(Ticket t: this.dependentTickets) {
+                if (!t.isAcycle(dependentTicket))
+                    return false;
+            }
+        }
+
+        return true;
+
     }
 
-    public void updateCount(){
+    public boolean isAlreadyDependent(@NotNull Ticket depedentTicket){
+        return this.dependentTickets.contains(depedentTicket);
+    }
+
+    public void addDependentTickets(@NotNull Ticket dependentTicket) {
+
+        this.dependentTickets.add(dependentTicket);
+
+    }
+
+    public Integer addCount(){
+        if(this.countDependencies==null)
+            this.countDependencies=0;
         this.countDependencies++;
+        return this.countDependencies;
     }
+
+    public Integer decreaseCount(){
+        if(this.countDependencies==null)
+            this.countDependencies=0;
+        this.countDependencies--;
+        return this.countDependencies;
+    }
+
+    public Set<Ticket> decreaseDependents(){
+        for(Ticket t: this.dependentTickets){
+            t.decreaseCount();
+        }
+        return this.dependentTickets;
+
+    }
+
 
     public String toString(){
         return this.ID.toString();

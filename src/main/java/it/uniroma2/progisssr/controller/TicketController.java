@@ -1,9 +1,7 @@
 package it.uniroma2.progisssr.controller;
 
 
-import it.uniroma2.progisssr.dao.ProductDao;
 import it.uniroma2.progisssr.dao.TicketDao;
-import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 // @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
@@ -68,19 +67,37 @@ public class TicketController {
         return tickets;
     }
 
-    public Ticket/*List<Ticket> */addDependentTicket( @NotNull Long ID, @NotNull Ticket ticket) throws EntitaNonTrovataException {
+    public Boolean addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws EntitaNonTrovataException {
         Ticket ticketMain = ticketDao.getOne(ID);
+        Ticket dependentTicket = ticketDao.getOne(dependentID);
 
-        if (ticketMain == null)
+        if (ticketMain == null || dependentTicket==null)
             throw new EntitaNonTrovataException();
-        //add ticket to ticketMain set of dependent tickets
-        System.out.println("TICKET DIPENDENTEEEEEEE:"+ticket.toString());
-        ticketMain.addDependentTickets(ticket);
-        //Ticket ticketMainUpdate = ticketDao.save(ticketMain);
-        //aggiungere campo conta dipendenze
+        if(ticketMain.isAlreadyDependent(dependentTicket))
+            return true;
+        //check if there is no-cycle
+        if(dependentTicket.isAcycle(ticketMain)) {
+            ticketMain.addDependentTickets(dependentTicket);
+            ticketDao.save(ticketMain);
+            dependentTicket.addCount();
+            ticketDao.save(dependentTicket);
+            return true;
 
-       /* return ticketDao.findDependentTickets(ID);*/
-        return ticketDao.save(ticketMain);
+        }
+        else return false;
+    }
+
+
+    public Ticket releaseTicket(@NotNull  Long id, @NotNull Ticket ticket) throws EntitaNonTrovataException {
+        Ticket ticketReleased = ticketDao.getOne(id);
+        if (ticket == null )
+            throw new EntitaNonTrovataException();
+        ticketReleased.update(ticket);
+        ticketDao.save(ticketReleased);
+        Set<Ticket> dependents = ticketReleased.decreaseDependents();
+        for(Ticket t: dependents)
+            ticketDao.save(t);
+        return ticketReleased;
 
     }
 }

@@ -81,22 +81,36 @@ public class TicketRestService {
             return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
-    @RequestMapping(path = "addDependentTicket/{id}", method = RequestMethod.POST)
+
+    @RequestMapping(path = "addDependentTicket/{id}/{dependentTicketID}", method = RequestMethod.POST)
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
-    public ResponseEntity<Ticket> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
-        Ticket ticketMain = null;
-          //  List<Ticket> tickets = new ArrayList<>();
+    public ResponseEntity<Boolean> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
+        Boolean b=false;
         try {
-            ticketMain = ticketController.addDependentTicket(id, ticket);
+            b = ticketController.addDependentTicket(id, dependentTicketID);
         }catch (EntitaNonTrovataException e){
-            return new ResponseEntity<>(ticketMain, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(b, HttpStatus.NOT_FOUND);
         }
-        /*if(tickets==null || tickets.size()==0)
-            return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);*/
-        return new ResponseEntity<>(ticketMain, HttpStatus.OK);
+
+        if(b)
+            return new ResponseEntity<>(b, HttpStatus.OK);
+        else return new ResponseEntity<>(b, HttpStatus.FAILED_DEPENDENCY);
+
     }
 
+    //nella richiesta inserisci json con almeno id e stato(released)
+    @RequestMapping(path = "release/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> releaseTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
+        Ticket ticketRelease = null;
+        try {
+            ticketRelease = ticketController.releaseTicket(id,ticket);
+        }catch (EntitaNonTrovataException e){
+            return new ResponseEntity<>(ticketRelease, HttpStatus.NOT_FOUND);
+        }
 
+        return new ResponseEntity<>(ticketRelease, HttpStatus.OK);
+
+    }
 
 
 }
