@@ -48,6 +48,7 @@ public class TicketRestService {
     }
 
 
+    //TODO quando richiedono un ticket uguale ad un altro torni il primo che è entrato nel sistema ovvero quello salvato in same ticket
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Ticket>  findTicket(@PathVariable Long id) {
         Ticket ticket = ticketController.findTicketById(id);
@@ -111,6 +112,48 @@ public class TicketRestService {
         return new ResponseEntity<>(ticketRelease, HttpStatus.OK);
 
     }
+
+    @RequestMapping(path = "addRegression/{id}/{idGenerator}", method = RequestMethod.POST)
+    public ResponseEntity<Ticket> addRegression(@PathVariable Long id,@PathVariable Long idGenerator) {
+        Ticket ticketRegression = null;
+        try {
+            ticketRegression = ticketController.addRegression(id, idGenerator);
+        } catch (EntitaNonTrovataException e){
+            return new ResponseEntity<>(ticketRegression, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(ticketRegression, HttpStatus.OK);
+
+    }
+
+//---------------Per stampare le tabelle nelle schermate del dispatcher--------------------------------
+
+    @RequestMapping(path = "findAllTicketsByStatusNot/{status}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findAllTicketsByStatusNot(@PathVariable String status) {
+        List<Ticket> tickets = ticketController.findAllTicketsByStatusNot(status);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path = "findAllTicketsForEquality/{status}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findAllTicketsForEquality(@PathVariable String status) {
+        List<Ticket> tickets = ticketController.findAllTicketsForEquality(status);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "findAllTicketsForDependency/{status}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findAllTicketsForDependency(@PathVariable String status) {
+        List<Ticket> tickets = ticketController.findAllTicketsForDependency(status);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path = "findAllTicketsForRegression/{status}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findAllTicketsForRegression(@PathVariable String status) {
+        List<Ticket> tickets = ticketController.findAllTicketsForRegression(status);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
 
 
 }

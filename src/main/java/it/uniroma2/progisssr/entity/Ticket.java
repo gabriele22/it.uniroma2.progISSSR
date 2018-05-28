@@ -43,7 +43,11 @@ public class Ticket {
     @ManyToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
     private Set<Ticket> dependentTickets;
     private Integer countDependencies;
-     /*   @Transient ALLEGATI
+    @ManyToMany
+    @JoinTable(name = "regressionTicketsGenerator")
+    @JsonIgnoreProperties
+    private Set<Ticket> regressionTicketsGenerator;
+    /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
     private Byte attached;
 
@@ -140,5 +144,9 @@ public class Ticket {
 
     public String toString(){
         return this.ID.toString();
+    }
+
+    public void addRegression(Ticket ticketGenerator) {
+        this.regressionTicketsGenerator.add(ticketGenerator);
     }
 }

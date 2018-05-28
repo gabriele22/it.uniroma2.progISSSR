@@ -90,7 +90,7 @@ public class TicketController {
 
     public Ticket releaseTicket(@NotNull  Long id, @NotNull Ticket ticket) throws EntitaNonTrovataException {
         Ticket ticketReleased = ticketDao.getOne(id);
-        if (ticket == null )
+        if (ticketReleased == null )
             throw new EntitaNonTrovataException();
         ticketReleased.update(ticket);
         ticketDao.save(ticketReleased);
@@ -99,5 +99,39 @@ public class TicketController {
             ticketDao.save(t);
         return ticketReleased;
 
+    }
+
+    public Ticket addRegression(@NotNull Long id,@NotNull Long idGenerator) throws EntitaNonTrovataException {
+        Ticket ticketRegression = ticketDao.getOne(id);
+        Ticket ticketGenerator = ticketDao.getOne(idGenerator);
+        if (ticketRegression == null )
+            throw new EntitaNonTrovataException();
+        if (ticketGenerator == null )
+            throw new EntitaNonTrovataException();
+        ticketRegression.addRegression(ticketGenerator);
+        return ticketDao.save(ticketRegression);
+
+    }
+
+    public List<Ticket> findAllTicketsByStatusNot(String status) {
+        List<Ticket> tickets = ticketDao.findByStatusNot(status);
+        return tickets;
+
+    }
+
+    public List<Ticket> findAllTicketsForEquality(String status) {
+        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(status);
+        return tickets;
+    }
+
+    public List<Ticket> findAllTicketsForDependency(String status) {
+        List<Ticket> tickets = ticketDao.findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(status);
+        return tickets;
+    }
+
+
+    public List<Ticket> findAllTicketsForRegression(String status) {
+        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(status);
+        return tickets;
     }
 }
