@@ -31,5 +31,4 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     //@Query("select '*' from Ticket t join t.dependentTickets dt on mainID")
     //List<Ticket> getTicketsByIDAndDAndDependentTickets(@Param("mainID") Long ID );
 
-
 }

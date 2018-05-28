@@ -123,7 +123,6 @@ public class TicketRestService {
         }
 
         return new ResponseEntity<>(ticketRegression, HttpStatus.OK);
-
     }
 
 //---------------Per stampare le tabelle nelle schermate del dispatcher--------------------------------

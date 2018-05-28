@@ -129,7 +129,6 @@ public class TicketController {
         return tickets;
     }
 
-
     public List<Ticket> findAllTicketsForRegression(String status) {
         List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(status);
         return tickets;
