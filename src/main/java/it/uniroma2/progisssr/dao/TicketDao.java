@@ -23,9 +23,23 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     //to use in select equality
     List<Ticket> findByStatusAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(String status);
     //to use in select dependency
-    List<Ticket> findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(String status);
+    List<Ticket> findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(String stattus);
     //to use in select regression
     List<Ticket> findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(String status);
+
+    //Ticket where is possidle add any relation
+    List<Ticket> findByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(String status);
+    //Ticket where is possibile add a depency relation
+    List<Ticket> findByStatusAndDependentTicketsIsNotNull(String status);
+    //Ticket with no relation
+    List<Ticket> findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull();
+    //Ticket for create a uguality relation
+    List<Ticket> findBySameTicketIsNotNull();
+    //Ticket for create a dependency relation
+    List<Ticket> findByDependentTicketsIsNotNull();
+    //Ticket for create a regression relation
+    List<Ticket> findByStatus(String status);
+
 
     //@Query("select '*' from Ticket t inner join Ticket dt where dt.ID = :mainID")
     //@Query("select '*' from Ticket t join t.dependentTickets dt on mainID")

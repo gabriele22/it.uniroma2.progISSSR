@@ -133,4 +133,36 @@ public class TicketController {
         List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(status);
         return tickets;
     }
+
+
+
+    //------------  Seconda versione relazioni-------------------------
+
+
+    public List<Ticket> findTicketNoRelation() {
+        List<Ticket> tickets = ticketDao.findByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull("new");
+        return tickets;
+    }
+
+    public List<Ticket> findTicketDependency() {
+        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNotNull("new");
+        return tickets;
+    }
+
+    public List<Ticket> findTicketForCreateUguality() {
+        List<Ticket> tickets = ticketDao.findBySameTicketIsNotNull();
+        tickets.addAll(ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull());
+        return tickets;
+    }
+
+    public List<Ticket> findTicketForCreateDependency() {
+        List<Ticket> tickets = ticketDao.findByDependentTicketsIsNotNull();
+        tickets.addAll(ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull());
+        return tickets;
+    }
+
+    public List<Ticket> findTicketForCreateRegression() {
+        List<Ticket> tickets = ticketDao.findByStatus("closed");
+        return tickets;
+    }
 }

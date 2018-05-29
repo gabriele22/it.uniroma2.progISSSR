@@ -153,6 +153,37 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+//-----------------relation new version-----------------------------
+
+    @RequestMapping(path = "findTicketNoRelation", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketNoRelation() {
+        List<Ticket> tickets = ticketController.findTicketNoRelation();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "findTicketDependency", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketDependency() {
+        List<Ticket> tickets = ticketController.findTicketDependency();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "findTicketForCreateUguality", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForCreateUguality() {
+        List<Ticket> tickets = ticketController.findTicketForCreateUguality();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "findTicketForCreateDependency", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForCreateDependency() {
+        List<Ticket> tickets = ticketController.findTicketForCreateDependency();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "findTicketForCreateRegression", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForCreateRegression() {
+        List<Ticket> tickets = ticketController.findTicketForCreateRegression();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
 
 
 }
