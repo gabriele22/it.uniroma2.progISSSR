@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -150,8 +151,8 @@ public class TicketController {
     }
 
     public List<Ticket> findTicketForCreateUguality() {
-        List<Ticket> tickets = ticketDao.findBySameTicketIsNotNull();
-        tickets.addAll(ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull());
+        List<Ticket> tickets = new ArrayList<>();
+        tickets =ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
         return tickets;
     }
 
@@ -165,4 +166,6 @@ public class TicketController {
         List<Ticket> tickets = ticketDao.findByStatus("closed");
         return tickets;
     }
+
+
 }

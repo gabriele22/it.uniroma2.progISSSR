@@ -153,6 +153,7 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+
 //-----------------relation new version-----------------------------
 
     @RequestMapping(path = "findTicketNoRelation", method = RequestMethod.GET)
@@ -184,6 +185,9 @@ public class TicketRestService {
         List<Ticket> tickets = ticketController.findTicketForCreateRegression();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
+
+
+
 
 
 }
