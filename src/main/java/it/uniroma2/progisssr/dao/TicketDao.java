@@ -25,24 +25,23 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     //to use in select equality
     List<Ticket> findByStatusAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(String status);
     //to use in select dependency
-    List<Ticket> findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(String stattus);
+    List<Ticket> findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(String status);
     //to use in select regression
     List<Ticket> findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(String status);
 
     //Ticket where is possible add any relation
-    List<Ticket> findByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(String status);
+    List<Ticket> findDistinctByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull(String status);
     //Ticket where is possible add a dependency relation
-    List<Ticket> findByStatusAndDependentTicketsIsNotNull(String status);
+    List<Ticket> findDistinctByStatusAndDependentTicketsIsNotNullOrCountDependenciesIsNotNull(String status);
     //Ticket with no relation
-    List<Ticket> findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot(String status);
+    List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot(String status);
     //Ticket for create a equality relation
     List<Ticket> findBySameTicketIsNotNull();
     //Ticket for create a dependency relation
-    List<Ticket> findByDependentTicketsIsNotNull();
+    List<Ticket> findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
     //Ticket for create a regression relation
-    List<Ticket> findByStatus(String status);
-    List<Ticket> findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull();
-
+    List<Ticket> findDistinctByStatus(String status);
+    List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
 
     //@Query("select '*' from Ticket t inner join Ticket dt where dt.ID = :mainID")
 /*    @Query("SELECT t.dependentTickets FROM Ticket t  where t.ID = :mainID")

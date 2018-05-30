@@ -141,29 +141,29 @@ public class TicketController {
 
 
     public List<Ticket> findTicketNoRelation() {
-        List<Ticket> tickets = ticketDao.findByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull("new");
+        List<Ticket> tickets = ticketDao.findDistinctByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull("new");
         return tickets;
     }
 
     public List<Ticket> findTicketDependency() {
-        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNotNull("new");
+        List<Ticket> tickets = ticketDao.findDistinctByStatusAndDependentTicketsIsNotNullOrCountDependenciesIsNotNull("new");
         return tickets;
     }
 
     public List<Ticket> findTicketForCreateEquality() {
         List<Ticket> tickets = new ArrayList<>();
-        tickets =ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
+        tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
         return tickets;
     }
 
     public List<Ticket> findTicketForCreateDependency() {
-        List<Ticket> tickets = ticketDao.findByDependentTicketsIsNotNull();
-        tickets.addAll(ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull());
+        List<Ticket> tickets = ticketDao.findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
+        tickets.addAll(ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull());
         return tickets;
     }
 
     public List<Ticket> findTicketForCreateRegression() {
-        List<Ticket> tickets = ticketDao.findByStatus("closed");
+        List<Ticket> tickets = ticketDao.findDistinctByStatus("closed");
         return tickets;
     }
 
