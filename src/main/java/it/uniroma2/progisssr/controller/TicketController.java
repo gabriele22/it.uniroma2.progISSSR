@@ -150,7 +150,7 @@ public class TicketController {
         return tickets;
     }
 
-    public List<Ticket> findTicketForCreateUguality() {
+    public List<Ticket> findTicketForCreateEquality() {
         List<Ticket> tickets = new ArrayList<>();
         tickets =ticketDao.findBySameTicketIsNullAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
         return tickets;

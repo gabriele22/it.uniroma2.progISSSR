@@ -168,9 +168,9 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "findTicketForCreateUguality", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findTicketForCreateUguality() {
-        List<Ticket> tickets = ticketController.findTicketForCreateUguality();
+    @RequestMapping(path = "findTicketForCreateEquality", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForCreateEquality() {
+        List<Ticket> tickets = ticketController.findTicketForCreateEquality();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
