@@ -151,8 +151,7 @@ public class TicketController {
     }
 
     public List<Ticket> findTicketForCreateEquality() {
-        List<Ticket> tickets = new ArrayList<>();
-        tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
+        List<Ticket> tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
         return tickets;
     }
 
@@ -164,6 +163,7 @@ public class TicketController {
 
     public List<Ticket> findTicketForCreateRegression() {
         List<Ticket> tickets = ticketDao.findDistinctByStatus("closed");
+
         return tickets;
     }
 

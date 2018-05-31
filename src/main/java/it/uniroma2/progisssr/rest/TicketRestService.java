@@ -87,6 +87,8 @@ public class TicketRestService {
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
     public ResponseEntity<Boolean> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
         Boolean b=false;
+        if (id == dependentTicketID)
+            return new ResponseEntity<>(b, HttpStatus.FAILED_DEPENDENCY);
         try {
             b = ticketController.addDependentTicket(id, dependentTicketID);
         }catch (EntitaNonTrovataException e){
@@ -116,6 +118,8 @@ public class TicketRestService {
     @RequestMapping(path = "addRegression/{id}/{idGenerator}", method = RequestMethod.POST)
     public ResponseEntity<Ticket> addRegression(@PathVariable Long id,@PathVariable Long idGenerator) {
         Ticket ticketRegression = null;
+        if (id == idGenerator)
+            return new ResponseEntity<>(ticketRegression, HttpStatus.FAILED_DEPENDENCY);
         try {
             ticketRegression = ticketController.addRegression(id, idGenerator);
         } catch (EntitaNonTrovataException e){
