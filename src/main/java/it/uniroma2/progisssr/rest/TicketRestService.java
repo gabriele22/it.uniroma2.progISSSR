@@ -85,19 +85,19 @@ public class TicketRestService {
 
     @RequestMapping(path = "addDependentTicket/{id}/{dependentTicketID}", method = RequestMethod.POST)
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
-    public ResponseEntity<Boolean> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
-        Boolean b=false;
+    public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
+        List<Ticket> cycle = new ArrayList<>();
         if (id == dependentTicketID)
-            return new ResponseEntity<>(b, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(cycle, HttpStatus.FAILED_DEPENDENCY);
         try {
-            b = ticketController.addDependentTicket(id, dependentTicketID);
+            cycle = ticketController.addDependentTicket(id, dependentTicketID);
         }catch (EntitaNonTrovataException e){
-            return new ResponseEntity<>(b, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(cycle, HttpStatus.NOT_FOUND);
         }
 
-        if(b)
-            return new ResponseEntity<>(b, HttpStatus.OK);
-        else return new ResponseEntity<>(b, HttpStatus.FAILED_DEPENDENCY);
+        if(cycle.isEmpty())
+            return new ResponseEntity<>(cycle, HttpStatus.OK);
+        else return new ResponseEntity<>(cycle, HttpStatus.FAILED_DEPENDENCY);
 
     }
 

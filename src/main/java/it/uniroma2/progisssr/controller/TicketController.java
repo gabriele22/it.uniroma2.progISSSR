@@ -68,24 +68,25 @@ public class TicketController {
         return tickets;
     }
 
-    public Boolean addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws EntitaNonTrovataException {
+    public List<Ticket> addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws EntitaNonTrovataException {
         Ticket ticketMain = ticketDao.getOne(ID);
         Ticket dependentTicket = ticketDao.getOne(dependentID);
+        List<Ticket> cycle = new ArrayList<>();
 
         if (ticketMain == null || dependentTicket==null)
             throw new EntitaNonTrovataException();
         if(ticketMain.isAlreadyDependent(dependentTicket))
-            return true;
+            return cycle;
         //check if there is no-cycle
-        if(dependentTicket.isAcycle(ticketMain)) {
+        if(dependentTicket.isAcycle(ticketMain, cycle).isEmpty()) {
             ticketMain.addDependentTickets(dependentTicket);
             ticketDao.save(ticketMain);
             dependentTicket.addCount();
             ticketDao.save(dependentTicket);
-            return true;
+            return cycle;
 
         }
-        else return false;
+        else return cycle;
     }
 
 

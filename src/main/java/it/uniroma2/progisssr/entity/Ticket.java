@@ -40,7 +40,9 @@ public class Ticket {
     //si legano i ticket uguali sempre al main ticket già presente nel sistema
     @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
     private Ticket sameTicket;
-    @ManyToMany@JoinTable(name = "dependentTickets")@JsonIgnoreProperties
+    @ManyToMany
+    @JoinTable(name = "dependent_tickets")
+    @JsonIgnoreProperties
     private Set<Ticket> dependentTickets;
     private Integer countDependencies;
     @ManyToMany
@@ -92,20 +94,29 @@ public class Ticket {
     }
 
     //return true if there isn't cycle
-    public boolean isAcycle(@NotNull Ticket dependentTicket){
+    public List<Ticket> isAcycle(@NotNull Ticket dependentTicket, List<Ticket> cycle){
 
+        List<Ticket> newCycle = new ArrayList<>();
+        //newCycle.addAll(cycle);
         if(this.dependentTickets.isEmpty())
-            return true;
-        if(this.dependentTickets.contains(dependentTicket))
-            return false;
+            return newCycle;
+        if(this.dependentTickets.contains(dependentTicket)) {
+            cycle.add(dependentTicket);
+            cycle.add(this);
+            newCycle.addAll(cycle);
+            return newCycle;
+        }
         else{
             for(Ticket t: this.dependentTickets) {
-                if (!t.isAcycle(dependentTicket))
-                    return false;
+                if (!t.isAcycle(dependentTicket, cycle).isEmpty()) {
+                    cycle.add(this);
+                    newCycle.addAll(cycle);
+                    return newCycle;
+                }
             }
         }
 
-        return true;
+        return newCycle;
 
     }
 
