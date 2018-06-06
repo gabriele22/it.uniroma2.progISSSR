@@ -49,6 +49,10 @@ public class Ticket {
     @JoinTable(name = "regressionTicketsGenerator")
     @JsonIgnoreProperties
     private Set<Ticket> regressionTicketsGenerator;
+    /*@OneToMany
+    @JoinTable(name = "relationTicket")
+    @JsonIgnoreProperties
+    private Set<RelationInstance> relations;*/
     /*   @Transient ALLEGATI
     private List<String> attachedFiles; */
     private Byte attached;

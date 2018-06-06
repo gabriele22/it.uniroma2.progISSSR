@@ -1,0 +1,33 @@
+package it.uniroma2.progisssr.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity(name = "relation_istance")
+@NoArgsConstructor
+@Getter
+@Setter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class RelationInstance {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "relation_ID")
+    private Long ID;
+    @OneToOne
+    private Ticket fatherTicket;
+    @OneToOne
+    private Ticket sonTicket;
+    @OneToOne
+    private Relation relation;
+
+
+    public RelationInstance(Ticket fatherTicket, Ticket sonTicket, Relation relation) {
+        this.fatherTicket = fatherTicket;
+        this.sonTicket = sonTicket;
+        this.relation = relation;
+    }
+}
