@@ -23,11 +23,12 @@ public class ThreadEscalation implements Runnable{
     @Override
     public void run() {
         //TODO
-        //problema per fare la funzione devo accedere ai campi del ticket ma non ho i getter e setter
 
-/*        for(Ticket ticket: tickets){
-            if (ticket.getDateStart > maxTime)
-        }*/
+/*
+        for(Ticket ticket: tickets){
+                ticket.updateRank(customerPriority,teamPriority,time);
+        }
+*/
 
     }
 

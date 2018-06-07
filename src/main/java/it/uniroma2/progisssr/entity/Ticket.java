@@ -1,6 +1,7 @@
 package it.uniroma2.progisssr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.uniroma2.progisssr.utils.ParseDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Ticket {
     private Long ID;
     private String status;
     private String dateStart;
+    private String datePendingStart;
     private String dateEnd;
     private String category;
     private String title;
@@ -31,6 +33,7 @@ public class Ticket {
     private Target target;
     private Integer customerPriority;
     private Integer teamPriority;
+    private Double rank;
  /*   @OneToMany(mappedBy = "ticket")
     private Set<TicketMessage> ticketMessages;*/
     @ManyToOne
@@ -157,6 +160,12 @@ public class Ticket {
 
     }
 
+    public Double updateRank(Double a, Double b, Double c) {
+        Calendar now = Calendar.getInstance();
+        GregorianCalendar datePendingStart =  ParseDate.parseGregorianCalendar(this.datePendingStart);
+        Long time = (now.getTimeInMillis() -datePendingStart.getTimeInMillis())/(1000*3600);
+         return this.rank = a * this.customerPriority + b * this.teamPriority + c * time.intValue();
+    }
 
     public String toString(){
         return this.ID.toString();

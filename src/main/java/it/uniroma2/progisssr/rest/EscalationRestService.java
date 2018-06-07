@@ -17,7 +17,7 @@ public class EscalationRestService {
     EscalationController escalationController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Escalation> createRelation(@RequestBody Escalation escalation) {
+    public ResponseEntity<Escalation> createEscalation(@RequestBody Escalation escalation) {
         Escalation newEscalation = escalationController.createEscalation(escalation);
         return new ResponseEntity<>(newEscalation, HttpStatus.CREATED);
     }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name = "relation_instance")
@@ -30,5 +31,8 @@ public class RelationInstance {
         this.fatherTicket = fatherTicket;
         this.sonTicket = sonTicket;
         this.relation = relation;
+        GregorianCalendar g = new GregorianCalendar(2018, 0,1);
     }
+
+
 }
