@@ -6,7 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity(name = "relation_istance")
+@Entity
+@Table(name = "relation_instance")
 @NoArgsConstructor
 @Getter
 @Setter

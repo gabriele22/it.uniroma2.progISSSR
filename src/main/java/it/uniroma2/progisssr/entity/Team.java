@@ -16,7 +16,7 @@ public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "team_ID")
+    @Column(name = "team_id")
     private Long ID;
     private String teamName;
     @OneToOne
@@ -24,7 +24,7 @@ public class Team {
     @OneToOne
     private User teamCoordinator;
     @OneToMany
-    @JoinTable(name = "Team_Members")
+    @JoinTable(name = "team_members")
     private Set<User> teamMembersUsername;
 
     public Team(String teamName, User teamLeader, User teamCoordinator, Set<User> teamMembers) {

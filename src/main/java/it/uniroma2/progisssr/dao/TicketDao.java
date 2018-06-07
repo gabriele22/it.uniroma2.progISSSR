@@ -43,9 +43,12 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     List<Ticket> findDistinctByStatus(String status);
     List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
 
+    @Query("select t.id from Ticket t where t= :ticket")
+    Long getIDByTicket(@Param("ticket") Ticket ticket);
+
+
     //@Query("select '*' from Ticket t inner join Ticket dt where dt.ID = :mainID")
 /*    @Query("SELECT t.dependentTickets FROM Ticket t  where t.ID = :mainID")
     Set<Ticket> getDeoendentTicketsByTicket(@Param("mainID") Long ID );*/
-
 
 }

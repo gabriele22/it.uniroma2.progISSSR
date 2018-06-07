@@ -9,7 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-@Entity(name = "ticket")
+@Entity
+@Table(name = "ticket")
 @NoArgsConstructor
 @Getter
 @Setter

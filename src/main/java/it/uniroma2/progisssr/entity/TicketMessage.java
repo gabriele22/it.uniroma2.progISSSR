@@ -17,7 +17,7 @@ public class TicketMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "message_ID")
+    @Column(name = "message_id")
     private Long ID;
  /*   @ManyToOne@JoinColumn(name = "ticket_ID")
     private Ticket ticket;
