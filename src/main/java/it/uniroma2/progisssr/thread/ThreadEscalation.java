@@ -1,38 +1,51 @@
 package it.uniroma2.progisssr.thread;
 
+import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.utils.State;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+
+/*
+thread che:
+ -attiva la funzione computeRank su tutti i ticket in pending
+ -aggiorna il campo rank di ogni ticket in pending
+ -e salva ogni ticket nel database
+
+ */
 public class ThreadEscalation implements Runnable{
 
 
-    private Integer customerPriority;
-    private Integer teamPriority;
-    private Integer time;
-    private Integer maxTime = 30;
-    private ArrayList<Ticket> tickets;
+    private Double customerPriority;
+    private Double teamPriority;
+    private Double time;
+    private TicketDao ticketDao;
 
-    public ThreadEscalation(Integer customerPriority, Integer teamPriority, Integer time, ArrayList<Ticket> tickets) {
+
+
+    public ThreadEscalation( Double customerPriority, Double teamPriority, Double time, TicketDao ticketDao) {
         this.customerPriority = customerPriority;
         this.teamPriority = teamPriority;
         this.time = time;
-        this.tickets = tickets;
+        this.ticketDao=ticketDao;
+
     }
 
     @Override
     public void run() {
-        //TODO
 
-/*
-        for(Ticket ticket: tickets){
-                ticket.updateRank(customerPriority,teamPriority,time);
+
+        List<Ticket> pendingTickets = ticketDao.findDistinctByStatus(State.PENDING.toString().toLowerCase());
+
+        for(Ticket ticket: pendingTickets){
+                Double rank = ticket.computeRank(customerPriority,teamPriority,time);
+                ticket.updateRank(rank);
+                ticketDao.save(ticket);
+
         }
-*/
 
-    }
-
-    public ArrayList<Ticket> getTickets() {
-        return tickets;
     }
 }

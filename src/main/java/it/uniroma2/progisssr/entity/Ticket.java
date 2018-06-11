@@ -99,6 +99,7 @@ public class Ticket {
             this.sameTicket = ticketUpdated.sameTicket;
         if(ticketUpdated.teamComment != null)
             this.teamComment = ticketUpdated.teamComment;
+
     }
 
     //return true if there isn't cycle
@@ -160,11 +161,19 @@ public class Ticket {
 
     }
 
-    public Double updateRank(Double a, Double b, Double c) {
+    public Double computeRank(Double a, Double b, Double c) {
         Calendar now = Calendar.getInstance();
         GregorianCalendar datePendingStart =  ParseDate.parseGregorianCalendar(this.datePendingStart);
-        Long time = (now.getTimeInMillis() -datePendingStart.getTimeInMillis())/(1000*3600);
-         return this.rank = a * this.customerPriority + b * this.teamPriority + c * time.intValue();
+        Long waitingTimeInHour = (now.getTimeInMillis() -datePendingStart.getTimeInMillis())/(1000*3600);
+        if(this.customerPriority==null)
+            this.customerPriority=0;
+        if(this.teamPriority == null)
+            this.teamPriority =0;
+        return  a * this.customerPriority + b * this.teamPriority + c * waitingTimeInHour.intValue();
+    }
+
+    public void updateRank( Double rankUpdated){
+        this.rank= rankUpdated;
     }
 
     public String toString(){

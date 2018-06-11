@@ -10,11 +10,29 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+
+/*
+Classe controllore che alla creazione di Escalation avvia un runnable che controlla
+i ticket in stato di pending in maniera periodica fino alla creazione di una nuova
+classe Escalation
+ */
 @Service
 public class EscalationController {
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    private ScheduledFuture<?> oldHandler;
+
     @Autowired
     private EscalationDao escalationDao;
 
@@ -25,13 +43,28 @@ public class EscalationController {
     @Transactional
     public @NotNull Escalation createEscalation(@NotNull Escalation escalation) {
         Escalation newEscalation = escalationDao.save(escalation);
-        //TODO dopo aver creato una nuova escalation fermi il thread, gli assegni i parametri e lo fai ripartire
 
-        List<Ticket> tickets = ticketDao.findDistinctByStatus("pending");
-        //ThreadEscalation threadEscalation =  new ThreadEscalation(3,3,3);
+        Double customerPriority = escalationDao.getCustomerPriorityByEscalation(newEscalation);
+        Double teamPriority = escalationDao.getTeamPriorityByEscalation(newEscalation);
+        Double time = escalationDao.getTimeByEscalation(newEscalation);
 
+        ThreadEscalation threadEscalation =  new ThreadEscalation(customerPriority,teamPriority,time,ticketDao);
+
+        //cancellazione dell'handler precedente
+        if(oldHandler !=null)
+            oldHandler.cancel(true);
+
+        //avvio del nuovo handler periodico con il runnable aggiornato
+        ScheduledFuture<?> newHandler = scheduler.scheduleAtFixedRate(threadEscalation, 1, 15, SECONDS);
+
+        oldHandler= newHandler;
 
         return newEscalation;
     }
+
+
+
+
+
 
 }

@@ -5,6 +5,7 @@ import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.utils.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -163,7 +164,7 @@ public class TicketController {
     }
 
     public List<Ticket> findTicketForCreateRegression() {
-        List<Ticket> tickets = ticketDao.findDistinctByStatus("closed");
+        List<Ticket> tickets = ticketDao.findDistinctByStatus(State.CLOSED.toString().toLowerCase());
 
         return tickets;
     }

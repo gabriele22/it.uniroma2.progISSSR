@@ -8,26 +8,30 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "escalation")
+@Entity
+@Table(name = "escalation")
 @NoArgsConstructor
 @Getter
 @Setter
+/*
+entita utilizzata per mantenere i pesi inseriti dall'admin per calcolare il rank
+
+ */
 public class Escalation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "escalation_ID")
     private Long ID;
-    private Integer customerPriority;
-    private Integer teamPriority;
-    private Integer time;
+    private Double customerPriority;
+    private Double teamPriority;
+    private Double time;
 
-    public Escalation(Integer customerPriority, Integer teamPriority, Integer time) {
+    public Escalation(Double customerPriority, Double teamPriority, Double time) {
         this.customerPriority = customerPriority;
         this.teamPriority = teamPriority;
         this.time = time;
     }
-
 
     public void update(@NotNull Escalation escalationUpdate){
         this.customerPriority = escalationUpdate.customerPriority;
