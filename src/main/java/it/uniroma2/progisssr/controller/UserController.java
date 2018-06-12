@@ -23,8 +23,10 @@ public class UserController {
     TicketDao ticketDao;
 
     @Transactional
-    public @NotNull User createUser(@NotNull User user) {
-        User newUser= userDao.save(user);
+    public @NotNull User createUser(@NotNull User user,@NotNull String username) {
+        User newUser=null;
+        if(!userDao.existsById(username))
+            newUser= userDao.save(user);
         return newUser;
     }
     @Transactional

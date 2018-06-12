@@ -16,8 +16,10 @@ public class RelationController {
     private RelationDao relationDao;
 
     @Transactional
-    public @NotNull Relation createRelation(@NotNull Relation relation) {
-        Relation newRelation = relationDao.save(relation);
+    public @NotNull Relation createRelation(@NotNull Relation relation, @NotNull String name) {
+        Relation newRelation =null;
+        if(!relationDao.existsById(name))
+            newRelation = relationDao.save(relation);
         return newRelation;
     }
 

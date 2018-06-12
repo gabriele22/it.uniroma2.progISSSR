@@ -27,10 +27,13 @@ public class UserRestService {
     @Autowired
     private TicketController ticketController;
 
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userController.createUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    @RequestMapping(path = "{username}", method = RequestMethod.POST)
+    public ResponseEntity<User> createUser(@RequestBody User user, @PathVariable String username) {
+
+        User newUser = userController.createUser(user,username);
+        //return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(newUser, newUser == null ? HttpStatus.FOUND : HttpStatus.CREATED);
+
     }
 
     @RequestMapping(path = "{username}", method = RequestMethod.PUT)

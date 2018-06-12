@@ -18,10 +18,11 @@ public class RelationRestService {
     @Autowired
     RelationController relationController;
 
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Relation> createRelation(@RequestBody Relation relation) {
-        Relation newRelation = relationController.createRelation(relation);
-        return new ResponseEntity<>(newRelation, HttpStatus.CREATED);
+    @RequestMapping(path = "{name}", method = RequestMethod.POST)
+    public ResponseEntity<Relation> createRelation(@RequestBody Relation relation, @PathVariable String name) {
+        Relation newRelation = relationController.createRelation(relation,name);
+        return new ResponseEntity<>(newRelation, newRelation == null ? HttpStatus.FOUND : HttpStatus.CREATED);
+
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
