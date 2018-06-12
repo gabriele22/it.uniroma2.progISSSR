@@ -14,8 +14,13 @@ public interface RelationInstanceDao extends JpaRepository<RelationInstance,Long
     @Query ("select r.sonTicket from RelationInstance r where r.relation = :relation and r.fatherTicket = :fatherTicket ")
     List<Ticket> findSonTicketsByRelationAndFatherTicket(@Param("relation") Relation relation, @Param("fatherTicket") Ticket fatherTicket);
 
-    @Query ("select r.sonTicket from RelationInstance r where r.fatherTicket = :fatherTicket ")
+/*
+    @Query ("select r from RelationInstance r where r.fatherTicket = :fatherTicket ")
     List<RelationInstance> findSonTicketsByFatherTicket( @Param("fatherTicket") Ticket fatherTicket);
+*/
+
+    List<RelationInstance> findAllRelationInstanceByFatherTicketID(Long fatherTicketId);
+
 
 
 
