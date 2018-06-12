@@ -58,6 +58,12 @@ public class RelationInstanceController {
 
         return sonTickets;
     }
+    public List<RelationInstance> findTicketsByFather(@NotNull Long fatherTicketId) {
+        Ticket ticketFather = ticketDao.getOne(fatherTicketId);
+        List<RelationInstance> sonTickets = relationInstanceDao.findSonTicketsByFatherTicket(ticketFather);
+
+        return sonTickets;
+    }
 
     //quando viene chiamata come fatherTicket gli passi il son e la sua lista(figli dei figli)
     private List<Ticket> isAcycle(@NotNull Long fatherTicketId , @NotNull String relationName,
@@ -91,10 +97,5 @@ public class RelationInstanceController {
 
     }
 
-    public List<Ticket> findTickets(@NotNull Long fatherTicketId) {
-        Ticket ticketFather = ticketDao.getOne(fatherTicketId);
-        List<Ticket> sonTickets = relationInstanceDao.findSonTicketsByFatherTicket(ticketFather);
 
-        return sonTickets;
-    }
 }

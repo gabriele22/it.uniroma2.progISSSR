@@ -168,8 +168,6 @@ public class Ticket {
         Long waitingTime = (now.getTimeInMillis() -datePendingStart.getTimeInMillis());
 
         Double waitingTimeInHour=  waitingTime.doubleValue()/(1000*3600);
-
-        System.out.println("waitingTime"+ waitingTimeInHour);
         if(this.customerPriority==null)
             this.customerPriority=0;
         if(this.teamPriority == null)
