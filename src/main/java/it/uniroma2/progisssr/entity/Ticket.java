@@ -5,6 +5,7 @@ import it.uniroma2.progisssr.utils.ParseDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -173,7 +174,7 @@ public class Ticket {
             this.customerPriority=0;
         if(this.teamPriority == null)
             this.teamPriority =0;
-        return  a * this.customerPriority + b * this.teamPriority + c * waitingTimeInHour.intValue();
+        return  a * this.customerPriority + b * this.teamPriority + c * waitingTimeInHour;
     }
 
     public void updateRank( Double rankUpdated){

@@ -90,4 +90,11 @@ public class RelationInstanceController {
         return tmpList;
 
     }
+
+    public List<Ticket> findTickets(@NotNull Long fatherTicketId) {
+        Ticket ticketFather = ticketDao.getOne(fatherTicketId);
+        List<Ticket> sonTickets = relationInstanceDao.findSonTicketsByFatherTicket(ticketFather);
+
+        return sonTickets;
+    }
 }

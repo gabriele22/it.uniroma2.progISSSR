@@ -44,6 +44,12 @@ public class RelationInstanceRestService {
         return new ResponseEntity<>(sonTickets, sonTickets == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/findSonTickets/{fatherTicketId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>>  findSonTickets(@PathVariable Long fatherTicketId) {
+        List<Ticket> sonTickets = relationInstanceController.findTickets(fatherTicketId);
+        return new ResponseEntity<>(sonTickets, sonTickets == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    }
+
 
 
 

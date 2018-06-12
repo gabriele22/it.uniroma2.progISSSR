@@ -53,14 +53,12 @@ public class ParseDate {
 
         //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar now = Calendar.getInstance();
-        GregorianCalendar nowG = new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE),
-                now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-        System.out.println("tcuvyibu"+ nowG.get(Calendar.DATE) + nowG.toString());
+        System.out.println("tcuvyibu"+ now.get(Calendar.DATE) + now.toString());
         System.out.println("\n------------------------\n"+ d.toString());
 
 
 
-        Long i = (now.getTimeInMillis() - d.getTimeInMillis()) / 1000;
+        Long i = (now.getTimeInMillis() - d.getTimeInMillis()) / (1000*3600);
         System.out.println("tempo"+ i);
         System.out.println("data inizio"+d.get(Calendar.DATE) + d.get(Calendar.MONTH) +d.get(Calendar.YEAR));
         System.out.println("data inizio"+d2.get(Calendar.DATE) + d2.get(Calendar.MONTH) +d.get(Calendar.YEAR));
