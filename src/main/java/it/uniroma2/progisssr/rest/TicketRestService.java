@@ -191,6 +191,16 @@ public class TicketRestService {
     }
 
 
+    //rest per ottenere i ticket in coda (pending)
+    @RequestMapping(path = "findTicketInQueue", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketInQueue() {
+        List<Ticket> tickets = ticketController.findTicketInQueue();
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+
+
+
 
 
 

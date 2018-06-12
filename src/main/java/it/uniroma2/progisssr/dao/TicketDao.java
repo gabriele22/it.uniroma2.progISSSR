@@ -41,6 +41,7 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     List<Ticket> findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
     //Ticket for create a regression relation
     List<Ticket> findDistinctByStatus(String status);
+    List<Ticket> findDistinctByStatusOrderByRank(String status);
     List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
 
     @Query("select t.id from Ticket t where t= :ticket")

@@ -170,4 +170,13 @@ public class TicketController {
     }
 
 
+    //per stampare la coda dei ticket in pending
+    public List<Ticket> findTicketInQueue (){
+        List<Ticket> tickets = ticketDao.findDistinctByStatusOrderByRank(State.PENDING.toString().toLowerCase());
+
+        return tickets;
+    }
+
+
+
 }

@@ -164,7 +164,11 @@ public class Ticket {
     public Double computeRank(Double a, Double b, Double c) {
         Calendar now = Calendar.getInstance();
         GregorianCalendar datePendingStart =  ParseDate.parseGregorianCalendar(this.datePendingStart);
-        Long waitingTimeInHour = (now.getTimeInMillis() -datePendingStart.getTimeInMillis())/(1000*3600);
+        Long waitingTime = (now.getTimeInMillis() -datePendingStart.getTimeInMillis());
+
+        Double waitingTimeInHour=  waitingTime.doubleValue()/(1000*3600);
+
+        System.out.println("waitingTime"+ waitingTimeInHour);
         if(this.customerPriority==null)
             this.customerPriority=0;
         if(this.teamPriority == null)
