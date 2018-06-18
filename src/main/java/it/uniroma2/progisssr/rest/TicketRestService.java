@@ -118,7 +118,7 @@ public class TicketRestService {
     @RequestMapping(path = "addRegression/{id}/{idGenerator}", method = RequestMethod.POST)
     public ResponseEntity<Ticket> addRegression(@PathVariable Long id,@PathVariable Long idGenerator) {
         Ticket ticketRegression = null;
-        if (id == idGenerator)
+        if (id.equals(idGenerator))
             return new ResponseEntity<>(ticketRegression, HttpStatus.FAILED_DEPENDENCY);
         try {
             ticketRegression = ticketController.addRegression(id, idGenerator);

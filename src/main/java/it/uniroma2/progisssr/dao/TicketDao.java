@@ -29,19 +29,19 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     //to use in select regression
     List<Ticket> findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(String status);
 
-    //Ticket where is possible add any relation
-    List<Ticket> findDistinctByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull(String status);
+    /*//Ticket where is possible add any relation
+    List<Ticket> findDistinctByStatusAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull(String status);
     //Ticket where is possible add a dependency relation
     List<Ticket> findDistinctByStatusAndDependentTicketsIsNotNullOrCountDependenciesIsNotNull(String status);
     //Ticket with no relation
     List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot(String status);
     //Ticket for create a equality relation
-    List<Ticket> findBySameTicketIsNotNull();
+    List<Ticket> findBySameTicketIsNotNull();*/
     //Ticket for create a dependency relation
     List<Ticket> findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
     //Ticket for create a regression relation
     List<Ticket> findDistinctByStatus(String status);
-    List<Ticket> findDistinctByStatusOrderByRank(String status);
+    List<Ticket> findDistinctByStatusOrderByRankDesc(String status);
     List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
 
     @Query("select t.id from Ticket t where t= :ticket")

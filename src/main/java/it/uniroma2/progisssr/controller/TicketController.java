@@ -143,17 +143,17 @@ public class TicketController {
 
 
     public List<Ticket> findTicketNoRelation() {
-        List<Ticket> tickets = ticketDao.findDistinctByStatusAndSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull("new");
+        List<Ticket> tickets = ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
         return tickets;
     }
 
     public List<Ticket> findTicketDependency() {
-        List<Ticket> tickets = ticketDao.findDistinctByStatusAndDependentTicketsIsNotNullOrCountDependenciesIsNotNull("new");
+        List<Ticket> tickets = ticketDao.findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
         return tickets;
     }
 
     public List<Ticket> findTicketForCreateEquality() {
-        List<Ticket> tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot("new");
+        List<Ticket> tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
         return tickets;
     }
 
@@ -172,7 +172,7 @@ public class TicketController {
 
     //per stampare la coda dei ticket in pending
     public List<Ticket> findTicketInQueue (){
-        List<Ticket> tickets = ticketDao.findDistinctByStatusOrderByRank(State.PENDING.toString().toLowerCase());
+        List<Ticket> tickets = ticketDao.findDistinctByStatusOrderByRankDesc(State.PENDING.toString().toLowerCase());
 
         return tickets;
     }

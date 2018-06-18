@@ -55,7 +55,7 @@ public class EscalationController {
             oldHandler.cancel(true);
 
         //avvio del nuovo handler periodico con il runnable aggiornato
-        ScheduledFuture<?> newHandler = scheduler.scheduleAtFixedRate(threadEscalation, 1, 15, SECONDS);
+        ScheduledFuture<?> newHandler = scheduler.scheduleAtFixedRate(threadEscalation, 1, 5, SECONDS);
 
         oldHandler= newHandler;
 
