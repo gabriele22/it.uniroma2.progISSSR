@@ -87,7 +87,7 @@ public class TicketRestService {
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
     public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
         List<Ticket> cycle = new ArrayList<>();
-        if (id == dependentTicketID)
+        if (id.equals(dependentTicketID))
             return new ResponseEntity<>(cycle, HttpStatus.FAILED_DEPENDENCY);
         try {
             cycle = ticketController.addDependentTicket(id, dependentTicketID);
