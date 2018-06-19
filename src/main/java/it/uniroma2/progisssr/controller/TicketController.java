@@ -153,13 +153,12 @@ public class TicketController {
     }
 
     public List<Ticket> findTicketForCreateEquality() {
-        List<Ticket> tickets =ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
+        List<Ticket> tickets =ticketDao.findDistinctBySameTicketIsNull();
         return tickets;
     }
 
     public List<Ticket> findTicketForCreateDependency() {
-        List<Ticket> tickets = ticketDao.findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
-        tickets.addAll(ticketDao.findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull());
+        List<Ticket> tickets = ticketDao.findDistinctBySameTicketIsNullAndRegressionTicketsGeneratorIsNull();
         return tickets;
     }
 

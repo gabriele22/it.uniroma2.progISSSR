@@ -47,7 +47,9 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     @Query("select t.id from Ticket t where t= :ticket")
     Long getIDByTicket(@Param("ticket") Ticket ticket);
 
+    List<Ticket> findDistinctBySameTicketIsNull();
 
+    List<Ticket> findDistinctBySameTicketIsNullAndRegressionTicketsGeneratorIsNull();
 
 
     //@Query("select '*' from Ticket t inner join Ticket dt where dt.ID = :mainID")

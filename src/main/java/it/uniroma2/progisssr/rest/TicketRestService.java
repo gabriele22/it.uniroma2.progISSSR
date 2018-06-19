@@ -83,6 +83,23 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "addEqualityTicket/{id}/{sameTicketId}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> addEqualityTicket(@PathVariable Long id,@PathVariable Long sameTicketId, @RequestBody Ticket sameTicket) {
+        Ticket ticketUpdated = null;
+        if (id.equals(sameTicketId))
+            return new ResponseEntity<>(ticketUpdated, HttpStatus.UNAUTHORIZED);
+        try {
+            ticketUpdated = ticketController.updateTicket(id, sameTicket);
+        }catch (EntitaNonTrovataException e){
+            return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
+        }
+
+
+        return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
+
+
+    }
+
     @RequestMapping(path = "addDependentTicket/{id}/{dependentTicketID}", method = RequestMethod.POST)
   //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
     public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
