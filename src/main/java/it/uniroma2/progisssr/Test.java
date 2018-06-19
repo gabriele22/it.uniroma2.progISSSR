@@ -1,24 +1,22 @@
 package it.uniroma2.progisssr;
 
 import it.uniroma2.progisssr.entity.Ticket;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class Test {
 
-
-    public static void main(String[] strings){
-/*
-        TicketController ticketController = new TicketController();
-        Target product = new Target("p1",1,"wvwvv");
-        User user = new User("pippo","franco","ooo@ini","pip","pip","customer");
-        //UserController userController = new UserController();
-        ProductRestService productRestService =  new ProductRestService();
-        productRestService.createProduct(product);
-        //userController.createUser(user);
-*/
-
+    @Scheduled(fixedDelay = 1, initialDelay = 1)
+    public void scheduleFixedRateTask() {
+        System.out.println(
+                "Fixed rate task - " + System.currentTimeMillis() / 1000);
     }
-   // Ticket ticket = new Ticket(date,"bug")
+
+
 }
+

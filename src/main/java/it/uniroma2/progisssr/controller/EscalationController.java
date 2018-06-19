@@ -4,21 +4,15 @@ import it.uniroma2.progisssr.dao.EscalationDao;
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.entity.Escalation;
 import it.uniroma2.progisssr.entity.Ticket;
-import it.uniroma2.progisssr.thread.ThreadEscalation;
+import it.uniroma2.progisssr.utils.State;
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 /*
@@ -29,9 +23,12 @@ classe Escalation
 @Service
 public class EscalationController {
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    /*    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private ScheduledFuture<?> oldHandler;
+    private ScheduledFuture<?> oldHandler;*/
+
+    private Escalation escalation;
+    private int i=0;
 
     @Autowired
     private EscalationDao escalationDao;
@@ -39,6 +36,11 @@ public class EscalationController {
     @Autowired
     private TicketDao ticketDao;
 
+/*    public EscalationController() {
+        escalationStart();
+    }*/
+
+    /*
 
     @Transactional
     public @NotNull Escalation createEscalation(@NotNull Escalation escalation) {
@@ -63,6 +65,44 @@ public class EscalationController {
     }
 
 
+*/
+
+    @Transactional
+    public @NotNull Escalation createEscalation(@NotNull Escalation escalation) {
+        Escalation newEscalation = escalationDao.save(escalation);
+        this.escalation = newEscalation;
+
+        if(i==0) {
+            escalationStart();
+            i++;
+        }
+        return newEscalation;
+
+    }
+
+    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    public void escalationStart() {
+        Double customerPriority = escalationDao.getCustomerPriorityByEscalation(escalation);
+        Double teamPriority = escalationDao.getTeamPriorityByEscalation(escalation);
+        Double time = escalationDao.getTimeByEscalation(escalation);
+
+        if(customerPriority==null)
+            customerPriority=0.0;
+        if(teamPriority==null)
+            teamPriority=0.0;
+        if(time==null)
+            time=0.0;
+
+        List<Ticket> pendingTickets = ticketDao.findDistinctByStatus(State.PENDING.toString().toLowerCase());
+
+        for(Ticket ticket: pendingTickets){
+            Double rank = ticket.computeRank(customerPriority,teamPriority,time);
+            ticket.updateRank(rank);
+            ticketDao.save(ticket);
+
+        }
+
+    }
 
 
 
