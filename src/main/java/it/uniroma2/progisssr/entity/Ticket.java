@@ -26,6 +26,8 @@ public class Ticket {
     private String status;
     private String dateStart;
     private String datePendingStart;
+    private String dateExecutionStart;
+    private Integer durationEstimation;
     private String dateEnd;
     private String category;
     private String title;
@@ -35,12 +37,13 @@ public class Ticket {
     private Integer customerPriority;
     private Integer teamPriority;
     private Double rank;
+    private Double difficulty;
  /*   @OneToMany(mappedBy = "ticket")
     private Set<TicketMessage> ticketMessages;*/
     @ManyToOne
     @JoinTable(name = "Person_Tickets")
     private User customer;
-    @OneToOne@Transient
+    @OneToOne@JoinColumn(name = "teamName")@JsonIgnoreProperties
     private Team team;
     //si legano i ticket uguali sempre al main ticket già presente nel sistema
     @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
@@ -100,6 +103,8 @@ public class Ticket {
             this.sameTicket = ticketUpdated.sameTicket;
         if(ticketUpdated.teamComment != null)
             this.teamComment = ticketUpdated.teamComment;
+        if(ticketUpdated.difficulty != null)
+            this.difficulty = ticketUpdated.difficulty;
 
     }
 
@@ -178,14 +183,16 @@ public class Ticket {
     public void updateRank( Double rankUpdated){
         this.rank= rankUpdated;
     }
-
     public String toString(){
         return this.ID.toString();
     }
-
     public void addRegression(Ticket ticketGenerator) {
         this.regressionTicketsGenerator.add(ticketGenerator);
     }
-
-
+    public void updateDuration(Integer duration) {
+        this.durationEstimation= duration;
+    }
+    public void updateDateExecutionStart(String date){
+        this.dateExecutionStart = date;
+    }
 }

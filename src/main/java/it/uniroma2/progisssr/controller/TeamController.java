@@ -1,9 +1,13 @@
 package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.TeamDao;
+import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Team;
+import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.utils.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +22,18 @@ public class TeamController {
     @Autowired
     private TeamDao teamDao;
     @Autowired
-    private UserDao userDao;
+    private TicketDao ticketDao;
 
     @Transactional
-    public @NotNull Team createTeam (@NotNull Team team){
-        teamDao.save(team);
-        return team;
+    public @NotNull Team createTeam (@NotNull Team team, @NotNull String teamName){
+        Team newTeam = null;
+        if(!teamDao.existsById(teamName))
+            newTeam=teamDao.save(team);
+        return newTeam;
     }
     @Transactional
-    public @NotNull Team updateTeam( @NotNull Long ID, @NotNull Team team) throws EntitaNonTrovataException {
-        Team teamToUpdate = teamDao.getOne(ID);
+    public @NotNull Team updateTeam( @NotNull String teamName, @NotNull Team team) throws EntitaNonTrovataException {
+        Team teamToUpdate = teamDao.getOne(teamName);
         if(teamToUpdate == null)
             throw new EntitaNonTrovataException();
         teamToUpdate.update(team);
@@ -36,21 +42,30 @@ public class TeamController {
 
     }
 
-    public Team findTeamById(@NotNull Long id){
-        Team team = teamDao.getOne(id);
+    public Team findTeamById(@NotNull String teamName){
+        Team team = teamDao.getOne(teamName);
         return team;
     }
 
-    public boolean deleteTicket(@NotNull Long id){
-        if(!teamDao.existsById(id)){
+    public boolean deleteTicket(@NotNull String teamName){
+        if(!teamDao.existsById(teamName)){
             return false;
         }
-        teamDao.deleteById(id);
+        teamDao.deleteById(teamName);
         return true;
     }
 
     public List<Team> findAllTeam(){
         List<Team> teams = teamDao.findAll();
         return teams;
+    }
+
+    public void computeTeamWeight(String teamName) {
+        Team team = teamDao.getOne(teamName);
+        List<User> teamMember = teamDao.findTeamMembersByTeam(team);
+        List<Ticket> ticketAssigned = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
+        Double teamWeight = (double) ticketAssigned.size() /(double)teamMember.size();
+        team.updateWeight(teamWeight);
+        teamDao.save(team);
     }
 }

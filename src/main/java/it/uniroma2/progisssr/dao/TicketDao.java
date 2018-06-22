@@ -1,6 +1,7 @@
 package it.uniroma2.progisssr.dao;
 
 
+import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import org.hibernate.type.ListType;
@@ -52,8 +53,16 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     List<Ticket> findDistinctBySameTicketIsNullAndRegressionTicketsGeneratorIsNull();
 
 
-    //@Query("select '*' from Ticket t inner join Ticket dt where dt.ID = :mainID")
-/*    @Query("SELECT t.dependentTickets FROM Ticket t  where t.ID = :mainID")
-    Set<Ticket> getDeoendentTicketsByTicket(@Param("mainID") Long ID );*/
+//-----------------------------GANTT-------------------------------
+    List<Ticket> findByTeam(Team team);
+    List<Ticket> findByTeamAndStatus(Team team, String status);
+
+    @Query("select t.difficulty from Ticket t where t = :ticket")
+    Double findDifficultyByTicket(@Param("ticket") Ticket ticket);
+
+    @Query("select t.dependentTickets from Ticket t where  t = :ticket")
+    List<Ticket> getDependentTicketByTicket(@Param("ticket") Ticket ticket);
+
+
 
 }

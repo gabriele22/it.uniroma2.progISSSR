@@ -16,15 +16,15 @@ public class TeamRestService {
 
     @Autowired
     private TeamController teamController;
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Team> createTeam(@RequestBody Team team){
-        Team newTeam = teamController.createTeam(team);
-        return new ResponseEntity<>(newTeam, HttpStatus.CREATED);
+    @RequestMapping(path = "{teamName}", method = RequestMethod.POST)
+    public ResponseEntity<Team> createTeam(@RequestBody Team team,@PathVariable String teamName){
+        Team newTeam = teamController.createTeam(team,teamName);
+        return new ResponseEntity<>(newTeam, newTeam==null? HttpStatus.FOUND: HttpStatus.CREATED);
     }
 
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Team> updateTeam(@PathVariable Long id, @RequestBody Team team) {
+    public ResponseEntity<Team> updateTeam(@PathVariable String id, @RequestBody Team team) {
         Team teamtUpdated = null;
         try {
             teamtUpdated = teamController.updateTeam(id, team);
@@ -35,13 +35,13 @@ public class TeamRestService {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Team>  findTeam(@PathVariable Long id) {
+    public ResponseEntity<Team>  findTeam(@PathVariable String id) {
         Team team = teamController.findTeamById(id);
         return new ResponseEntity<>(team, team == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteTeam(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteTeam(@PathVariable String id) {
         boolean deleted = teamController.deleteTicket(id);
         return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }

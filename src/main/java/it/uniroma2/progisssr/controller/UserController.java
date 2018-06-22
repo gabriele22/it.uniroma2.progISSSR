@@ -45,12 +45,7 @@ public class UserController {
         User user;
         if(!userDao.existsById(username))
             throw new EntitaNonTrovataException();
-  //      try {
         user = userDao.getOne(username);
- /*       }catch (Exception e){
-            e.printStackTrace();
-            throw new EntitaNonTrovataException();
-        }*/
         return user;
     }
 

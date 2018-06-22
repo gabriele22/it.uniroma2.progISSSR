@@ -62,6 +62,12 @@ public class ParseDate {
         System.out.println("tempo"+ i);
         System.out.println("data inizio"+d.get(Calendar.DATE) + d.get(Calendar.MONTH) +d.get(Calendar.YEAR));
         System.out.println("data inizio"+d2.get(Calendar.DATE) + d2.get(Calendar.MONTH) +d.get(Calendar.YEAR));
+        String n = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
+        System.out.println("nnnnnnnnnnnnn " +n );
+
+        now.add(Calendar.DATE, 9);
+        String ng = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
+        System.out.println("nnnnnnnnnnnnn " +ng );
 
     }
 

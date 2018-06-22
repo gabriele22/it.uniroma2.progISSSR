@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+@Table(name = "team")
 @Entity
 @NoArgsConstructor
 @Getter
@@ -15,9 +16,6 @@ import java.util.Set;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "team_id")
-    private Long ID;
     private String teamName;
     @OneToOne
     private User teamLeader;
@@ -25,24 +23,30 @@ public class Team {
     private User teamCoordinator;
     @OneToMany
     @JoinTable(name = "team_members")
-    private Set<User> teamMembersUsername;
+    private Set<User> teamMembers;
+    //carico del team
+    private Double teamWeight;
 
-    public Team(String teamName, User teamLeader, User teamCoordinator, Set<User> teamMembers) {
-        this.teamName = teamName;
+    public Team(User teamLeader, User teamCoordinator, Set<User> teamMembers) {
         this.teamLeader = teamLeader;
         this.teamCoordinator = teamCoordinator;
-        this.teamMembersUsername = teamMembers;
+        this.teamMembers = teamMembers;
+        this.teamWeight=0.0;
     }
 
     public void update(@NotNull Team teamUpdated) {
-        if (teamUpdated.teamName != null)
-            this.teamName = teamUpdated.teamName;
         if (teamUpdated.teamCoordinator != null)
             this.teamCoordinator = teamUpdated.teamCoordinator;
         if (teamUpdated.teamLeader != null)
             this.teamLeader = teamUpdated.teamLeader;
-        if (teamUpdated.teamMembersUsername != null)
-            this.teamMembersUsername = teamUpdated.teamMembersUsername;
+        if (teamUpdated.teamMembers != null)
+            this.teamMembers = teamUpdated.teamMembers;
+        if(teamUpdated.teamWeight != null)
+            this.teamWeight = teamUpdated.teamWeight;
+    }
+
+    public void updateWeight(Double weight){
+        this.teamWeight=weight;
     }
 
 

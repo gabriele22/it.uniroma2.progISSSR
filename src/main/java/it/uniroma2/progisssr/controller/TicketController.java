@@ -1,17 +1,21 @@
 package it.uniroma2.progisssr.controller;
 
 
+import it.uniroma2.progisssr.dao.TeamDao;
 import it.uniroma2.progisssr.dao.TicketDao;
+import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import it.uniroma2.progisssr.utils.State;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +23,8 @@ import java.util.Set;
 @Service
 public class TicketController {
 
+    @Autowired
+    private TeamDao teamDao;
     @Autowired
     private TicketDao ticketDao;
 
@@ -177,5 +183,55 @@ public class TicketController {
     }
 
 
+//---------------------------GANTT----------------------------------------------
+    //per ottenere tutti i ticket assegnati ad un team
+    public List<Ticket> findTicketByTeam(String teamName) {
+        Team team = teamDao.getOne(teamName);
+        List<Ticket> tickets = ticketDao.findByTeam(team);
+        return  tickets;
 
+
+    }
+
+    public Integer computeDuration(String teamName, Ticket ticketUpdated) {
+        Team team = teamDao.getOne(teamName);
+        Double teamWeight = teamDao.findTeamWeightByTeam(team);
+        Double difficulty = ticketDao.findDifficultyByTicket(ticketUpdated);
+        //stima della duration in eccesso
+        Integer duration = (int)Math.ceil(teamWeight*difficulty);
+        ticketUpdated.updateDuration(duration);
+        ticketDao.save(ticketUpdated);
+
+        return duration;
+
+
+
+
+    }
+
+    public void putDateExecutionStart(Integer duration, Ticket ticketUpdated, String teamName) {
+        List<Ticket> dependentTickets = ticketDao.getDependentTicketByTicket(ticketUpdated);
+        Calendar now = Calendar.getInstance();
+        String dateExec= now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
+        ticketUpdated.updateDateExecutionStart(dateExec);
+        now.add(Calendar.DATE, duration);
+        String dateDependentTicket= now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
+        if(dependentTickets.size()!=0)
+            for(Ticket ticket: dependentTickets){
+                ticket.updateDateExecutionStart(dateDependentTicket);
+                Integer durationTickDependent = computeDuration(teamName,ticketUpdated);
+                ticket.updateDuration(durationTickDependent);
+                ticketDao.save(ticket);
+            }
+
+        ticketDao.save(ticketUpdated);
+
+    }
+
+    public List<Ticket> findTicketForGantt(String teamName) {
+        Team team =  teamDao.getOne(teamName);
+        List<Ticket> tickets = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
+        return tickets;
+
+    }
 }

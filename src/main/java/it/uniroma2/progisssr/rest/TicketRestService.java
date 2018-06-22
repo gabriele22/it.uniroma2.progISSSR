@@ -1,6 +1,7 @@
 package it.uniroma2.progisssr.rest;
 
 
+import it.uniroma2.progisssr.controller.TeamController;
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
@@ -30,6 +31,9 @@ public class TicketRestService {
 
     @Autowired
     private TicketController ticketController;
+    @Autowired
+    private TeamController teamController;
+
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
         Ticket newTicket = ticketController.createTicket(ticket);
@@ -218,6 +222,40 @@ public class TicketRestService {
 
 
 
+//--------------GANTT---------------------------------
+
+    //per ottenere tutti i ticket associati ad un team
+    @RequestMapping(path = "findTicketByTeam/{teamName}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketByTeam(@PathVariable String teamName) {
+        List<Ticket> tickets = ticketController.findTicketByTeam(teamName);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+
+    //associa i ticket al team
+    @RequestMapping(path = "assignmentToTeam/{ticketId}/{teamName}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> assignmentToTeam(@PathVariable Long ticketId,@PathVariable String teamName,
+                                                   @RequestBody Ticket ticket) {
+        Ticket ticketUpdated = null;
+        try {
+            ticketUpdated = ticketController.updateTicket(ticketId, ticket);
+
+        } catch (EntitaNonTrovataException e) {
+            return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
+        }
+        teamController.computeTeamWeight(teamName);
+        Integer duration = ticketController.computeDuration(teamName,ticketUpdated);
+        ticketController.putDateExecutionStart(duration, ticketUpdated,teamName);
+
+        return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path = "findTicketForGantt/{teamName}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForGantt(@PathVariable String teamName) {
+        List<Ticket> tickets = ticketController.findTicketForGantt(teamName);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
 
 
 
