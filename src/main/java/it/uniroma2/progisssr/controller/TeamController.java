@@ -20,6 +20,8 @@ import java.util.*;
 public class TeamController {
 
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private TeamDao teamDao;
     @Autowired
     private TicketDao ticketDao;
@@ -67,5 +69,12 @@ public class TeamController {
         Double teamWeight = (double) ticketAssigned.size() /(double)teamMember.size();
         team.updateWeight(teamWeight);
         teamDao.save(team);
+    }
+
+    public List<Team> findAllTeamByPerson(String person) {
+        User user = userDao.getOne(person);
+        HashSet<User> set = new HashSet<>();
+        set.add(user);
+        return  teamDao.findAllByTeamMembersContainsOrTeamLeaderOrTeamCoordinator(set,user,user);
     }
 }

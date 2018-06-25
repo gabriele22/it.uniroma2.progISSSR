@@ -2,6 +2,7 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TeamController;
 import it.uniroma2.progisssr.entity.Team;
+import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,4 +52,12 @@ public class TeamRestService {
         List<Team> team = teamController.findAllTeam();
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
+
+    //metodo che ritorna tutti i team associati ad una determinata persona
+    @RequestMapping(path = "findAllTeamsByPerson/{person}", method = RequestMethod.GET)
+    public ResponseEntity<List<Team>> findAllTeamsByPerson(@PathVariable String person) {
+        List<Team> team = teamController.findAllTeamByPerson(person);
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
+
 }

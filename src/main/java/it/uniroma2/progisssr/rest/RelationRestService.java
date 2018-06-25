@@ -3,6 +3,7 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.RelationController;
 import it.uniroma2.progisssr.entity.Relation;
+import it.uniroma2.progisssr.logger.aspect.LogOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class RelationRestService {
     @Autowired
     RelationController relationController;
 
+    @LogOperation( inputArgs = {"Relation"}, returnObject = true)
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<Relation> createRelation(@RequestBody Relation relation, @PathVariable String name) {
         Relation newRelation = relationController.createRelation(relation,name);

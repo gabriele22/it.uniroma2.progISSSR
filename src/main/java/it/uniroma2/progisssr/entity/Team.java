@@ -21,7 +21,7 @@ public class Team {
     private User teamLeader;
     @OneToOne
     private User teamCoordinator;
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "team_members")
     private Set<User> teamMembers;
     //carico del team

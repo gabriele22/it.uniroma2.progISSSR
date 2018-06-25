@@ -1,5 +1,6 @@
 package it.uniroma2.progisssr.entity;
 
+import it.uniroma2.progisssr.logger.aspect.LogClass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-/*@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)*/
+@LogClass(idAttrs = {"name"})
 public class Relation {
 
     @Id

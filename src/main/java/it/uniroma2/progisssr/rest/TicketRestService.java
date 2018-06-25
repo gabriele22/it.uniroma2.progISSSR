@@ -251,18 +251,12 @@ public class TicketRestService {
     }
 
     //ritorna la lista dei ticket associata ad un team
-    @RequestMapping(path = "getTicketForGantt/{teamName}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTicketForGantt(@PathVariable String teamName) {
+    @RequestMapping(path = "findTicketForGantt/{teamName}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketForGantt(@PathVariable String teamName) {
         List<Ticket> tickets = ticketController.findTicketForGanttByTeam(teamName);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    //ritorna la lista di ticket associata ad un team in base ad uno degli elementi del team
-    @RequestMapping(path = "findTicketForGantt/{person}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findTicketForGantt(@PathVariable String person) {
-        List<Ticket> tickets = ticketController.findTicketForGanttByPerson(person);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
 
 
 }

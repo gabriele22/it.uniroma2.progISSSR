@@ -193,7 +193,6 @@ public class TicketController {
 
 
     }
-
     public Integer computeDuration(String teamName, Ticket ticketUpdated) {
         Team team = teamDao.getOne(teamName);
         Double teamWeight = teamDao.findTeamWeightByTeam(team);
@@ -204,9 +203,6 @@ public class TicketController {
         ticketDao.save(ticketUpdated);
 
         return duration;
-
-
-
 
     }
 
@@ -236,17 +232,5 @@ public class TicketController {
 
     }
 
-    //ritorna la lista di ticket associata ad un team in base ad uno degli elementi del team
-    public List<Ticket> findTicketForGanttByPerson(String person) {
-        User user = userDao.getOne(person);
-        HashSet<User> set = new HashSet<>();
-        set.add(user);
-        List<Team> teamList = teamDao.findAllByTeamMembersContainsOrTeamLeaderOrTeamCoordinator(set,user,user);
-        List<Ticket> tickets= new ArrayList<>();
-        for(Team team : teamList) {
-            tickets.addAll(ticketDao.findByTeamAndStatus(team, State.EXECUTION.toString().toLowerCase()));
 
-        }
-        return tickets;
-    }
 }
