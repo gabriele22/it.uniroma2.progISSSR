@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserDao  extends JpaRepository<User,String> {
 
-    //@Modifying
     @Query("SELECT u.password FROM User u where u.username = :username")
     String findPasswordByUsername(@Param("username") String username);
 

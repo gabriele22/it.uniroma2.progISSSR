@@ -3,6 +3,7 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.TeamDao;
 import it.uniroma2.progisssr.dao.TicketDao;
+import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 // @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class TicketController {
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private TeamDao teamDao;
@@ -228,10 +229,24 @@ public class TicketController {
 
     }
 
-    public List<Ticket> findTicketForGantt(String teamName) {
+    public List<Ticket> findTicketForGanttByTeam(String teamName) {
         Team team =  teamDao.getOne(teamName);
         List<Ticket> tickets = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
         return tickets;
 
+    }
+
+    //ritorna la lista di ticket associata ad un team in base ad uno degli elementi del team
+    public List<Ticket> findTicketForGanttByPerson(String person) {
+        User user = userDao.getOne(person);
+        HashSet<User> set = new HashSet<>();
+        set.add(user);
+        List<Team> teamList = teamDao.findAllByTeamMembersContainsOrTeamLeaderOrTeamCoordinator(set,user,user);
+        List<Ticket> tickets= new ArrayList<>();
+        for(Team team : teamList) {
+            tickets.addAll(ticketDao.findByTeamAndStatus(team, State.EXECUTION.toString().toLowerCase()));
+
+        }
+        return tickets;
     }
 }
