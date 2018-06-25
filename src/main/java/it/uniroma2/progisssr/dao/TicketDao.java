@@ -63,6 +63,7 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     @Query("select t.dependentTickets from Ticket t where  t = :ticket")
     List<Ticket> getDependentTicketByTicket(@Param("ticket") Ticket ticket);
 
+    List<Ticket> findAllByCountDependenciesIsNotNullAndCountDependenciesIsNot(Integer countDependencies);
 
 
 }

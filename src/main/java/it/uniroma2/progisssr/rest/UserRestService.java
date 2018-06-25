@@ -1,20 +1,13 @@
 package it.uniroma2.progisssr.rest;
 
-
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.controller.UserController;
-import it.uniroma2.progisssr.dao.UserDao;
-import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController

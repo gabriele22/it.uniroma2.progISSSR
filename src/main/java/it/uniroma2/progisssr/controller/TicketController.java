@@ -233,4 +233,58 @@ public class TicketController {
     }
 
 
+//----------------------GANTT nuova versione --------------------------------------------
+
+    public List<Ticket> findTicketForGanttByTeamNew(String teamName){
+        Team team =  teamDao.getOne(teamName);
+        List<Ticket> tickets = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
+        HashMap<Ticket,Double> mapTicketExec = new HashMap<>();
+        for(Ticket ticket: tickets){
+            mapTicketExec.put(ticket,ticketDao.findDifficultyByTicket(ticket));
+        }
+        List<Ticket> ticketsPending = ticketDao.findByTeamAndStatus(team,State.PENDING.toString().toLowerCase());
+        List<Ticket> ticketsDependent = ticketDao.findAllByCountDependenciesIsNotNullAndCountDependenciesIsNot(0);
+
+        int teamSize = teamDao.findTeamMembersByTeam(team).size();
+        int day[][]=new int[teamSize][];
+
+        List<Ticket> ticketForGantt = new ArrayList<>();
+/*
+        for(int i=0; i<30 ; i++){
+*//*            int sizeExecTicket = mapTicketExec.size();
+            for (int j = 0; j < teamSize/sizeExecTicket; j++) {
+                for (int k = 0; k < sizeExecTicket; k++) {
+                    day[j*teamSize + k] = mapTicketExec.
+                }
+            }*//*
+
+            for(int j=0; j<teamSize; j++) {
+                if(day[j]==0)
+                    day[j]= tickets.
+            }*/
+
+        for (int i = 0; i < 30; i++) {
+            for(Ticket ticket: tickets) {
+                if(ticketDao.findDifficultyByTicket(ticket)>0)
+                if(teamSize>ticketDao.findDifficultyByTicket(ticket)) {
+                    for (int j = 0; j < ticketDao.findDifficultyByTicket(ticket); j++)
+                        if (day[j][i] == 0) {
+                            day[j][i] = ticketDao.getIDByTicket(ticket).intValue();
+                            //decrementa difficoltà
+                        }
+
+                }else{
+                    continue;
+                }
+
+
+            }
+        }
+
+        return null;
+
+
+    }
+
+
 }
