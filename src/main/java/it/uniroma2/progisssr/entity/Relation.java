@@ -15,6 +15,8 @@ import javax.persistence.*;
 @LogClass(idAttrs = {"name"})
 public class Relation {
 
+
+
     @Id
     @Column(name = "name")
     private String name;

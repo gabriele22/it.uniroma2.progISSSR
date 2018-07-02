@@ -19,6 +19,8 @@ public class RelationRestService {
     @Autowired
     RelationController relationController;
 
+
+
     @LogOperation( inputArgs = {"Relation"}, returnObject = true)
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<Relation> createRelation(@RequestBody Relation relation, @PathVariable String name) {
