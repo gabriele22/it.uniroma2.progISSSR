@@ -242,6 +242,7 @@ public class TicketController {
         for(Ticket ticket: tickets){
             mapTicketExec.put(ticket,ticketDao.findDifficultyByTicket(ticket));
         }
+        Ticket[] keyTicket = (Ticket[]) mapTicketExec.keySet().toArray();
         List<Ticket> ticketsPending = ticketDao.findByTeamAndStatus(team,State.PENDING.toString().toLowerCase());
         List<Ticket> ticketsDependent = ticketDao.findAllByCountDependenciesIsNotNullAndCountDependenciesIsNot(0);
 
@@ -263,9 +264,27 @@ public class TicketController {
                     day[j]= tickets.
             }*/
 
-        for (int i = 0; i < 30; i++) {
-            for(Ticket ticket: tickets) {
-                if(ticketDao.findDifficultyByTicket(ticket)>0)
+        int i=0;
+        int t=0;
+        while( i < 30) {
+            while(t< keyTicket.length) {
+                Double diff = mapTicketExec.get(keyTicket[t]);
+                if(teamSize<=diff) {
+                    diff -= teamSize;
+                    mapTicketExec.replace(keyTicket[t], diff);
+                    i++;
+                    break;
+                }else{
+
+                }
+                int dailyCapacity = teamSize-diff.intValue();
+                if(dailyCapacity > 0)
+                    t++;
+                if(diff==0) t++;
+
+
+
+/*                if(ticketDao.findDifficultyByTicket(ticket)>0)
                 if(teamSize>ticketDao.findDifficultyByTicket(ticket)) {
                     for (int j = 0; j < ticketDao.findDifficultyByTicket(ticket); j++)
                         if (day[j][i] == 0) {
@@ -275,7 +294,9 @@ public class TicketController {
 
                 }else{
                     continue;
-                }
+                }*/
+
+
 
 
             }
