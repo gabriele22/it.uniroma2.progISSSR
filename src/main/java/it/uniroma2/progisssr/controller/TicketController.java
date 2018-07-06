@@ -227,7 +227,7 @@ public class TicketController {
 
     public List<Ticket> findTicketForGanttByTeam(String teamName) {
         Team team =  teamDao.getOne(teamName);
-        List<Ticket> tickets = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
+        List<Ticket> tickets = ticketDao.findByTeam(team);
         return tickets;
 
     }
