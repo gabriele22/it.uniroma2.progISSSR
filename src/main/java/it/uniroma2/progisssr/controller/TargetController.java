@@ -2,7 +2,7 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.TargetDao;
 import it.uniroma2.progisssr.entity.Target;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,11 @@ public class TargetController {
         return newTarget;
     }
     @Transactional
-    public @NotNull Target updateTarget( @NotNull Long id, @NotNull Target target) throws EntitaNonTrovataException{
+    public @NotNull Target updateTarget( @NotNull Long id, @NotNull Target target) throws NotFoundEntityException {
 
         Target targetToUpdate = targetDao.getOne(id);
         if (targetToUpdate == null)
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         targetToUpdate.update(target);
         Target targetUpdated = targetDao.save(targetToUpdate);
         return targetUpdated;

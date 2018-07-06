@@ -8,6 +8,7 @@ import it.uniroma2.progisssr.entity.GanttDay;
 import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
+import it.uniroma2.progisssr.exception.DependeciesFoundException;
 import it.uniroma2.progisssr.utils.ParseDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class GanttDayController {
     @Transactional
     public @NotNull List<GanttDay> createGanttInstance(@NotNull Ticket ticket, @NotNull String teamName,
                                                @NotNull String firstDay, @NotNull Integer duration,
-                                               @NotNull Long ticketId) {
+                                               @NotNull Long ticketId) throws DependeciesFoundException {
 
         List<GanttDay> ganttDays = new ArrayList<>();
 
@@ -45,6 +46,22 @@ public class GanttDayController {
         Ticket ticketAssigned = null;
 
         GregorianCalendar first = ParseDate.parseGregorianCalendar(firstDay);
+
+        //check dependencies
+        Set<Ticket> tickets = new HashSet<>();
+        tickets.add(ticketToUpdate);
+        List<Ticket> fatherTickets = ticketDao.findDistinctByDependentTicketsContains(tickets);
+        for (Ticket father : fatherTickets) {
+            Integer durationFather = ticketDao.findDurationByTicket(father);
+            if (durationFather == null) {
+                throw new DependeciesFoundException();
+            }
+            GregorianCalendar dateExecStartFather = ParseDate.parseGregorianCalendar(ticketDao.findDateExecutionByTicket(father));
+                        dateExecStartFather.add(Calendar.DAY_OF_MONTH,durationFather);
+            if (dateExecStartFather.compareTo(first) > 0) {
+                throw new DependeciesFoundException();
+            }
+        }
 
         //check availability for all day
         for(int i = 0; i<duration; i++) {
@@ -55,16 +72,20 @@ public class GanttDayController {
             }
             Double currentAvail = ganttDayDao.getAvailabilityByDayAndTeam(keyGanttDay);
             if (currentAvail >= 1) {
-                return null;
+                ganttDays.add(ganttDayDao.getOne(keyGanttDay));
             }
             first.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        if (!ganttDays.isEmpty()) {
+            return ganttDays;
         }
 
         first = ParseDate.parseGregorianCalendar(firstDay);
 
         for(int i = 0; i<duration; i++) {
             String currentDay = ParseDate.gregorianCalendarToString(first);
-            ganttDays.add(updateGanttDay(currentDay, ticketToUpdate, team));
+            updateGanttDay(currentDay, ticketToUpdate, team);
             first.add(Calendar.DAY_OF_MONTH, 1);
         }
 
@@ -79,12 +100,12 @@ public class GanttDayController {
 
     private Double computeAvailability(Team team, Integer ticketsSize) {
         List<User> teamMember = teamDao.findTeamMembersByTeam(team);
-        return (double) ticketsSize /(double)teamMember.size();
+        return (double) ticketsSize /((double)teamMember.size() + 2);
 
     }
 
 
-    private GanttDay updateGanttDay( String day, Ticket ticketToUpdate , Team team) {
+    private void updateGanttDay( String day, Ticket ticketToUpdate , Team team) {
         /*if(ganttDay == null) {
             Double availability = computeAvailability(day, team);
             Set<Ticket> ticketSet = new HashSet<>();
@@ -117,9 +138,5 @@ public class GanttDayController {
         GanttDay ganttDayUpdated = new GanttDay(keyGanttDay,newAvail,ticketSet);
         ganttDayToUpdate.update(ganttDayUpdated);
         ganttDayDao.save(ganttDayToUpdate);
-
-        return ganttDayToUpdate;
-            /*}else{
-                return null;*/
     }
 }

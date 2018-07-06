@@ -2,7 +2,7 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TeamController;
 import it.uniroma2.progisssr.entity.Team;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class TeamRestService {
         Team teamtUpdated = null;
         try {
             teamtUpdated = teamController.updateTeam(id, team);
-        } catch (EntitaNonTrovataException e) {
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(teamtUpdated, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(teamtUpdated, HttpStatus.OK);

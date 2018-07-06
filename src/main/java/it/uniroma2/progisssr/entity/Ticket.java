@@ -78,15 +78,18 @@ public class Ticket {
         this.customer = customer;
         this.attached = attached;
 
-
     }
 
     public void update(@NotNull Ticket ticketUpdated)
     {
         if(ticketUpdated.status !=null)
             this.status= ticketUpdated.status;
-        if(dateEnd != null)
+        if(ticketUpdated.dateEnd != null)
             this.dateEnd= ticketUpdated.dateEnd;
+        if (ticketUpdated.dateExecutionStart != null)
+            this.dateExecutionStart = ticketUpdated.dateExecutionStart;
+        if (ticketUpdated.durationEstimation != null)
+            this.durationEstimation = ticketUpdated.durationEstimation;
         if(ticketUpdated.category != null)
             this.category= ticketUpdated.category;
         if(ticketUpdated.customerPriority!=null)
@@ -197,13 +200,13 @@ public class Ticket {
     }
 
 
-    /*// ------------------------------------------------------
-    public Boolean isCountDependenciesZero() {
+
+    /*public Boolean isCountDependenciesZero() {
         if (this.countDependencies == 0)
             return true;
         else return false;
-    }
-
+    }*/
+/*
     public int compareRank(Ticket ticket) {
         return Double.compare(this.rank, ticket.rank);
     }*/

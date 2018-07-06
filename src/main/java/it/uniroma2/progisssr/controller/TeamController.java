@@ -7,7 +7,7 @@ import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import it.uniroma2.progisssr.utils.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,10 +37,10 @@ public class TeamController {
         return newTeam;
     }
     @Transactional
-    public @NotNull Team updateTeam( @NotNull String teamName, @NotNull Team team) throws EntitaNonTrovataException {
+    public @NotNull Team updateTeam( @NotNull String teamName, @NotNull Team team) throws NotFoundEntityException {
         Team teamToUpdate = teamDao.getOne(teamName);
         if(teamToUpdate == null)
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         teamToUpdate.update(team);
         Team teamUpdated = teamDao.save(teamToUpdate);
         return teamUpdated;

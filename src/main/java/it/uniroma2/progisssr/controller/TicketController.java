@@ -7,9 +7,8 @@ import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Team;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import it.uniroma2.progisssr.utils.State;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +35,11 @@ public class TicketController {
     }
 
     @Transactional
-    public @NotNull Ticket updateTicket(@NotNull Long ID, @NotNull Ticket ticket) throws EntitaNonTrovataException {
+    public @NotNull Ticket updateTicket(@NotNull Long ID, @NotNull Ticket ticket) throws NotFoundEntityException {
 
         Ticket ticketToUpdate = ticketDao.getOne(ID);
         if (ticketToUpdate == null)
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         ticketToUpdate.update(ticket);
 
         Ticket ticketUpdated = ticketDao.save(ticketToUpdate);
@@ -76,13 +75,13 @@ public class TicketController {
         return tickets;
     }
 
-    public List<Ticket> addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws EntitaNonTrovataException {
+    public List<Ticket> addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws NotFoundEntityException {
         Ticket ticketMain = ticketDao.getOne(ID);
         Ticket dependentTicket = ticketDao.getOne(dependentID);
         List<Ticket> cycle = new ArrayList<>();
 
         if (ticketMain == null || dependentTicket==null)
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         if(ticketMain.isAlreadyDependent(dependentTicket))
             return cycle;
         //check if there is no-cycle
@@ -98,10 +97,10 @@ public class TicketController {
     }
 
 
-    public Ticket releaseTicket(@NotNull  Long id, @NotNull Ticket ticket) throws EntitaNonTrovataException {
+    public Ticket releaseTicket(@NotNull  Long id, @NotNull Ticket ticket) throws NotFoundEntityException {
         Ticket ticketReleased = ticketDao.getOne(id);
         if (ticketReleased == null )
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         ticketReleased.update(ticket);
         ticketDao.save(ticketReleased);
         Set<Ticket> dependents = ticketReleased.decreaseDependents();
@@ -111,13 +110,13 @@ public class TicketController {
 
     }
 
-    public Ticket addRegression(@NotNull Long id,@NotNull Long idGenerator) throws EntitaNonTrovataException {
+    public Ticket addRegression(@NotNull Long id,@NotNull Long idGenerator) throws NotFoundEntityException {
         Ticket ticketRegression = ticketDao.getOne(id);
         Ticket ticketGenerator = ticketDao.getOne(idGenerator);
         if (ticketRegression == null )
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         if (ticketGenerator == null )
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         ticketRegression.addRegression(ticketGenerator);
         return ticketDao.save(ticketRegression);
 
@@ -233,79 +232,9 @@ public class TicketController {
     }
 
 
-//----------------------GANTT nuova versione --------------------------------------------
-
-    public List<Ticket> findTicketForGanttByTeamNew(String teamName){
-        Team team =  teamDao.getOne(teamName);
-        List<Ticket> tickets = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
-        HashMap<Ticket,Double> mapTicketExec = new HashMap<>();
-        for(Ticket ticket: tickets){
-            mapTicketExec.put(ticket,ticketDao.findDifficultyByTicket(ticket));
-        }
-        Ticket[] keyTicket = (Ticket[]) mapTicketExec.keySet().toArray();
-        List<Ticket> ticketsPending = ticketDao.findByTeamAndStatus(team,State.PENDING.toString().toLowerCase());
-        List<Ticket> ticketsDependent = ticketDao.findAllByCountDependenciesIsNotNullAndCountDependenciesIsNot(0);
-
-        int teamSize = teamDao.findTeamMembersByTeam(team).size();
-        int day[][]=new int[teamSize][];
-
-        List<Ticket> ticketForGantt = new ArrayList<>();
-/*
-        for(int i=0; i<30 ; i++){
-*//*            int sizeExecTicket = mapTicketExec.size();
-            for (int j = 0; j < teamSize/sizeExecTicket; j++) {
-                for (int k = 0; k < sizeExecTicket; k++) {
-                    day[j*teamSize + k] = mapTicketExec.
-                }
-            }*//*
-
-            for(int j=0; j<teamSize; j++) {
-                if(day[j]==0)
-                    day[j]= tickets.
-            }*/
-
-        int i=0;
-        int t=0;
-        while( i < 30) {
-            while(t< keyTicket.length) {
-                Double diff = mapTicketExec.get(keyTicket[t]);
-                if(teamSize<=diff) {
-                    diff -= teamSize;
-                    mapTicketExec.replace(keyTicket[t], diff);
-                    i++;
-                    break;
-                }else{
-
-                }
-                int dailyCapacity = teamSize-diff.intValue();
-                if(dailyCapacity > 0)
-                    t++;
-                if(diff==0) t++;
-
-
-
-/*                if(ticketDao.findDifficultyByTicket(ticket)>0)
-                if(teamSize>ticketDao.findDifficultyByTicket(ticket)) {
-                    for (int j = 0; j < ticketDao.findDifficultyByTicket(ticket); j++)
-                        if (day[j][i] == 0) {
-                            day[j][i] = ticketDao.getIDByTicket(ticket).intValue();
-                            //decrementa difficoltà
-                        }
-
-                }else{
-                    continue;
-                }*/
-
-
-
-
-            }
-        }
-
-        return null;
-
-
+    public List<Ticket> findFatherTicket(@NotNull Long ticketId) {
+        Set<Ticket> tickets = new HashSet<>();
+        tickets.add(ticketDao.getOne(ticketId));
+        return ticketDao.findDistinctByDependentTicketsContains(tickets);
     }
-
-
 }

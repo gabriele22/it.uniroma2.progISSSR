@@ -2,15 +2,13 @@ package it.uniroma2.progisssr.controller;
 
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
-import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,10 +27,10 @@ public class UserController {
         return newUser;
     }
     @Transactional
-    public User updateUser(String username, User user) throws EntitaNonTrovataException {
+    public User updateUser(String username, User user) throws NotFoundEntityException {
         User userToUpdate = userDao.getOne(username);
         if (userToUpdate == null)
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         userToUpdate.update(user);
         User userUpdated = userDao.save(userToUpdate);
         return userUpdated;
@@ -40,10 +38,10 @@ public class UserController {
 
 
 
-    public User findUserById(@NotNull String username) throws EntitaNonTrovataException {
+    public User findUserById(@NotNull String username) throws NotFoundEntityException {
         User user;
         if(!userDao.existsById(username))
-            throw new EntitaNonTrovataException();
+            throw new NotFoundEntityException();
         user = userDao.getOne(username);
         return user;
     }

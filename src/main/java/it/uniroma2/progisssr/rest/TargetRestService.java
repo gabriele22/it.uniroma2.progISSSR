@@ -2,7 +2,7 @@ package it.uniroma2.progisssr.rest;
 
 import it.uniroma2.progisssr.controller.TargetController;
 import it.uniroma2.progisssr.entity.Target;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class TargetRestService {
         Target targetUpdated = null;
         try {
             targetUpdated = TargetController.updateTarget(id, target);
-        } catch (EntitaNonTrovataException e) {
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(targetUpdated, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(targetUpdated, HttpStatus.OK);

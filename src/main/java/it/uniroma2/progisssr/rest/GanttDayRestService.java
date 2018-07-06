@@ -4,6 +4,7 @@ import it.uniroma2.progisssr.controller.GanttDayController;
 import it.uniroma2.progisssr.entity.GanttDay;
 import it.uniroma2.progisssr.entity.Target;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.exception.DependeciesFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,18 @@ public class GanttDayRestService {
         Ticket ticketAssigned = ganttDayController.createGanttInstance(ticket,teamName,firstDay,duration, ticketId);
         return new ResponseEntity<>(ticketAssigned,ticketAssigned == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);*/
 
-        List<GanttDay> ganttDays = ganttDayController.createGanttInstance(ticket,teamName,firstDay,duration, ticketId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<GanttDay> ganttDays;
+        try {
+            ganttDays = ganttDayController.createGanttInstance(ticket,teamName,firstDay,duration, ticketId);
+        }  catch (DependeciesFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        }
+        if (!ganttDays.isEmpty()) {
+            return new ResponseEntity<>(ganttDays, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(ganttDays, HttpStatus.OK);
     }
 
 

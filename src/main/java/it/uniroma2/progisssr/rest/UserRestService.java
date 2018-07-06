@@ -3,7 +3,7 @@ package it.uniroma2.progisssr.rest;
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.controller.UserController;
 import it.uniroma2.progisssr.entity.User;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class UserRestService {
         User userUpdated = null;
         try {
             userUpdated = userController.updateUser(username, user);
-        } catch (EntitaNonTrovataException e) {
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(userUpdated, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userUpdated, HttpStatus.OK);
@@ -42,11 +42,11 @@ public class UserRestService {
 
 
     @RequestMapping(path = "{username}", method = RequestMethod.GET)
-    public ResponseEntity<User> findUser(@PathVariable String username) throws EntitaNonTrovataException {
+    public ResponseEntity<User> findUser(@PathVariable String username) throws NotFoundEntityException {
         User user = null;
         try {
             user = userController.findUserById(username);
-        }catch (EntitaNonTrovataException e){
+        }catch (NotFoundEntityException e){
             e.printStackTrace();
             return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         }
@@ -58,7 +58,7 @@ public class UserRestService {
         User userToAuthenticated = null;
         try {
             userToAuthenticated =  userController.findUserById(username);
-        }catch (EntitaNonTrovataException e){
+        }catch (NotFoundEntityException e){
             e.printStackTrace();
             return new ResponseEntity<>(user,HttpStatus.NOT_FOUND);
         }

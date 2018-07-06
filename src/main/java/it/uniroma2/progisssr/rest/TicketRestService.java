@@ -5,7 +5,7 @@ import it.uniroma2.progisssr.controller.TeamController;
 import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
-import it.uniroma2.progisssr.exception.EntitaNonTrovataException;
+import it.uniroma2.progisssr.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +45,7 @@ public class TicketRestService {
         Ticket ticketUpdated = null;
         try {
             ticketUpdated = ticketController.updateTicket(id, ticket);
-        } catch (EntitaNonTrovataException e) {
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
@@ -94,7 +94,7 @@ public class TicketRestService {
             return new ResponseEntity<>(ticketUpdated, HttpStatus.UNAUTHORIZED);
         try {
             ticketUpdated = ticketController.updateTicket(id, sameTicket);
-        }catch (EntitaNonTrovataException e){
+        }catch (NotFoundEntityException e){
             return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
         }
 
@@ -112,7 +112,7 @@ public class TicketRestService {
             return new ResponseEntity<>(cycle, HttpStatus.FAILED_DEPENDENCY);
         try {
             cycle = ticketController.addDependentTicket(id, dependentTicketID);
-        }catch (EntitaNonTrovataException e){
+        }catch (NotFoundEntityException e){
             return new ResponseEntity<>(cycle, HttpStatus.NOT_FOUND);
         }
 
@@ -128,7 +128,7 @@ public class TicketRestService {
         Ticket ticketRelease = null;
         try {
             ticketRelease = ticketController.releaseTicket(id,ticket);
-        }catch (EntitaNonTrovataException e){
+        }catch (NotFoundEntityException e){
             return new ResponseEntity<>(ticketRelease, HttpStatus.NOT_FOUND);
         }
 
@@ -143,7 +143,7 @@ public class TicketRestService {
             return new ResponseEntity<>(ticketRegression, HttpStatus.FAILED_DEPENDENCY);
         try {
             ticketRegression = ticketController.addRegression(id, idGenerator);
-        } catch (EntitaNonTrovataException e){
+        } catch (NotFoundEntityException e){
             return new ResponseEntity<>(ticketRegression, HttpStatus.NOT_FOUND);
         }
 
@@ -240,7 +240,7 @@ public class TicketRestService {
         try {
             ticketUpdated = ticketController.updateTicket(ticketId, ticket);
 
-        } catch (EntitaNonTrovataException e) {
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
         }
         teamController.computeTeamWeight(teamName);
@@ -257,6 +257,11 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-
+    //return the list of ticket from which ticket depends
+    @RequestMapping(path = "findFatherTicket/{ticketId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findFatherTicket(@PathVariable Long ticketId) {
+        List<Ticket> tickets = ticketController.findFatherTicket(ticketId);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
 
 }
