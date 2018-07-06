@@ -48,7 +48,6 @@ public class GanttDayController {
 
         //check availability for all day
         for(int i = 0; i<duration; i++) {
-            first.add(Calendar.DATE, i);
             String currentDay = ParseDate.gregorianCalendarToString(first);
             KeyGanttDay keyGanttDay = new KeyGanttDay(currentDay,team);
             if (!ganttDayDao.existsById(keyGanttDay)) {
@@ -58,12 +57,15 @@ public class GanttDayController {
             if (currentAvail >= 1) {
                 return null;
             }
+            first.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        first = ParseDate.parseGregorianCalendar(firstDay);
+
         for(int i = 0; i<duration; i++) {
-            first.add(Calendar.DATE, i);
             String currentDay = ParseDate.gregorianCalendarToString(first);
             ganttDays.add(updateGanttDay(currentDay, ticketToUpdate, team));
+            first.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         ticketToUpdate.update(ticket);
@@ -99,16 +101,16 @@ public class GanttDayController {
             if(currentAvail<1) {*/
         Set<Ticket> ticketSet = new HashSet<>();
         GanttDay ganttDayToUpdate;
-       /* if (!ganttDayDao.existsById(keyGanttDay)) {*/
+        if (!ganttDayDao.existsById(keyGanttDay)) {
             //GanttDay ganttDay = new GanttDay(currentDay, 0.0, team, null);
-            Set<Ticket> tickets =  new HashSet<>();
+            /*Set<Ticket> tickets =  new HashSet<>();*/
             GanttDay ganttDayToSave = new GanttDay(keyGanttDay,0.0,ticketSet);
             ganttDayToUpdate = ganttDayDao.save(ganttDayToSave);
             /*ganttDayDao.saveAndFlush(ganttDay);*/
-       /* } else{
+        } else{
             ganttDayToUpdate = ganttDayDao.findByKeyGanttDay(keyGanttDay);
             ticketSet = ganttDayDao.getTicketsSetByKey(keyGanttDay);
-        }*/
+        }
         ticketSet.add(ticketToUpdate);
         Double newAvail = computeAvailability(team, ticketSet.size());
         //GanttDay ganttDayUpdated = new GanttDay(day, newAvail, team, ticketSet);

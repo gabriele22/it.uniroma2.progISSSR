@@ -28,7 +28,7 @@ public class GanttDay {
     private Double availability;
     /*@OneToOne@JoinColumn(name = "teamName")@JsonIgnoreProperties
     private Team team;*/
-    @OneToMany@JsonIgnoreProperties @JoinTable(name = "ticketsPerDay")
+    @ManyToMany@JsonIgnoreProperties @JoinTable(name = "ticketsPerDay")
     private Set<Ticket> tickets;
 /*
     public GanttDay(String day, Double availability, Team team, Set<Ticket> tickets) {
