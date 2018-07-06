@@ -195,4 +195,17 @@ public class Ticket {
     public void updateDateExecutionStart(String date){
         this.dateExecutionStart = date;
     }
+
+
+    /*// ------------------------------------------------------
+    public Boolean isCountDependenciesZero() {
+        if (this.countDependencies == 0)
+            return true;
+        else return false;
+    }
+
+    public int compareRank(Ticket ticket) {
+        return Double.compare(this.rank, ticket.rank);
+    }*/
+
 }

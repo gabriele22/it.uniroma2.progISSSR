@@ -80,7 +80,8 @@ public class EscalationController {
 
     }
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    //cron update rank every day every six hours
+    @Scheduled(fixedDelay = 1000, initialDelay = 1000 /*cron = "0 0 1,7,13,20 * * ?"*/)
     public void escalationStart() {
         Double customerPriority = escalationDao.getCustomerPriorityByEscalation(escalation);
         Double teamPriority = escalationDao.getTeamPriorityByEscalation(escalation);
