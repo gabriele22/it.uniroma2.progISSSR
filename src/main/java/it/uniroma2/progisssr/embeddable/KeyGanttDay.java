@@ -1,0 +1,43 @@
+package it.uniroma2.progisssr.embeddable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.uniroma2.progisssr.entity.Team;
+
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import java.io.Serializable;
+
+@Embeddable
+public class KeyGanttDay implements Serializable {
+
+    private String day;
+    @OneToOne
+    @JoinColumn(name = "teamName")@JsonIgnoreProperties
+    private Team team;
+
+    public  KeyGanttDay(){}
+
+    public KeyGanttDay(String day, Team team) {
+        this.day = day;
+        this.team = team;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+
+}

@@ -46,6 +46,13 @@ public class ParseDate {
 
     }
 
+
+    public static String gregorianCalendarToString(GregorianCalendar gregorianCalendar){
+
+        return gregorianCalendar.get(Calendar.DATE)+ "/" + gregorianCalendar.get(Calendar.MONTH)+ "/" + gregorianCalendar.get(Calendar.YEAR);
+
+    }
+
     public static void main(String[] args){
         GregorianCalendar d = ParseDate.parseGregorianCalendar("07:05:2018 17:50:23");
         GregorianCalendar d2 = ParseDate.parseGregorianCalendar("7/5/2018 16:19:23");
@@ -65,9 +72,13 @@ public class ParseDate {
         String n = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
         System.out.println("nnnnnnnnnnnnn " +n );
 
-        now.add(Calendar.DATE, 9);
+        now.add(Calendar.DATE, 0);
         String ng = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
-        System.out.println("nnnnnnnnnnnnn " +ng );
+        System.out.println("domani " +ng );
+
+        System.out.println("to string " + gregorianCalendarToString(d2) );
+
+
 
     }
 

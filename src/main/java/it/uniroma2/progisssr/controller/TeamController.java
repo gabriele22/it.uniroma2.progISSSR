@@ -1,5 +1,6 @@
 package it.uniroma2.progisssr.controller;
 
+import it.uniroma2.progisssr.dao.GanttDayDao;
 import it.uniroma2.progisssr.dao.TeamDao;
 import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
@@ -25,6 +26,8 @@ public class TeamController {
     private TeamDao teamDao;
     @Autowired
     private TicketDao ticketDao;
+    @Autowired
+    private GanttDayDao ganttDayDao;
 
     @Transactional
     public @NotNull Team createTeam (@NotNull Team team, @NotNull String teamName){
@@ -70,6 +73,8 @@ public class TeamController {
         team.updateWeight(teamWeight);
         teamDao.save(team);
     }
+
+
 
     public List<Team> findAllTeamByPerson(String person) {
         User user = userDao.getOne(person);
