@@ -15,9 +15,13 @@ public class ParseDate {
         int day = Integer.parseInt(splitStr[0]);
         int month = Integer.parseInt(splitStr[1]);
         int year = Integer.parseInt(splitStr[2]);
-        int hour = Integer.parseInt(splitStr[3]);
-        int minute = Integer.parseInt(splitStr[4]);
-        int second = Integer.parseInt(splitStr[5]);
+        int hour = 0, minute = 0, second = 0;
+        if (splitStr.length > 2) {
+            hour = Integer.parseInt(splitStr[3]);
+            minute = Integer.parseInt(splitStr[4]);
+            second = Integer.parseInt(splitStr[5]);
+        }
+
 
         if(month==0)
             return new GregorianCalendar(year,Calendar.JANUARY,day,hour,minute,second);
