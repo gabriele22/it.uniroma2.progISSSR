@@ -54,7 +54,7 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
 
 
 //-----------------------------GANTT-------------------------------
-    List<Ticket> findByTeam(Team team);
+    List<Ticket> findByTeamAndStatusIsNotAndStatusIsNot(Team team, String status, String status2);
     List<Ticket> findByTeamAndStatus(Team team, String status);
 
     @Query("select t.difficulty from Ticket t where t = :ticket")

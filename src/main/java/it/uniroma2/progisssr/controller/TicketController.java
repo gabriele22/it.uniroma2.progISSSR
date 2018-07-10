@@ -187,7 +187,8 @@ public class TicketController {
     //per ottenere tutti i ticket assegnati ad un team
     public List<Ticket> findTicketByTeam(String teamName) {
         Team team = teamDao.getOne(teamName);
-        List<Ticket> tickets = ticketDao.findByTeam(team);
+        List<Ticket> tickets = ticketDao.findByTeamAndStatusIsNotAndStatusIsNot(team,
+                State.RELEASED.toString().toLowerCase(), State.CLOSED.toString().toLowerCase());
         return  tickets;
 
 
@@ -226,7 +227,8 @@ public class TicketController {
 
     public List<Ticket> findTicketForGanttByTeam(String teamName) {
         Team team =  teamDao.getOne(teamName);
-        List<Ticket> tickets = ticketDao.findByTeam(team);
+        List<Ticket> tickets = ticketDao.findByTeamAndStatusIsNotAndStatusIsNot(team,
+                State.RELEASED.toString().toLowerCase(), State.CLOSED.toString().toLowerCase());
         return tickets;
 
     }
