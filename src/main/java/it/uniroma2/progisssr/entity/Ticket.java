@@ -87,7 +87,7 @@ public class Ticket {
         if(ticketUpdated.dateEnd != null)
             this.dateEnd= ticketUpdated.dateEnd;
         if (ticketUpdated.dateExecutionStart != null)
-            this.dateExecutionStart = ticketUpdated.dateExecutionStart;
+            this.dateExecutionStart = ticketUpdated.dateExecutionStart.split(" ")[0];
         if (ticketUpdated.durationEstimation != null)
             this.durationEstimation = ticketUpdated.durationEstimation;
         if(ticketUpdated.category != null)
