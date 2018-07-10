@@ -16,7 +16,7 @@ public class ParseDate {
         int month = Integer.parseInt(splitStr[1]);
         int year = Integer.parseInt(splitStr[2]);
         int hour = 0, minute = 0, second = 0;
-        if (splitStr.length > 2) {
+        if (splitStr.length > 3) {
             hour = Integer.parseInt(splitStr[3]);
             minute = Integer.parseInt(splitStr[4]);
             second = Integer.parseInt(splitStr[5]);
