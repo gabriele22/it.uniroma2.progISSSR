@@ -64,7 +64,7 @@ public class RelationInstanceController {
         return sonTickets;
     }
 
-    //quando viene chiamata come fatherTicket gli passi il son e la sua lista(figli dei figli)
+    //NB: quando viene chiamata come fatherTicket gli passi il son e la sua lista(figli dei figli)
     private List<Ticket> isAcycle(@NotNull Long fatherTicketId , @NotNull String relationName,
                                   @NotNull Long sonTicketId, List<Ticket> cycleList){
         List<Ticket> tmpList = new ArrayList<>();

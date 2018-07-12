@@ -1,8 +1,9 @@
 package it.uniroma2.progisssr;
 
-public class test2 {
+//NB: classe test per lo scheduler
+public class ScheduledTest2 {
     public static void main(String[] strings) {
-        Test t = new Test();
+        ScheduledTest t = new ScheduledTest();
         t.scheduleFixedRateTask();
 
         for (; ; ) {

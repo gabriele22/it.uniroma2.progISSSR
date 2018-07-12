@@ -52,7 +52,7 @@ public class TeamRestService {
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
-    //metodo che ritorna tutti i team associati ad una determinata persona
+    //NB: metodo che ritorna tutti i team associati ad una determinata persona
     @RequestMapping(path = "findAllTeamsByPerson/{person}", method = RequestMethod.GET)
     public ResponseEntity<List<Team>> findAllTeamsByPerson(@PathVariable String person) {
         List<Team> team = teamController.findAllTeamByPerson(person);

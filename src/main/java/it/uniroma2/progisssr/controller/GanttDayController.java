@@ -43,7 +43,6 @@ public class GanttDayController {
 
         Team team = teamDao.getOne(teamName);
         Ticket ticketToUpdate = ticketDao.getOne(ticketId);
-        Ticket ticketAssigned = null;
 
         GregorianCalendar first = ParseDate.parseGregorianCalendar(firstDay);
 
@@ -90,9 +89,7 @@ public class GanttDayController {
         }
 
         ticketToUpdate.update(ticket);
-        ticketAssigned = ticketDao.save(ticketToUpdate);
-
-        //return ticketAssigned;
+        ticketDao.save(ticketToUpdate);
 
         return ganttDays;
     }
@@ -106,35 +103,18 @@ public class GanttDayController {
 
 
     private void updateGanttDay( String day, Ticket ticketToUpdate , Team team) {
-        /*if(ganttDay == null) {
-            Double availability = computeAvailability(day, team);
-            Set<Ticket> ticketSet = new HashSet<>();
-            ticketSet.add(ticket);
-            GanttDay ganttDayNew = new GanttDay(day, availability, team,ticketSet);
-            ganttDayDao.save(ganttDayNew);
-            ticketToUpdate.update(ticket);
-            Ticket ticketAssigned = ticketDao.save(ticketToUpdate);
-            return ticketAssigned;
-
-        }else{*/
-        KeyGanttDay keyGanttDay = new KeyGanttDay(day, team);
-            /*Double currentAvail = ganttDayDao.getAvailabilityByDayAndTeam(keyGanttDay);
-            if(currentAvail<1) {*/
+       KeyGanttDay keyGanttDay = new KeyGanttDay(day, team);
         Set<Ticket> ticketSet = new HashSet<>();
         GanttDay ganttDayToUpdate;
         if (!ganttDayDao.existsById(keyGanttDay)) {
-            //GanttDay ganttDay = new GanttDay(currentDay, 0.0, team, null);
-            /*Set<Ticket> tickets =  new HashSet<>();*/
             GanttDay ganttDayToSave = new GanttDay(keyGanttDay,0.0,ticketSet);
             ganttDayToUpdate = ganttDayDao.save(ganttDayToSave);
-            /*ganttDayDao.saveAndFlush(ganttDay);*/
         } else{
             ganttDayToUpdate = ganttDayDao.findByKeyGanttDay(keyGanttDay);
             ticketSet = ganttDayDao.getTicketsSetByKey(keyGanttDay);
         }
         ticketSet.add(ticketToUpdate);
         Double newAvail = computeAvailability(team, ticketSet.size());
-        //GanttDay ganttDayUpdated = new GanttDay(day, newAvail, team, ticketSet);
         GanttDay ganttDayUpdated = new GanttDay(keyGanttDay,newAvail,ticketSet);
         ganttDayToUpdate.update(ganttDayUpdated);
         ganttDayDao.save(ganttDayToUpdate);

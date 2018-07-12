@@ -17,8 +17,6 @@ public class UserRestService {
 
     @Autowired
     private UserController userController;
-    @Autowired
-    private TicketController ticketController;
 
     @RequestMapping(path = "{username}", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user, @PathVariable String username) {

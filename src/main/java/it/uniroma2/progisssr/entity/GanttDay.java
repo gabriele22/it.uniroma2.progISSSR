@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+//NB: Modelizza la disponibilità di una specifico team in uno specifico giorno
 public class GanttDay {
 
     @EmbeddedId

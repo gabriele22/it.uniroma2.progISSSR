@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//NB: comunica a Spring che questa è un'applicazione Spring
 public class TicketingSystemApplication {
 
 

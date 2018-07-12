@@ -1,14 +1,10 @@
 package it.uniroma2.progisssr.controller;
 
-import it.uniroma2.progisssr.dao.GanttDayDao;
 import it.uniroma2.progisssr.dao.TeamDao;
-import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.dao.UserDao;
 import it.uniroma2.progisssr.entity.Team;
-import it.uniroma2.progisssr.entity.Ticket;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.NotFoundEntityException;
-import it.uniroma2.progisssr.utils.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +20,6 @@ public class TeamController {
     private UserDao userDao;
     @Autowired
     private TeamDao teamDao;
-    @Autowired
-    private TicketDao ticketDao;
-    @Autowired
-    private GanttDayDao ganttDayDao;
 
     @Transactional
     public @NotNull Team createTeam (@NotNull Team team, @NotNull String teamName){
@@ -64,17 +56,6 @@ public class TeamController {
         List<Team> teams = teamDao.findAll();
         return teams;
     }
-
-    public void computeTeamWeight(String teamName) {
-        Team team = teamDao.getOne(teamName);
-        List<User> teamMember = teamDao.findTeamMembersByTeam(team);
-        List<Ticket> ticketAssigned = ticketDao.findByTeamAndStatus(team,State.EXECUTION.toString().toLowerCase());
-        Double teamWeight = (double) ticketAssigned.size() /(double)teamMember.size();
-        team.updateWeight(teamWeight);
-        teamDao.save(team);
-    }
-
-
 
     public List<Team> findAllTeamByPerson(String person) {
         User user = userDao.getOne(person);

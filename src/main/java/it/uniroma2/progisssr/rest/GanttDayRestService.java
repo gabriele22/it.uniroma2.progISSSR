@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping(path = "gantt")
 @CrossOrigin
 public class GanttDayRestService {
+
     @Autowired
     private GanttDayController ganttDayController;
 
@@ -27,14 +28,14 @@ public class GanttDayRestService {
 
 
 
+    //NB: crea/aggiorna un'istanza di GanttDay, andando a cercare di aggiungere una nuova pianificazione per un ticket
+    // In particolare ritorna, in caso di fallimento, la lista dei giorni in cui non c'è disponibilità o avverte che ci
+    // sono delle dipendenze da risolvere prima per quel ticket. In caso di successo assigna il ticket al team, ne programma
+    // la data di inizio esecuzione pianificata e la durata, e aggiorna le disponibilità del team nei giorni coinvolti.
     @RequestMapping(path = "createGanttInstance/{teamName}/{firstDay}/{duration}/{ticketId}", method = RequestMethod.POST)
     public ResponseEntity<List<GanttDay>> createGanttInstance(@RequestBody Ticket ticket, @PathVariable String teamName,
                                                               @PathVariable String firstDay, @PathVariable Integer duration,
                                                               @PathVariable Long ticketId) {
-/*
-        Ticket ticketAssigned = ganttDayController.createGanttInstance(ticket,teamName,firstDay,duration, ticketId);
-        return new ResponseEntity<>(ticketAssigned,ticketAssigned == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);*/
-
         List<GanttDay> ganttDays;
         try {
             ganttDays = ganttDayController.createGanttInstance(ticket,teamName,firstDay,duration, ticketId);
@@ -45,10 +46,7 @@ public class GanttDayRestService {
         if (!ganttDays.isEmpty()) {
             return new ResponseEntity<>(ganttDays, HttpStatus.NOT_ACCEPTABLE);
         }
-
         return new ResponseEntity<>(ganttDays, HttpStatus.OK);
     }
-
-
 
 }

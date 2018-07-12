@@ -3,6 +3,7 @@ package it.uniroma2.progisssr.utils;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+//NB: classe usate per fare il parsing delle date con GregorianCalendar
 public class ParseDate {
     public ParseDate() {
     }
@@ -54,35 +55,6 @@ public class ParseDate {
     public static String gregorianCalendarToString(GregorianCalendar gregorianCalendar){
 
         return gregorianCalendar.get(Calendar.DATE)+ "/" + gregorianCalendar.get(Calendar.MONTH)+ "/" + gregorianCalendar.get(Calendar.YEAR);
-
-    }
-
-    public static void main(String[] args){
-        GregorianCalendar d = ParseDate.parseGregorianCalendar("07:05:2018 17:50:23");
-        GregorianCalendar d2 = ParseDate.parseGregorianCalendar("7/5/2018 16:19:23");
-
-
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Calendar now = Calendar.getInstance();
-        System.out.println("tcuvyibu"+ now.get(Calendar.DATE) + now.toString());
-        System.out.println("\n------------------------\n"+ d.toString());
-
-
-
-        Long i = (now.getTimeInMillis() - d.getTimeInMillis()) / (1000*3600);
-        System.out.println("tempo"+ i);
-        System.out.println("data inizio"+d.get(Calendar.DATE) + d.get(Calendar.MONTH) +d.get(Calendar.YEAR));
-        System.out.println("data inizio"+d2.get(Calendar.DATE) + d2.get(Calendar.MONTH) +d.get(Calendar.YEAR));
-        String n = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
-        System.out.println("nnnnnnnnnnnnn " +n );
-
-        now.add(Calendar.DATE, 0);
-        String ng = now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
-        System.out.println("domani " +ng );
-
-        System.out.println("to string " + gregorianCalendarToString(d2) );
-
-
 
     }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// @RestController e @Controller identificano uno Spring Bean che nell'architettura MVC è l'anello di congiunzione tra
+// NB: @RestController e @Controller identificano uno Spring Bean che nell'architettura MVC è l'anello di congiunzione tra
 // la View e il Controller (vedere l'annotazione @Service della classe PersonaController).
 // La differenzatra @Controller e @RestController è che @RestController (che estende @Controller) preconfigura tutti i
 // metodi per accettare in input e restituire in output delle richieste HTTP il cui payload è in formato JSON.
@@ -26,15 +26,23 @@ import java.util.List;
 // e deserializzare il JSON.
 @RestController
 @RequestMapping(path = "ticket")
+//NB: serve per specificare il path dell'URL per accedere ai metodi di questo rest
 @CrossOrigin
+//NB: serve per integrare CORS (Cross-Origin Http Request), in modo da permettere lo scambio di risorse tra client/serve
+//  su differenti domini, protocolli e porte
 public class TicketRestService {
 
     @Autowired
+    //NB: specifica a Spring di risolvere questa dipendenza a runtime
     private TicketController ticketController;
     @Autowired
     private TeamController teamController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
+    //NB: permette di specificare il path, da aggiungere al path della classe (in questo caso "ticket"), per accedere
+    // al metodo e la tipologia di richiesta http. @RequestBody specifica il tipo del body json della richiesta
+    // (usato da Jackson per il casting). @PathVariable specifica il tipo di attributi presenti nel path
+    // (dichiarati in @RequestMapping tramite le {nomeAttributo})
     public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
         Ticket newTicket = ticketController.createTicket(ticket);
         return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
@@ -52,7 +60,6 @@ public class TicketRestService {
     }
 
 
-    //TODO quando richiedono un ticket uguale ad un altro torni il primo che è entrato nel sistema ovvero quello salvato in same ticket
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Ticket>  findTicket(@PathVariable Long id) {
         Ticket ticket = ticketController.findTicketById(id);
@@ -71,6 +78,7 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: restituisce i ticket di un utente
     @RequestMapping(path = "getTicketsByUser", method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> findTicketsById(@RequestBody User user) {
         List<Ticket> tickets = ticketController.findTicketsByCustomer(user);
@@ -79,6 +87,7 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: restituisce i ticket in relazione di uguaglianza con "ticket"
     @RequestMapping(path = "getTicketsBySameTicket", method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> findTicketsBySameTicket(@RequestBody Ticket ticket) {
         List<Ticket> tickets = ticketController.findTicketBySameTicket(ticket);
@@ -87,6 +96,7 @@ public class TicketRestService {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: crea una relazione di uguaglianza tra i ticket con id "id" (ticket principale) e "sameTicketId (ticket secondario)
     @RequestMapping(path = "addEqualityTicket/{id}/{sameTicketId}", method = RequestMethod.PUT)
     public ResponseEntity<Ticket> addEqualityTicket(@PathVariable Long id,@PathVariable Long sameTicketId, @RequestBody Ticket sameTicket) {
         Ticket ticketUpdated = null;
@@ -104,8 +114,8 @@ public class TicketRestService {
 
     }
 
+    //NB: crea una relazione di dipendenza tra i ticket con id "id" (ticket padre) e "dependentTicketId (ticket figlio)
     @RequestMapping(path = "addDependentTicket/{id}/{dependentTicketID}", method = RequestMethod.POST)
-  //  public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@RequestBody Ticket ticket) {
     public ResponseEntity<List<Ticket>> addDependentTicket(@PathVariable Long id,@PathVariable Long dependentTicketID) {
         List<Ticket> cycle = new ArrayList<>();
         if (id.equals(dependentTicketID))
@@ -150,67 +160,44 @@ public class TicketRestService {
         return new ResponseEntity<>(ticketRegression, HttpStatus.OK);
     }
 
-//---------------Per stampare le tabelle nelle schermate del dispatcher--------------------------------
+//----------------- Relation -----------------------------
 
-    @RequestMapping(path = "findAllTicketsByStatusNot/{status}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findAllTicketsByStatusNot(@PathVariable String status) {
-        List<Ticket> tickets = ticketController.findAllTicketsByStatusNot(status);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
-
-    @RequestMapping(path = "findAllTicketsForEquality/{status}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findAllTicketsForEquality(@PathVariable String status) {
-        List<Ticket> tickets = ticketController.findAllTicketsForEquality(status);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
-    @RequestMapping(path = "findAllTicketsForDependency/{status}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findAllTicketsForDependency(@PathVariable String status) {
-        List<Ticket> tickets = ticketController.findAllTicketsForDependency(status);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
-
-    @RequestMapping(path = "findAllTicketsForRegression/{status}", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findAllTicketsForRegression(@PathVariable String status) {
-        List<Ticket> tickets = ticketController.findAllTicketsForRegression(status);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
-
-//-----------------relation new version-----------------------------
-
+    //NB: ritorna i ticket senza una relazione
     @RequestMapping(path = "findTicketNoRelation", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketNoRelation() {
         List<Ticket> tickets = ticketController.findTicketNoRelation();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: ritorna i ticket che possiedono una relazione di dipendenza
     @RequestMapping(path = "findTicketDependency", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketDependency() {
         List<Ticket> tickets = ticketController.findTicketDependency();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: ritorna i ticket con i quali è possibile creare una relazione di uguaglianza
     @RequestMapping(path = "findTicketForCreateEquality", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketForCreateEquality() {
         List<Ticket> tickets = ticketController.findTicketForCreateEquality();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: ritorna i ticket con i quali è possibile creare una relazione di dipendenza
     @RequestMapping(path = "findTicketForCreateDependency", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketForCreateDependency() {
         List<Ticket> tickets = ticketController.findTicketForCreateDependency();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    //NB: ritorna i ticket con i quali è possibile creare una relazione di regressione
     @RequestMapping(path = "findTicketForCreateRegression", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketForCreateRegression() {
         List<Ticket> tickets = ticketController.findTicketForCreateRegression();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+//------------------ Escalation ----------------------------------
 
     //rest per ottenere i ticket in coda (pending)
     @RequestMapping(path = "findTicketInQueue", method = RequestMethod.GET)
@@ -222,42 +209,23 @@ public class TicketRestService {
 
 
 
-//--------------GANTT---------------------------------
+//-------------- GANTT ---------------------------------
 
-    //per ottenere tutti i ticket associati ad un team
+    //NB: per ottenere tutti i ticket associati ad un team
     @RequestMapping(path = "findTicketByTeam/{teamName}", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketByTeam(@PathVariable String teamName) {
         List<Ticket> tickets = ticketController.findTicketByTeam(teamName);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-
-    //associa i ticket al team
-    @RequestMapping(path = "assignmentToTeam/{ticketId}/{teamName}", method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> assignmentToTeam(@PathVariable Long ticketId,@PathVariable String teamName,
-                                                   @RequestBody Ticket ticket) {
-        Ticket ticketUpdated = null;
-        try {
-            ticketUpdated = ticketController.updateTicket(ticketId, ticket);
-
-        } catch (NotFoundEntityException e) {
-            return new ResponseEntity<>(ticketUpdated, HttpStatus.NOT_FOUND);
-        }
-        teamController.computeTeamWeight(teamName);
-        Integer duration = ticketController.computeDuration(teamName,ticketUpdated);
-        ticketController.putDateExecutionStart(duration, ticketUpdated,teamName);
-
-        return new ResponseEntity<>(ticketUpdated, HttpStatus.OK);
-    }
-
-    //ritorna la lista dei ticket associata ad un team
+    //NB: ritorna la lista dei ticket associata ad un team
     @RequestMapping(path = "findTicketForGantt/{teamName}", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketForGantt(@PathVariable String teamName) {
         List<Ticket> tickets = ticketController.findTicketForGanttByTeam(teamName);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    //return the list of ticket from which ticket depends
+    //NB: return the list of ticket from which ticket depends
     @RequestMapping(path = "findFatherTicket/{ticketId}", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findFatherTicket(@PathVariable Long ticketId) {
         List<Ticket> tickets = ticketController.findFatherTicket(ticketId);

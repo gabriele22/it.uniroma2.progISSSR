@@ -60,9 +60,6 @@ public class UserController {
     }
 
     public boolean userVerifyCredentials(@NotNull String username, @NotNull User user) {
-       // User userToFind = userDao.getOne(username);
-
-        //String password = userDao.findPasswordById(username);
         return user.verifyPassword(userDao.findPasswordByUsername(username));
     }
 

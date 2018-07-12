@@ -16,28 +16,12 @@ import java.util.Set;
 
 public interface TicketDao extends JpaRepository<Ticket,Long> {
 
-    /*@Modifying
-    @Query("SELECT '*' FROM Ticket t where t.customer = :username")*/
-    List<Ticket> findByCustomer(/*@Param("username") */User customer);
+    //NB: nel DAO è possibile creare dei metodi di ricerca della classe associata al DAO (Ticket in questo caso)
+    // sulla base di condizioni definibili sugli attributi (=, !=, isNull, isNotNull, Contains, etc.)
+    List<Ticket> findByCustomer(User customer);
 
     List<Ticket> findBySameTicket(Ticket ticket);
 
-    List<Ticket> findByStatusNot(String status);
-    //to use in select equality
-    List<Ticket> findByStatusAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(String status);
-    //to use in select dependency
-    List<Ticket> findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(String status);
-    //to use in select regression
-    List<Ticket> findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(String status);
-
-    /*//Ticket where is possible add any relation
-    List<Ticket> findDistinctByStatusAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullSameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull(String status);
-    //Ticket where is possible add a dependency relation
-    List<Ticket> findDistinctByStatusAndDependentTicketsIsNotNullOrCountDependenciesIsNotNull(String status);
-    //Ticket with no relation
-    List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNullAndStatusIsNot(String status);
-    //Ticket for create a equality relation
-    List<Ticket> findBySameTicketIsNotNull();*/
     //Ticket for create a dependency relation
     List<Ticket> findDistinctByDependentTicketsIsNotNullOrCountDependenciesIsNotNull();
     //Ticket for create a regression relation
@@ -46,6 +30,8 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     List<Ticket> findDistinctBySameTicketIsNullAndDependentTicketsIsNullAndCountDependenciesIsNullAndRegressionTicketsGeneratorIsNull();
 
     @Query("select t.id from Ticket t where t= :ticket")
+    //NB: @Query permette di specificare una query in JPQL (query SQL sulle classi java). E' possibile specificare dei parametri
+    // di input della query con ":parametro", e richiamati nell'input del metodo del DAO con la notazione @Param("parametro") ClasseParametro nomeParametro
     Long getIDByTicket(@Param("ticket") Ticket ticket);
 
     List<Ticket> findDistinctBySameTicketIsNull();
@@ -55,15 +41,12 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
 
 //-----------------------------GANTT-------------------------------
     List<Ticket> findByTeamAndStatusIsNotAndStatusIsNot(Team team, String status, String status2);
-    List<Ticket> findByTeamAndStatus(Team team, String status);
 
     @Query("select t.difficulty from Ticket t where t = :ticket")
     Double findDifficultyByTicket(@Param("ticket") Ticket ticket);
 
     @Query("select t.dependentTickets from Ticket t where  t = :ticket")
     List<Ticket> getDependentTicketByTicket(@Param("ticket") Ticket ticket);
-
-    List<Ticket> findAllByCountDependenciesIsNotNullAndCountDependenciesIsNot(Integer countDependencies);
 
     List<Ticket> findDistinctByDependentTicketsContains(Set<Ticket> dependentTickets);
 

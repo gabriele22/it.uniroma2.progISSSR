@@ -16,19 +16,16 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
+//NB: @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class TicketController {
-
-    @Autowired
-    private UserDao userDao;
-
     @Autowired
     private TeamDao teamDao;
     @Autowired
     private TicketDao ticketDao;
 
     @Transactional
+    //NB: @Transactional indica a Spring che il seguente metodo è una transazione
     public @NotNull Ticket createTicket(@NotNull Ticket ticket) {
         Ticket newTicket = ticketDao.save(ticket);
         return newTicket;
@@ -122,30 +119,7 @@ public class TicketController {
 
     }
 
-    public List<Ticket> findAllTicketsByStatusNot(String status) {
-        List<Ticket> tickets = ticketDao.findByStatusNot(status);
-        return tickets;
-
-    }
-
-    public List<Ticket> findAllTicketsForEquality(String status) {
-        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndRegressionTicketsGeneratorIsNull(status);
-        return tickets;
-    }
-
-    public List<Ticket> findAllTicketsForDependency(String status) {
-        List<Ticket> tickets = ticketDao.findByStatusAndSameTicketIsNullAndRegressionTicketsGeneratorIsNull(status);
-        return tickets;
-    }
-
-    public List<Ticket> findAllTicketsForRegression(String status) {
-        List<Ticket> tickets = ticketDao.findByStatusAndDependentTicketsIsNullAndSameTicketIsNull(status);
-        return tickets;
-    }
-
-
-
-    //------------  Seconda versione relazioni-------------------------
+//------------  Relation  -------------------------
 
 
     public List<Ticket> findTicketNoRelation() {
@@ -174,8 +148,9 @@ public class TicketController {
         return tickets;
     }
 
+//-------------- Escalation ----------------------------------------------
 
-    //per stampare la coda dei ticket in pending
+    //NB: per stampare la coda dei ticket in pending
     public List<Ticket> findTicketInQueue (){
         List<Ticket> tickets = ticketDao.findDistinctByStatusOrderByRankDesc(State.PENDING.toString().toLowerCase());
 
@@ -184,44 +159,14 @@ public class TicketController {
 
 
 //---------------------------GANTT----------------------------------------------
-    //per ottenere tutti i ticket assegnati ad un team
+
+    //NB: per ottenere tutti i ticket assegnati ad un team
     public List<Ticket> findTicketByTeam(String teamName) {
         Team team = teamDao.getOne(teamName);
         List<Ticket> tickets = ticketDao.findByTeamAndStatusIsNotAndStatusIsNot(team,
                 State.RELEASED.toString().toLowerCase(), State.CLOSED.toString().toLowerCase());
         return  tickets;
 
-
-    }
-    public Integer computeDuration(String teamName, Ticket ticketUpdated) {
-        Team team = teamDao.getOne(teamName);
-        Double teamWeight = teamDao.findTeamWeightByTeam(team);
-        Double difficulty = ticketDao.findDifficultyByTicket(ticketUpdated);
-        //stima della duration in eccesso
-        Integer duration = (int)Math.ceil(teamWeight*difficulty);
-        ticketUpdated.updateDuration(duration);
-        ticketDao.save(ticketUpdated);
-
-        return duration;
-
-    }
-
-    public void putDateExecutionStart(Integer duration, Ticket ticketUpdated, String teamName) {
-        List<Ticket> dependentTickets = ticketDao.getDependentTicketByTicket(ticketUpdated);
-        Calendar now = Calendar.getInstance();
-        String dateExec= now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
-        ticketUpdated.updateDateExecutionStart(dateExec);
-        now.add(Calendar.DATE, duration);
-        String dateDependentTicket= now.get(Calendar.DATE)+ "-"+ now.get(Calendar.MONTH)+ "-"+now.get(Calendar.YEAR);
-        if(dependentTickets.size()!=0)
-            for(Ticket ticket: dependentTickets){
-                ticket.updateDateExecutionStart(dateDependentTicket);
-                Integer durationTickDependent = computeDuration(teamName,ticketUpdated);
-                ticket.updateDuration(durationTickDependent);
-                ticketDao.save(ticket);
-            }
-
-        ticketDao.save(ticketUpdated);
 
     }
 

@@ -201,11 +201,4 @@ public class Ticket {
     public void addRegression(Ticket ticketGenerator) {
         this.regressionTicketsGenerator.add(ticketGenerator);
     }
-    public void updateDuration(Integer duration) {
-        this.durationEstimation= duration;
-    }
-    public void updateDateExecutionStart(String date){
-        this.dateExecutionStart = date;
-    }
-
 }

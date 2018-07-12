@@ -19,9 +19,8 @@ public class RelationRestService {
     @Autowired
     RelationController relationController;
 
-
-
     @LogOperation( inputArgs = {"Relation"}, returnObject = true)
+    //NB: annotazione creata per il logging delle relazioni (integrata da altro gruppo)
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<Relation> createRelation(@RequestBody Relation relation, @PathVariable String name) {
         Relation newRelation = relationController.createRelation(relation,name);

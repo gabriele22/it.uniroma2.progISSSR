@@ -10,11 +10,12 @@ import java.util.List;
 
 
 /*
-thread che:
+NB: thread che:
  -attiva la funzione computeRank su tutti i ticket in pending
  -aggiorna il campo rank di ogni ticket in pending
  -e salva ogni ticket nel database
 
+versione usata senza l'annotazione @Scheduled
  */
 public class ThreadEscalation implements Runnable{
 

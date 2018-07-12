@@ -38,24 +38,18 @@ public class RelationInstanceRestService {
     }
 
 
+    //NB: ritorna i figli di un ticket relativi alla relazione "relationName"
     @RequestMapping(path = "/findSonTickets/{relationName}/{fatherTicketId}", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>>  findSonTickets(@PathVariable String relationName, @PathVariable Long fatherTicketId) {
         List<Ticket> sonTickets = relationInstanceController.findTicketsByRelation(relationName, fatherTicketId);
         return new ResponseEntity<>(sonTickets, sonTickets == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
+    //NB: ritorna la lista delle relazioni non custom di cui fatherTicket è padre
     @RequestMapping(path = "/findRelations/{fatherTicketId}", method = RequestMethod.GET)
     public ResponseEntity<List<RelationInstance>>  findRelationByFatherTicket(@PathVariable Long fatherTicketId) {
         List<RelationInstance> sonTickets = relationInstanceController.findRelationsByFather(fatherTicketId);
         return new ResponseEntity<>(sonTickets, sonTickets == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
-
-
-
-    /*@RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<RelationInstance>> findAllRelations() {
-        List<RelationInstance> relationInstances = relationInstanceController.findAll;
-        return new ResponseEntity<>(relations, HttpStatus.OK);
-    }*/
 }

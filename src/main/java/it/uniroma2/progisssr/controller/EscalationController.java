@@ -36,7 +36,11 @@ public class EscalationController {
     @Autowired
     private TicketDao ticketDao;
 
-/*    public EscalationController() {
+/*
+
+----------------- Versione senza @Scheduled dell'Escalation ---------------------------------------------
+
+    public EscalationController() {
         escalationStart();
     }*/
 
@@ -64,6 +68,7 @@ public class EscalationController {
         return newEscalation;
     }
 
+-----------------------------------------------------------------------------------------------------------
 
 */
 
@@ -80,8 +85,12 @@ public class EscalationController {
 
     }
 
-    //cron update rank every day every six hours
+
     @Scheduled(fixedDelay = 5000, initialDelay = 1000 /*cron = "0 0 1,7,13,20 * * ?"*/)
+    //NB: l'annotazione @Scheduled avverte Spring di creare in automatico un thread con un delay pari a "fixedDelay"
+    // esegue il seguente metodo (nel nostro caso effettua l'escalation)
+    // Il parametro cron permette di impostare delle esecuzione in determinati momenti della giornata (ad esempio il setting
+    // commentato esegue il metodo ogni giorno ogni sei ore
     public void escalationStart() {
         Double customerPriority = escalationDao.getCustomerPriorityByEscalation(escalation);
         Double teamPriority = escalationDao.getTeamPriorityByEscalation(escalation);
@@ -104,8 +113,4 @@ public class EscalationController {
         }
 
     }
-
-
-
-
 }
