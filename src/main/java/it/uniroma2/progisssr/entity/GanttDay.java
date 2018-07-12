@@ -18,7 +18,7 @@ import java.util.Set;
 public class GanttDay {
 
     @EmbeddedId
-    //annotation to specify that the Id is a class (composite primary key) that is embedded to this
+    //NB: annotation to specify that the Id is a class (composite primary key) that is embedded to this
     private KeyGanttDay keyGanttDay;
     private Double availability;
     @ManyToMany

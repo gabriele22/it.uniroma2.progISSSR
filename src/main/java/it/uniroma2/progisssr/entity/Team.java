@@ -24,14 +24,11 @@ public class Team {
     @ManyToMany
     @JoinTable(name = "team_members")
     private Set<User> teamMembers;
-    //carico del team
-    private Double teamWeight;
 
     public Team(User teamLeader, User teamCoordinator, Set<User> teamMembers) {
         this.teamLeader = teamLeader;
         this.teamCoordinator = teamCoordinator;
         this.teamMembers = teamMembers;
-        this.teamWeight=0.0;
     }
 
     public void update(@NotNull Team teamUpdated) {
@@ -41,13 +38,5 @@ public class Team {
             this.teamLeader = teamUpdated.teamLeader;
         if (teamUpdated.teamMembers != null)
             this.teamMembers = teamUpdated.teamMembers;
-        if(teamUpdated.teamWeight != null)
-            this.teamWeight = teamUpdated.teamWeight;
     }
-
-    public void updateWeight(Double weight){
-        this.teamWeight=weight;
-    }
-
-
 }

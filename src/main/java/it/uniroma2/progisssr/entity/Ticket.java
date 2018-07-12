@@ -12,16 +12,27 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
+//NB: annotation to specify to Spring that this class is persistent
 @Table(name = "ticket")
+//NB: specify the name of the table in the DB associated to this class
 @NoArgsConstructor
+//NB: Lombok, generate in auto a constructor with no argoments at run time
 @Getter
 @Setter
+//NB: Lombok, generate in auto getter and setter at run time
 @Inheritance(strategy = InheritanceType.JOINED)
+//NB: specify the strategy use to map a generalization. In particular
+//      SINGLE_TABLE: tutte le generalizzazioni accorpate nell'entità padre, con l'aggiunta di un attributo disciminante
+//      JOINED: le classi figlie mantengono solo i loro attributi caratteristici e un fk alla classe padre
+//      TABLE_PER_CLASS: le classi figlie mantengono tutti i loro attributi, compresi quelli del padre (senza fk)
 public class Ticket {
 
     @Id
+    //NB: specify the attibute id of this class
     @GeneratedValue(strategy = GenerationType.AUTO)
+    //NB: auto generate the id of this class
     @Column(name = "ticket_ID")
+    //NB: specify the name of the column associated to this attribute
     private Long ID;
     private String status;
     private String dateStart;
@@ -38,33 +49,32 @@ public class Ticket {
     private Integer teamPriority;
     private Double rank;
     private Double difficulty;
- /*   @OneToMany(mappedBy = "ticket")
-    private Set<TicketMessage> ticketMessages;*/
     @ManyToOne
     @JoinTable(name = "Person_Tickets")
     private User customer;
-    @OneToOne@JoinColumn(name = "teamName")@JsonIgnoreProperties
+    @OneToOne
+    @JoinColumn(name = "teamName")
+    @JsonIgnoreProperties
+    //NB: evita che la libreria jackson generi una ricorsione infinita nella conversione di questo attributo in formato json
     private Team team;
-    //si legano i ticket uguali sempre al main ticket già presente nel sistema
-    @OneToOne@JoinColumn(name = "sameTicket")@JsonIgnoreProperties
+    @OneToOne
+    @JoinColumn(name = "sameTicket")
+    @JsonIgnoreProperties
+    //NB: tutti i ticket appertenenti ad una stessa classe della relazione "uguaglianza" fanno riferimento ad un unico
+    //  ticket principale
     private Ticket sameTicket;
     @ManyToMany
     @JoinTable(name = "dependent_tickets")
     @JsonIgnoreProperties
+    //NB: lista dei ticket che dipendono da questa istanza di ticket
     private Set<Ticket> dependentTickets;
+    //NB: indica il numero di ticket non risolti da cui dipende questa istanza di ticket
     private Integer countDependencies;
     @ManyToMany
     @JoinTable(name = "regressionTicketsGenerator")
     @JsonIgnoreProperties
+    //NB: lista di ticket in relazione di "regressione" con questa istanza di ticket
     private Set<Ticket> regressionTicketsGenerator;
-    /*@OneToMany
-    @JoinTable(name = "relationTicket")
-    @JsonIgnoreProperties
-    private Set<RelationInstance> relations;*/
-    /*   @Transient ALLEGATI
-    private List<String> attachedFiles; */
-    private Byte attached;
-
     private String teamComment;
 
     public Ticket(String status, String dateStart, String category, String title, String description, Target target, Integer customerPriority, User customer, Byte attached) {
@@ -76,8 +86,6 @@ public class Ticket {
         this.target = target;
         this.customerPriority = customerPriority;
         this.customer = customer;
-        this.attached = attached;
-
     }
 
     public void update(@NotNull Ticket ticketUpdated)
@@ -111,7 +119,9 @@ public class Ticket {
 
     }
 
-    //return true if there isn't cycle
+    //NB: metodo controlla se l'aggiunta di una relazione tra questa istanza di ticket e dependentTicket crea un ciclo
+    //  tra le relazione. Ritorna la lista dei ticket coinvoilti nel ciclo in caso si crei quest'ultimo, altrimenti
+    //  torna una lista vuota se non si formano cicli
     public List<Ticket> isAcycle(@NotNull Ticket dependentTicket, List<Ticket> cycle){
 
         List<Ticket> newCycle = new ArrayList<>();
@@ -138,14 +148,13 @@ public class Ticket {
 
     }
 
+    //NB: ritorna vero se dependentTicket dipennde già da questo ticket, falso altrimenti
     public boolean isAlreadyDependent(@NotNull Ticket depedentTicket){
         return this.dependentTickets.contains(depedentTicket);
     }
 
     public void addDependentTickets(@NotNull Ticket dependentTicket) {
-
         this.dependentTickets.add(dependentTicket);
-
     }
 
     public Integer addCount(){
@@ -167,9 +176,9 @@ public class Ticket {
             t.decreaseCount();
         }
         return this.dependentTickets;
-
     }
 
+    //NB: calcolo il rank del ticket
     public Double computeRank(Double a, Double b, Double c) {
         Calendar now = Calendar.getInstance();
         GregorianCalendar datePendingStart =  ParseDate.parseGregorianCalendar(this.datePendingStart);
@@ -198,17 +207,5 @@ public class Ticket {
     public void updateDateExecutionStart(String date){
         this.dateExecutionStart = date;
     }
-
-
-
-    /*public Boolean isCountDependenciesZero() {
-        if (this.countDependencies == 0)
-            return true;
-        else return false;
-    }*/
-/*
-    public int compareRank(Ticket ticket) {
-        return Double.compare(this.rank, ticket.rank);
-    }*/
 
 }

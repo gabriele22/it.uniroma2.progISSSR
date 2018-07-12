@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Embeddable
-//annotation to declare that a class is meant to be embedded by other entities
+//NB: annotation to declare that a class is meant to be embedded by other entities
 public class KeyGanttDay implements Serializable {
 
     private String day;

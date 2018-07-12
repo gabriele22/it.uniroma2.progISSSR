@@ -21,13 +21,12 @@ public class User {
     private String name;
     private String surname;
     @NaturalId
+    //NB: is the same of UNIQUE in SQL attributes
     private String email;
     @Id
     private String username;
     private String password;
     private String role;
-    /*    @OneToMany(mappedBy = "writer")
-    private Set<TicketMessage> ticketMessages;*/
 
 
 
@@ -69,11 +68,6 @@ public class User {
                 "role:"     +   this.role       + "\n";
 
     }
-
-
-/*    public String getPassword() {
-        return password;
-    }*/
 
     public boolean verifyPassword(@NotNull String password) {
         return password.equals(this.password);
