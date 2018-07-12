@@ -9,11 +9,13 @@ import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Embeddable
+//annotation to declare that a class is meant to be embedded by other entities
 public class KeyGanttDay implements Serializable {
 
     private String day;
     @OneToOne
-    @JoinColumn(name = "teamName")@JsonIgnoreProperties
+    @JoinColumn(name = "teamName")
+    @JsonIgnoreProperties
     private Team team;
 
     public  KeyGanttDay(){}

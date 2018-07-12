@@ -14,8 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 /*
-entita utilizzata per mantenere i pesi inseriti dall'admin per calcolare il rank
-
+Entity use to store the weight choosen by admin for the escalation
  */
 public class Escalation {
 

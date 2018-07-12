@@ -17,28 +17,14 @@ import java.util.Set;
 @Setter
 public class GanttDay {
 
-/*    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "day_ID")
-    private Long ID;
-    private String day;*/
-
     @EmbeddedId
+    //annotation to specify that the Id is a class (composite primary key) that is embedded to this
     private KeyGanttDay keyGanttDay;
     private Double availability;
-    /*@OneToOne@JoinColumn(name = "teamName")@JsonIgnoreProperties
-    private Team team;*/
-    @ManyToMany@JsonIgnoreProperties @JoinTable(name = "ticketsPerDay")
+    @ManyToMany
+    @JsonIgnoreProperties
+    @JoinTable(name = "ticketsPerDay")
     private Set<Ticket> tickets;
-/*
-    public GanttDay(String day, Double availability, Team team, Set<Ticket> tickets) {
-*//*        this.day = day;
-        this.availability = availability;
-        this.team = team;*//*
-        this.keyGanttDay = new KeyGanttDay(day,team);
-        this.tickets = tickets;
-        this.availability = availability;
-    }*/
 
     public GanttDay(KeyGanttDay keyGanttDay, Double availability, Set<Ticket> tickets) {
         this.keyGanttDay = keyGanttDay;
