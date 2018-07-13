@@ -16,7 +16,7 @@ public class EscalationRestService {
     @Autowired
     EscalationController escalationController;
 
-    //NB: crea un'esaclation, ovvero fa partire un nuovo thread con una nuova relazione (con i parametri definiti dall'admin)
+    //NB: crea un'escalation, ovvero fa partire un nuovo thread con una nuova relazione (con i parametri definiti dall'admin)
     // per il calcolo del rank e killa il precedente
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<Escalation> createEscalation(@RequestBody Escalation escalation) {

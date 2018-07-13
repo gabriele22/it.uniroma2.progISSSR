@@ -1,6 +1,5 @@
 package it.uniroma2.progisssr.rest;
 
-import it.uniroma2.progisssr.controller.TicketController;
 import it.uniroma2.progisssr.controller.UserController;
 import it.uniroma2.progisssr.entity.User;
 import it.uniroma2.progisssr.exception.NotFoundEntityException;

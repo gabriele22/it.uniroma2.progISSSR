@@ -72,6 +72,7 @@ public class TicketController {
         return tickets;
     }
 
+    @Transactional
     public List<Ticket> addDependentTicket( @NotNull Long ID, @NotNull Long dependentID) throws NotFoundEntityException {
         Ticket ticketMain = ticketDao.getOne(ID);
         Ticket dependentTicket = ticketDao.getOne(dependentID);
@@ -93,7 +94,7 @@ public class TicketController {
         else return cycle;
     }
 
-
+    @Transactional
     public Ticket releaseTicket(@NotNull  Long id, @NotNull Ticket ticket) throws NotFoundEntityException {
         Ticket ticketReleased = ticketDao.getOne(id);
         if (ticketReleased == null )
@@ -107,6 +108,7 @@ public class TicketController {
 
     }
 
+    @Transactional
     public Ticket addRegression(@NotNull Long id,@NotNull Long idGenerator) throws NotFoundEntityException {
         Ticket ticketRegression = ticketDao.getOne(id);
         Ticket ticketGenerator = ticketDao.getOne(idGenerator);

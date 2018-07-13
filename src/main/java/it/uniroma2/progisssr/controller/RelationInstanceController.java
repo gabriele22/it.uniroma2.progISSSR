@@ -7,6 +7,7 @@ import it.uniroma2.progisssr.dao.TicketDao;
 import it.uniroma2.progisssr.entity.Relation;
 import it.uniroma2.progisssr.entity.RelationInstance;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.exception.AlreadyPresentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,18 @@ public class RelationInstanceController {
     @Transactional
     public @NotNull List<Ticket> createRelationInstance(@NotNull RelationInstance relationInstance,
                                                             @NotNull String relationName,
-                                                            @NotNull Long fatherId, @NotNull Long sonId) {
+                                                            @NotNull Long fatherId, @NotNull Long sonId) throws AlreadyPresentException {
 
         Relation relation =  relationDao.getOne(relationName);
+
+        // AGGIUNTO IL 13 LUGLIO!!!!!!!!!!
+        Ticket ticketFather = ticketDao.getOne(fatherId);
+        Ticket ticketSon = ticketDao.getOne(sonId);
+
+        List<Ticket> sonTickets = relationInstanceDao.findSonTicketsByRelationAndFatherTicket(relation, ticketFather);
+        if(sonTickets.contains(ticketSon))
+            throw new AlreadyPresentException();
+       //-------!!!!!!!!!!!!!-------------
         List<Ticket> cycleList = new ArrayList<>();
         if(relationDao.findCyclicByRelation(relation)) {
             relationInstanceDao.save(relationInstance);

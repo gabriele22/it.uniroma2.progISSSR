@@ -31,7 +31,6 @@ public class RelationInstance {
         this.fatherTicket = fatherTicket;
         this.sonTicket = sonTicket;
         this.relation = relation;
-        GregorianCalendar g = new GregorianCalendar(2018, 0,1);
     }
 
 

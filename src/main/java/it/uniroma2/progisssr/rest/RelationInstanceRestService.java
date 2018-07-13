@@ -1,10 +1,9 @@
 package it.uniroma2.progisssr.rest;
 
-import it.uniroma2.progisssr.controller.RelationController;
 import it.uniroma2.progisssr.controller.RelationInstanceController;
-import it.uniroma2.progisssr.entity.Relation;
 import it.uniroma2.progisssr.entity.RelationInstance;
 import it.uniroma2.progisssr.entity.Ticket;
+import it.uniroma2.progisssr.exception.AlreadyPresentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +24,14 @@ public class RelationInstanceRestService {
                                                                    @PathVariable String relationName,
                                                                    @PathVariable Long fatherId,
                                                                    @PathVariable Long sonId) {
-        List<Ticket> ticketsCycle = relationInstanceController.createRelationInstance(relationInstance,
-                                                                        relationName, fatherId, sonId);
+        List<Ticket> ticketsCycle = null;
+        try {
+            ticketsCycle = relationInstanceController.createRelationInstance(relationInstance,
+                                                                            relationName, fatherId, sonId);
+        } catch (AlreadyPresentException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+        }
 
         return new ResponseEntity<>(ticketsCycle, !ticketsCycle.isEmpty() ? HttpStatus.FAILED_DEPENDENCY : HttpStatus.CREATED);
     }

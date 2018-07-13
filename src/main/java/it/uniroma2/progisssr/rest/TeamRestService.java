@@ -42,7 +42,7 @@ public class TeamRestService {
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteTeam(@PathVariable String id) {
-        boolean deleted = teamController.deleteTicket(id);
+        boolean deleted = teamController.deleteTeam(id);
         return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 

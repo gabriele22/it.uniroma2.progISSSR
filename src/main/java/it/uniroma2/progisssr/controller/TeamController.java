@@ -44,7 +44,8 @@ public class TeamController {
         return team;
     }
 
-    public boolean deleteTicket(@NotNull String teamName){
+    @Transactional
+    public boolean deleteTeam(@NotNull String teamName){
         if(!teamDao.existsById(teamName)){
             return false;
         }
