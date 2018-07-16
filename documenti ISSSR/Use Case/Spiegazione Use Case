@@ -1,0 +1,7 @@
+Utente: l'ho inteso come utente generico del sistema, quindi può registrarsi e accedere al proprio profilo, creare ticket, vedere quelli che ha creato lui.
+
+Admin: è l'amministratore e c'è la generalizzazione con Utente perché può fare tutte le funzionalità di Utente + creare target, creare team e assegnare membri, visualizzare ticket, gestire relazioni tra ticket e inserire nuove relazioni, gestire l'escalation.
+
+Team member: è anche un Utente ma può visualizzare il Gantt creato dal Team Leader.
+
+Team leader: è anche un Utente e un Team Member (perché anche lui può visualizzare il Gantt e non ero sicura di poter mettere un'altra freccia verso lo stesso caso d'uso Visualizza Gantt) e può gestire il Gantt.
